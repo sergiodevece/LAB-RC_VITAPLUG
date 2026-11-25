@@ -23,7 +23,9 @@ using IRProvider = std::function<juce::AudioBuffer<float>(int room, int pair)>;
 class RoomMixer {
 public:
     RoomMixer(); ~RoomMixer();
-    void prepare(double sampleRate, int maxBlockSize, int initialRoom, IRProvider);
+    void prepare(double sampleRate, int maxBlockSize, int initialRoom, IRProvider,
+                 bool externallyControlledRoom = false);
+    void requestRoom(int room) noexcept;
     void release(); // host audio stopped only; nunca dentro callback
     void process(float* const* channels, int numInputChannels, int numSamples,
                  const Parameters&, bool hostBypassed=false) noexcept;
@@ -34,6 +36,8 @@ public:
 ```
 
 El buffer siempre tiene al menos dos canales, aunque entrada sea mono. No double. Parámetros leídos una vez por bloque; DSP sanea valores defensivamente. prepare puede bloquear/asignar; process jamás. Los detalles y clases auxiliares pertenecen al agente DSP. Si el contrato necesita variar, avisar al lead antes de cambiar.
+
+Processor utiliza `externallyControlledRoom=true`: RoomChoice/control publican la selección mediante requestRoom y process solo lee el target. En el modo clásico por defecto, el consumidor publica Parameters.room en process. No mezclar ambas autoridades para Processor. La preparación/restore frío ocurre con audio detenido; si el host empieza concurrentemente, su wrapper JUCE puede esperar el getCallbackLock de la fase de control. El render propio no toma ese lock. El pipeline del host/framework no se anuncia libre de locks.
 
 ## Processor / editor
 
@@ -46,7 +50,8 @@ El buffer siempre tiene al menos dos canales, aunque entrada sea mono. No double
 - `void resetParameters(); void beginUserGesture(const juce::String& name);`
 - APVTS construido con nullptr UndoManager; historial público separado, sin undo por automation.
 - `void beginParameterGesture(const juce::String& id,const juce::String& name={}); void setParameterFromUser(const juce::String& id,float actualValue); void endParameterGesture(const juce::String& id);`
-- ParameterAttachment solo escucha; controles llaman las tres funciones anteriores. Cambios de usuario coalescen por ID y transacción, begin/end host.
+- La UI no registra ParameterAttachment ni listeners de parámetro: lee raw atomics en el timer30Hz. Los controles llaman las tres funciones anteriores; cambios de usuario coalescen por ID y transacción, begin/end host. No sobrescribir un editor numérico activo en el refresco.
+- `bool canUndoUser(); bool canRedoUser(); bool undoUser(); bool redoUser();`: todas las operaciones UI de historial pasan por estas APIs para invalidar historia anterior a restore host antes de actuar.
 - setMicsVisible es usuario deshacible; restore escribe preferencias sin acción. Reset parámetros DSP y MICS=true en una transacción; conserva tamaño.
 - Estado XML envelope LABRC_STATE version=1 con hijo PARAMETERS; aceptar PARAMETERS antiguo; parcial usa defaults y clamp; blob corrupto conserva estado previo.
 

@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "screenshots": [
+    {
+      "file": "kentucky-min.png",
+      "width": 800,
+      "height": 500,
+      "bytes": 432748,
+      "sha256": "4427cc0ad4fd1900f20548692702a73d1badec38cb67cce09b59a44367f04080"
+    },
+    {
+      "file": "kentucky-default.png",
+      "width": 1180,
+      "height": 738,
+      "bytes": 827984,
+      "sha256": "111f1b577698b69ec75ca96b47586f73f1d6c11df36eeb74b4bcf829a2a7792f"
+    },
+    {
+      "file": "kentucky-max.png",
+      "width": 1586,
+      "height": 992,
+      "bytes": 1367021,
+      "sha256": "5ef51cc7ab57b5dcbed64b688df4a913e77c8cdcb00ff143f7e7d0bce61f980f"
+    },
+    {
+      "file": "kentucky-default@2x.png",
+      "width": 2360,
+      "height": 1476,
+      "bytes": 2897071,
+      "sha256": "6f182c55b25df1c77b000a4acdf79ded688c5f479f1c5c57637a3dbba9396f40"
+    },
+    {
+      "file": "center-field-min.png",
+      "width": 800,
+      "height": 500,
+      "bytes": 484791,
+      "sha256": "34380f18534c7491b4c1c0adc30d6f8826192d7ab0113eb6ffe4bdf2a9aeb0e0"
+    },
+    {
+      "file": "center-field-default.png",
+      "width": 1180,
+      "height": 738,
+      "bytes": 948152,
+      "sha256": "01bcf3dbbb28ef39b3c8a2ddebd1e22afe20d29bc6d061d66b4e4142460ad0c8"
+    },
+    {
+      "file": "center-field-max.png",
+      "width": 1586,
+      "height": 992,
+      "bytes": 1570337,
+      "sha256": "c283908d64d1a9a142c0380aa16e2db6fb45b9578222f6d01ee536317a4d4ef9"
+    },
+    {
+      "file": "center-field-default@2x.png",
+      "width": 2360,
+      "height": 1476,
+      "bytes": 3240684,
+      "sha256": "aea1aa1f50cfb1e5a77ff18b9556b1db172170650b982a1c7de9f87d5a0975d9"
+    },
+    {
+      "file": "live-room-min.png",
+      "width": 800,
+      "height": 500,
+      "bytes": 431772,
+      "sha256": "4c9716b36fd855be94405bf2d455532a38f92ee4c8edb713565f270d4aeda15e"
+    },
+    {
+      "file": "live-room-default.png",
+      "width": 1180,
+      "height": 738,
+      "bytes": 829386,
+      "sha256": "d7b4c1428b81ab883c1956bd23f0ed963068b6e0d3a2ce61180814817be58d0e"
+    },
+    {
+      "file": "live-room-max.png",
+      "width": 1586,
+      "height": 992,
+      "bytes": 1365812,
+      "sha256": "4ce9681ea4832830935b09ab7ff157c20d73946da21c72e966ea638d40093828"
+    },
+    {
+      "file": "live-room-default@2x.png",
+      "width": 2360,
+      "height": 1476,
+      "bytes": 2869843,
+      "sha256": "3cc6e25ff87ed546e3b8648cc1bf28198043b21a51c1a041ee3ef67bc029669a"
+    }
+  ]
+}

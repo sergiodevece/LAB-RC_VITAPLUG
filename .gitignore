@@ -7,3 +7,4 @@ dist/*
 CMakeUserPresets.json
 docs/screenshots/
 __pycache__/
+docs/briefs/*.diff

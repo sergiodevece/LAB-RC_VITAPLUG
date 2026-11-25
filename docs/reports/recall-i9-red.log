@@ -1,0 +1,64 @@
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Room request during idle prepares the selected bank on the worker without a callback...
+Completed tests in Room matrices, controls and scheduling / Room request during idle prepares the selected bank on the worker without a callback
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / The final audio callback with an old room snapshot cannot cancel an external idle request...
+!!! Test 2 failed: Final room must reach the worker before audio resumes
+!!! Test 3 failed: Expected value  within 2e-05 of: 3, Actual value: 1
+
+FAILED!!  2 tests failed, out of a total of 3
+
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Two independent stereo inputs sum through four distinct FIRs...
+Completed tests in Room matrices, controls and scheduling / Two independent stereo inputs sum through four distinct FIRs
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / L-only, R-only and mono traverse every sample of all nine approved matrices...
+Maximum sample error (L/R/mono, all 9 pairs): 0.0000000298
+Completed tests in Room matrices, controls and scheduling / L-only, R-only and mono traverse every sample of all nine approved matrices
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / All 64 solo/mute combinations preserve independent pair gains...
+Completed tests in Room matrices, controls and scheduling / All 64 solo/mute combinations preserve independent pair gains
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Dry routing respects trims; bypass ramps to original unity; peak above full scale survives...
+Completed tests in Room matrices, controls and scheduling / Dry routing respects trims; bypass ramps to original unity; peak above full scale survives
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Nonfinite samples and controls leave following buffers usable...
+Completed tests in Room matrices, controls and scheduling / Nonfinite samples and controls leave following buffers usable
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Room requests keep previous output until new bank is ready and latest room wins...
+Completed tests in Room matrices, controls and scheduling / Room requests keep previous output until new bank is ready and latest room wins
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Fader, mute, solo, trims and mix ramp at sample resolution; excluded tail remains hot...
+Completed tests in Room matrices, controls and scheduling / Fader, mute, solo, trims and mix ramp at sample resolution; excluded tail remains hot
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Multiple requests during an audible transition converge on the last selection...
+Completed tests in Room matrices, controls and scheduling / Multiple requests during an audible transition converge on the last selection
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / A sub-frame over is retained across silent callbacks until read by the UI...
+Completed tests in Room matrices, controls and scheduling / A sub-frame over is retained across silent callbacks until read by the UI
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / A failed off-thread IR load preserves the sounding room and permits another selection...
+Completed tests in Room matrices, controls and scheduling / A failed off-thread IR load preserves the sounding room and permits another selection
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Transfer magnitude and phase at all host rates, including delayed high-frequency content...
+Completed tests in Room matrices, controls and scheduling / Transfer magnitude and phase at all host rates, including delayed high-frequency content
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Broadband stereo random burst vs double-precision time-domain convolution at every sample rate...
+Fs 44100 Hz, max time-domain error 0.000011709
+Fs 48000 Hz, max time-domain error 0.000008410
+Fs 88200 Hz, max time-domain error 0.000004461
+Fs 96000 Hz, max time-domain error 0.000000124
+Fs 176400 Hz, max time-domain error 0.000002636
+Fs 192000 Hz, max time-domain error 0.000001273
+Completed tests in Room matrices, controls and scheduling / Broadband stereo random burst vs double-precision time-domain convolution at every sample rate
+-----------------------------------------------------------------
+Starting tests in: Room matrices, controls and scheduling / Nine recorded matrices preserve complex transfer across the six host sample rates...
+Fs 44100 Hz, max absolute complex transfer error 0.000017582
+Fs 48000 Hz, max absolute complex transfer error 0.000005998
+Fs 88200 Hz, max absolute complex transfer error 0.000001076
+Fs 96000 Hz, max absolute complex transfer error 0.000001036
+Fs 176400 Hz, max absolute complex transfer error 0.000002535
+Fs 192000 Hz, max absolute complex transfer error 0.000002936
+Completed tests in Room matrices, controls and scheduling / Nine recorded matrices preserve complex transfer across the six host sample rates
+LAB-RC: 15 sections, 207 checks passed, 2 failed

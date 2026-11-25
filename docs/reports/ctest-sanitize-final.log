@@ -1,0 +1,21 @@
+Test project /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-sanitize
+    Start 1: DSP
+1/5 Test #1: DSP ..............................   Passed   93.77 sec
+    Start 2: Processor
+2/5 Test #2: Processor ........................   Passed   21.44 sec
+    Start 3: UI
+3/5 Test #3: UI ...............................   Passed    0.84 sec
+    Start 4: BuildTools
+4/5 Test #4: BuildTools .......................   Passed    0.52 sec
+    Start 5: Bootstrap
+5/5 Test #5: Bootstrap ........................   Passed    0.12 sec
+
+100% tests passed out of 5
+
+Label Time Summary:
+Build        =   0.63 sec*proc (2 tests)
+DSP          =  93.77 sec*proc (1 test)
+Processor    =  21.44 sec*proc (1 test)
+UI           =   0.84 sec*proc (1 test)
+
+Total Test time (real) = 116.69 sec
