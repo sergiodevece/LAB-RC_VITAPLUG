@@ -1,0 +1,362 @@
+{
+  "project": "LAB-RC",
+  "version": "handoff-1.0",
+  "files": [
+    {
+      "path": "MASTER_PROMPT.md",
+      "bytes": 14164,
+      "sha256": "d226d3067a34ee7e9561ddadccd277e4867564df16eb1d052833f8bfae35ff56"
+    },
+    {
+      "path": "assets/design/approved_vintage.png",
+      "bytes": 2860400,
+      "sha256": "e97f122debe7700c83ee3e26e5a79fe762261c5c375e2fd008042d7f7540b52f",
+      "dimensions": [
+        1586,
+        992
+      ]
+    },
+    {
+      "path": "assets/design/prototype_v01.html",
+      "bytes": 3152605,
+      "sha256": "df5e7bc8ed7596a4864ca8992266b6b99468f0f7a2385f57b04ba1c132bfabec"
+    },
+    {
+      "path": "assets/ir/v05/center_field_EARS_wet.wav",
+      "bytes": 2688058,
+      "sha256": "dd2be2d5e9700f5cc60fbbbfd824bac98c4b76d7d6e769011c62f2d83bc0011c",
+      "sample_rate": 96000,
+      "frames": 336000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 3.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/center_field_FLOOR_wet.wav",
+      "bytes": 2688058,
+      "sha256": "c3e981183d873a187dd785ab940b442e23b81e7f3c9034dc35348a72e1a15e56",
+      "sample_rate": 96000,
+      "frames": 336000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 3.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/center_field_FRONT_wet.wav",
+      "bytes": 2688058,
+      "sha256": "262157184502a7c196fc35101c0eeca051f1044305cb86a385b8137f95ecdf72",
+      "sample_rate": 96000,
+      "frames": 336000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 3.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/kentucky_EARS_wet.wav",
+      "bytes": 1920058,
+      "sha256": "ba6353afd8e89976f1fe02fc8b5532f5daa29d2d950735718e2c68881ed1871c",
+      "sample_rate": 96000,
+      "frames": 240000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 2.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/kentucky_FLOOR_wet.wav",
+      "bytes": 1920058,
+      "sha256": "1ecd9990597625b95a7715a78a5a794a6421d2c592a8c20f5d25ee4bd870a36f",
+      "sample_rate": 96000,
+      "frames": 240000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 2.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/kentucky_FRONT_wet.wav",
+      "bytes": 1920058,
+      "sha256": "dd948af2083b34eddcf5b43562034872c84ea2c8d7eb8ca0455be4b63f239fc0",
+      "sample_rate": 96000,
+      "frames": 240000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 2.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/live_room_EARS_wet.wav",
+      "bytes": 3456058,
+      "sha256": "f77001ebba70bcb83c089b17b83038745fc6fb93e2538261ab24672da1f0d20d",
+      "sample_rate": 96000,
+      "frames": 432000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 4.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/live_room_FLOOR_wet.wav",
+      "bytes": 3456058,
+      "sha256": "bdaf7e470e02c35b5485cf507485ceeceb0b4412569ada877089c6d16ba44cbe",
+      "sample_rate": 96000,
+      "frames": 432000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 4.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v05/live_room_FRONT_wet.wav",
+      "bytes": 3456058,
+      "sha256": "b4a5ad4aec5591e450ac7023f74b13a4c92afa345ec942c534c159e6841ae3b1",
+      "sample_rate": 96000,
+      "frames": 432000,
+      "channels": 2,
+      "dtype": "float32",
+      "duration_s": 4.5,
+      "channel_order": [
+        "mic_L",
+        "mic_R"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/center_field_EARS_wet_matrix.wav",
+      "bytes": 5376058,
+      "sha256": "118edfbdad3de9b79230c405775f7792b6a44f7a08fade9f7b8a039e3341fa26",
+      "sample_rate": 96000,
+      "frames": 336000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 3.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/center_field_FLOOR_wet_matrix.wav",
+      "bytes": 5376058,
+      "sha256": "af814989e9860436b29337904b97a5eff8171c5fb2d28b7bdc77d6914e518382",
+      "sample_rate": 96000,
+      "frames": 336000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 3.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/center_field_FRONT_wet_matrix.wav",
+      "bytes": 5376058,
+      "sha256": "99a02da80f931709dc38236b2cdf705fe0d5b144573932df9f7ff56dbce1610b",
+      "sample_rate": 96000,
+      "frames": 336000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 3.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/kentucky_EARS_wet_matrix.wav",
+      "bytes": 3840058,
+      "sha256": "7e5782922f295421ed6855f8f639a2f0470c06f78afc8bbf2d32c540a6bb083a",
+      "sample_rate": 96000,
+      "frames": 240000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 2.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/kentucky_FLOOR_wet_matrix.wav",
+      "bytes": 3840058,
+      "sha256": "f54b151a0ee46e73f5f3156598ad2a28083c130fcc83f518bcb723cfa4f97a33",
+      "sample_rate": 96000,
+      "frames": 240000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 2.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/kentucky_FRONT_wet_matrix.wav",
+      "bytes": 3840058,
+      "sha256": "df6f374b61d0af71e6cd7640ebe1ece394ecf1c4a751a76a10d0c79a1927260e",
+      "sample_rate": 96000,
+      "frames": 240000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 2.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/live_room_EARS_wet_matrix.wav",
+      "bytes": 6912058,
+      "sha256": "5a1465f69e2770eab8c60ea3f8e8fa45f91dd8ca08b855b4b25b7503b648dc7e",
+      "sample_rate": 96000,
+      "frames": 432000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 4.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/live_room_FLOOR_wet_matrix.wav",
+      "bytes": 6912058,
+      "sha256": "813493f00e87fa97f60d850a73a47cc3c02435c4ecf377f7fde026ca8f3a4628",
+      "sample_rate": 96000,
+      "frames": 432000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 4.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/ir/v06/live_room_FRONT_wet_matrix.wav",
+      "bytes": 6912058,
+      "sha256": "9cba5b3d2cea739694d5ac79cb481d85dfd98a8a49fa1196d9211dd4c3882c76",
+      "sample_rate": 96000,
+      "frames": 432000,
+      "channels": 4,
+      "dtype": "float32",
+      "duration_s": 4.5,
+      "channel_order": [
+        "LL",
+        "LR",
+        "RL",
+        "RR"
+      ]
+    },
+    {
+      "path": "assets/rooms/center_field.png",
+      "bytes": 2772006,
+      "sha256": "6401b080c448f030b8948e901842969ff21d50d74f6d377a2138800f22980b4a",
+      "dimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "path": "assets/rooms/kentucky.png",
+      "bytes": 2890124,
+      "sha256": "b0d06ddaab3df1d1b8aafd6268757328199473bd3cf8af6188b0a4a0ba5947d4",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "path": "assets/rooms/live_room.png",
+      "bytes": 2760893,
+      "sha256": "4461a64409b62e2c9c4aa7cf84501b1f80ff2aeaaa1758b27b36b2b7beea953a",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "path": "research/geometry_v02.json",
+      "bytes": 4878,
+      "sha256": "0caaaf56ffd815f60ab66181fd4c78533fe304c2fef53777e0cca6335bf37c81"
+    },
+    {
+      "path": "research/v05/README.md",
+      "bytes": 3912,
+      "sha256": "4ec58f6f4102cbafd0da89943949e58c5f1e6eb96269039e141a6c8c29ff3f41"
+    },
+    {
+      "path": "research/v05/execution_log.txt",
+      "bytes": 1055,
+      "sha256": "0d4311805d637a900447c1e022dae7ede9d8914f5a2905f48c1437e5e611b2e8"
+    },
+    {
+      "path": "research/v05/late_config.json",
+      "bytes": 879,
+      "sha256": "55b6810e5715947a9947ec7f742ecbc914f5aff5f14a71885af6b512e68798df"
+    },
+    {
+      "path": "research/v05/tests.json",
+      "bytes": 1002,
+      "sha256": "5d8b3eca04c177d6f8c89ad2c7a72f69001c1d3db2de62c8eeee277bc15ee29a"
+    },
+    {
+      "path": "research/v06/README.md",
+      "bytes": 3460,
+      "sha256": "8cc863c73e5b08127f5d37d78d186743033a43097cea6dc083a71ba9dbda98f4"
+    },
+    {
+      "path": "research/v06/execution_log.txt",
+      "bytes": 300,
+      "sha256": "76c081d0fd2b80d9a31aafa85b4fe88ac8cb86f1ceb4cea2f8a3413fb6e3ab51"
+    },
+    {
+      "path": "research/v06/results.json",
+      "bytes": 5558,
+      "sha256": "3fd1003afd1936f3de3fa0bcd4d34c999c4a08d9434f2feef7c631eb893724b5"
+    }
+  ]
+}

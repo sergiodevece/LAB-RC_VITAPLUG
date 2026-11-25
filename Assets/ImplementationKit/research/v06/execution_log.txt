@@ -1,0 +1,4 @@
+kentucky 377 374 side late ratio 0.65 mono err 3.725290298461914e-09
+center_field 377 374 side late ratio 0.65 mono err 3.725290298461914e-09
+live_room 436 435 side late ratio 0.65 mono err 3.2575826480751857e-09
+PASS: 9 matrix WAV, 36 transfer paths, mono/side/random convolution, finite, roundtrip

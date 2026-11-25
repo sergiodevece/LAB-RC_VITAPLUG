@@ -1,0 +1,17 @@
+# LAB-RC — AcousticLab v0.6
+Manza’s Rooms & Chambers — A Tribute to Steve Albini
+
+## Goal
+Experimental 2-input/2-output wet convolution for each of three virtual mic pairs in each room. The v0.5 mono wet IRs are immutable reference data (SHA256 recorded in measurements/results.json). Kentucky received initial positive subjective listening feedback from the user; other rooms have no confirmed listening validation yet.
+
+## Matrix convention
+WAV float32, 96 kHz, four channels in **input-major** order: L→mic L, L→mic R, R→mic L, R→mic R. Not a surround recording. yL = xL*hLL + xR*hRL; yR = xL*hLR + xR*hRR. Mono input is duplicated at unity into both matrix inputs; stereo inputs unchanged. Do not independently normalize, trim, or align channels. Preserve common time origin and gain under resampling. These are wet-only responses.
+
+## Model
+M=(L+R)/2, S=(L-R)/2; output = H*M + D*S. H is the original v0.5 stereo wet IR, not a regenerated response. D early = half the difference of two v0.4 geometric calculations with source shifted ±0.45m in X, same microphones, same room geometry, same material filters, same early fade. D late = signed, rotated and delayed (3–8ms) readouts of the existing six-channel late field, with a final taper and global energy scaling. Side late RMS energy ratio relative to original late (square root of energy ratio) capped to [0.15,0.65]; all three hit upper cap. This is a heuristic decorrelation, not a second independently excited FDN or a measured transfer. Matrix columns (H+D)/2 and (H-D)/2. Thus mono compatibility is guaranteed algebraically, up to float32 rounding, and left-only/right-only responses differ. No instrument separation or physically exact two-source propagation claimed. A separate independent FDN excitation can be tested later if listening exposes coloration or correlation issues.
+
+## Reproduce
+Unpack v0.4 and v0.5 in sibling directories, then run `python stereo.py --v04 ../LAB-RC_AcousticLab_v04 --v05 ../LAB-RC_AcousticLab_v05`. Requires numpy, scipy, shapely, matplotlib, numba (the imported prior modules require these). `measurements/results.json` reports regression errors, reference hashes, generated hashes, energy ratios and correlations; `execution_log.txt` records the run. All nine matrices passed readback, finite values, identical-input convolution, different-input response, side-only and random stereo linearity tests. No live plugin build or DAW test in v0.6.
+
+## JUCE handoff proposal (not implemented)
+First release: fixed IR convolutions (offline hybrid FDN + early solver already baked into assets). Mono→stereo and stereo→stereo layouts. Three pairs with independent gain, mute, solo; room selection, input/output trim, dry/wet, bypass. Default wet aux mode to avoid doubling source. Process M/S with four convolutions per active pair or equivalent matrix; preserve latency alignment and gains. No audio-thread allocation, locks, disk access or IR rebuild. Load/resample asynchronously, crossfade room switch; no state loss, test tails and CPU. Separate dry only, delay compensation for computational latency not modeled acoustic propagation. Parameter smoothing, automation/undo, persistence, resizing; AU universal macOS, VST3 Windows, host smoke. Proposed UI controls require approval. No approved image assets changed. Full geometric/direct mode, continuous decay editing and real-time FDN deferred; no unsupported promises of exact room capture.

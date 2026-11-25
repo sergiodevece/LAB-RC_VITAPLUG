@@ -1,0 +1,208 @@
+{
+  "project": "LAB-RC — Manza’s Rooms & Chambers",
+  "version": "0.2",
+  "status": "provisional; not a surveyed architectural plan",
+  "source_image": "Captura de pantalla 2026-11-25 a las 21.57.11.png",
+  "coordinate_convention": "Local plan coordinates in metres, x right, y down in image; z up; transform to right-handed coordinates before simulation. Each room has independent local origin.",
+  "calibration": {
+    "center_field_area_m2": 111.483648,
+    "live_room_area_m2": 74.322432,
+    "relative_linear_scale_difference": 0.07173770987836736,
+    "note": "Separate calibrations; discrepancy indicates plan not reliably to scale. Kentucky uses Center Field scale based on adjacent location, alternative scale yields 31.95 m2; scenarios are not confidence limits."
+  },
+  "rooms": {
+    "Kentucky": {
+      "studio": "A",
+      "outline_px_reference_1533x992": [
+        [
+          783,
+          340
+        ],
+        [
+          886,
+          340
+        ],
+        [
+          886,
+          420
+        ],
+        [
+          787,
+          409
+        ]
+      ],
+      "vertices_m_xy_clockwise_screen_y_down": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          6.2668,
+          0.0
+        ],
+        [
+          6.2668,
+          4.8674
+        ],
+        [
+          0.2434,
+          4.1981
+        ]
+      ],
+      "area_m2": 27.8135,
+      "bounding_box_m": [
+        6.2668,
+        4.8674
+      ],
+      "scale_m_per_reference_px": 0.0608424846848143,
+      "height_mean_m_assumed": 3.35,
+      "height_status": "assumption; not measured",
+      "area_status": "estimated from Center Field calibration",
+      "notes": "Coupled basement air volume via vented floor perimeter; aperture dimensions unknown. Secondary source describes total height ~20 ft and floor elevation ~9 ft; mean height provisional.",
+      "volume_m3_assumed": 93.18
+    },
+    "Center Field": {
+      "studio": "A",
+      "outline_px_reference_1533x992": [
+        [
+          702,
+          399
+        ],
+        [
+          886,
+          420
+        ],
+        [
+          886,
+          544
+        ],
+        [
+          678,
+          567
+        ],
+        [
+          678,
+          420
+        ],
+        [
+          702,
+          420
+        ]
+      ],
+      "vertices_m_xy_clockwise_screen_y_down": [
+        [
+          1.4602,
+          0.0
+        ],
+        [
+          12.6552,
+          1.2777
+        ],
+        [
+          12.6552,
+          8.8222
+        ],
+        [
+          0.0,
+          10.2215
+        ],
+        [
+          0.0,
+          1.2777
+        ],
+        [
+          1.4602,
+          1.2777
+        ]
+      ],
+      "area_m2": 111.4836,
+      "bounding_box_m": [
+        12.6552,
+        10.2215
+      ],
+      "scale_m_per_reference_px": 0.0608424846848143,
+      "height_mean_m_assumed": 3.5,
+      "height_status": "assumption; not measured",
+      "area_status": "calibration target from published approximate area",
+      "notes": "Six-vertex outline with recess; height unknown.",
+      "volume_m3_assumed": 390.19
+    },
+    "Live Room": {
+      "studio": "B",
+      "outline_px_reference_1533x992": [
+        [
+          756,
+          627
+        ],
+        [
+          886,
+          627
+        ],
+        [
+          909,
+          644
+        ],
+        [
+          909,
+          746
+        ],
+        [
+          794,
+          746
+        ],
+        [
+          756,
+          718
+        ]
+      ],
+      "vertices_m_xy_clockwise_screen_y_down": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          8.4769,
+          0.0
+        ],
+        [
+          9.9767,
+          1.1085
+        ],
+        [
+          9.9767,
+          7.7597
+        ],
+        [
+          2.4779,
+          7.7597
+        ],
+        [
+          0.0,
+          5.9339
+        ]
+      ],
+      "area_m2": 74.3224,
+      "bounding_box_m": [
+        9.9767,
+        7.7597
+      ],
+      "scale_m_per_reference_px": 0.06520718519941252,
+      "height_mean_m_assumed": 8.07,
+      "height_status": "assumption; not measured",
+      "area_status": "calibration target from published approximate area",
+      "notes": "Published ceiling height 30 ft; sloped diffusion ceiling; mean height and precise slope unknown.",
+      "volume_m3_assumed": 599.78
+    }
+  },
+  "sources": [
+    "https://www.electricalaudio.com/studios-overview",
+    "https://www.electricalaudio.com/studio-a",
+    "https://www.electricalaudio.com/studio-b",
+    "https://recordinghacks.com/2008/10/07/touring-electrical-audio/"
+  ],
+  "limitations": [
+    "Manual digitization of schematic contours, not physical measurement.",
+    "No wall thickness, exact interior heights, slopes, opening states, absorption, or microphone global positions verified.",
+    "Volumes are provisional. Do not use generated graphics for metrology."
+  ]
+}
