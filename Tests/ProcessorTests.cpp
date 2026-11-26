@@ -477,6 +477,44 @@ public:
         expectEquals(warm.getMagnitude(0,warm.getNumSamples()),0.f);
         expect(p.getTailLengthSeconds()>=4.5+p.getLatencySamples()/48000.0);
         p.releaseResources();
+
+        beginTest("Two active instances process uninterrupted audio independently");
+        LabRCProcessor active, quiet;
+        for (auto* instance : {&active, &quiet})
+        {
+            instance->setRateAndBufferSizeDetails(48000, 64);
+            instance->prepareToPlay(48000, 64);
+            expectEquals(instance->getLatencySamples(), 128);
+        }
+        constexpr int frames = 16384;
+        juce::AudioBuffer<float> loud(2, frames), silent(2, frames);
+        loud.clear();
+        silent.clear();
+        loud.setSample(0, 0, 0.75f);
+        loud.setSample(1, 17, -0.25f);
+        auto process = [](LabRCProcessor& instance, juce::AudioBuffer<float>& audio)
+        {
+            juce::MidiBuffer messages;
+            for (int start = 0; start < audio.getNumSamples(); start += 64)
+            {
+                float* channels[]{audio.getWritePointer(0, start), audio.getWritePointer(1, start)};
+                juce::AudioBuffer<float> block(channels, 2, 64);
+                instance.processBlock(block, messages);
+            }
+        };
+        std::thread otherHost([&] { process(quiet, silent); });
+        process(active, loud);
+        otherHost.join();
+        expect(loud.getMagnitude(0, frames) > 0.001f);
+        expectEquals(silent.getMagnitude(0, frames), 0.f);
+        for (const auto* audio : {&loud, &silent})
+            for (int channel = 0; channel < audio->getNumChannels(); ++channel)
+            {
+                const auto* start = audio->getReadPointer(channel);
+                expect(std::all_of(start, start + frames, [](float value) { return std::isfinite(value); }));
+            }
+        active.releaseResources();
+        quiet.releaseResources();
     }
 };
 static ProcessorAudioTests processorAudioTests;

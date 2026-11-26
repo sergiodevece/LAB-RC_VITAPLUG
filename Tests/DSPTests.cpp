@@ -9,6 +9,12 @@
 #if JUCE_MAC
 #include <mach/mach.h>
 #include <dlfcn.h>
+#elif JUCE_WINDOWS
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#include <psapi.h>
 #endif
 #include <random>
 #include <stdexcept>
@@ -652,29 +658,25 @@ class PairEQTests final : public juce::UnitTest
 
     void runTest() override
     {
-        beginTest(
-            "Impulse responses match complex RBJ curves at six rates, including shelving and bell symmetry");
+        beginTest("Each pair's three bands match complex RBJ curves in both directions at six rates");
+        constexpr std::array<std::array<float, 3>, 9> gainCases{{
+            {12, 0, 0}, {-12, 0, 0}, {0, 12, 0}, {0, -12, 0}, {0, 0, 12}, {0, 0, -12},
+            {12, -12, 12}, {-12, 12, -12}, {12, 12, 12}
+        }};
         double maximum = 0., rightRatioError = 0.;
         for (double fs : {44100., 48000., 88200., 96000., 176400., 192000.})
         {
             double worst = 0.;
-            for (int combination = 0; combination < 9; ++combination)
+            for (int pair = 0; pair < 3; ++pair)
+                for (const auto& gains : gainCases)
             {
                 RoomMixer mixer;
                 mixer.prepare(fs, 127, 0, identity);
                 Parameters p;
                 p.pairDb.fill(0);
-                const int pair = combination % 3;
                 p.solo[pair] = true;
                 p.eqEnabled[pair] = true;
-                if (combination < 6)
-                    p.eqDb[pair][pair] = combination < 3 ? 12.f : -12.f;
-                else if (combination == 6)
-                    p.eqDb[pair] = {12, -12, 12};
-                else if (combination == 7)
-                    p.eqDb[pair] = {-12, 12, -12};
-                else
-                    p.eqDb[pair] = {12, 12, 12};
+                p.eqDb[pair] = gains;
                 const int len = int(fs * 0.16), latency = mixer.latencySamples();
                 Buffer out(2, len + latency);
                 out.clear();
@@ -876,6 +878,24 @@ class PairEQTests final : public juce::UnitTest
 };
 PairEQTests pairEQTests;
 
+double workingSetMiB()
+{
+    constexpr double bytesPerMiB = 1024. * 1024.;
+#if JUCE_MAC
+    mach_task_basic_info_data_t info{};
+    mach_msg_type_number_t length = MACH_TASK_BASIC_INFO_COUNT;
+    if (task_info(mach_task_self(), MACH_TASK_BASIC_INFO, reinterpret_cast<task_info_t>(&info),
+                  &length) == KERN_SUCCESS)
+        return double(info.resident_size) / bytesPerMiB;
+#elif JUCE_WINDOWS
+    PROCESS_MEMORY_COUNTERS info{};
+    info.cb = sizeof(info);
+    if (K32GetProcessMemoryInfo(GetCurrentProcess(), &info, info.cb))
+        return double(info.WorkingSetSize) / bytesPerMiB;
+#endif
+    return -1.;
+}
+
 class DspBenchmark : public juce::UnitTest
 {
   public:
@@ -960,13 +980,9 @@ class DspBenchmark : public juce::UnitTest
                                       juce::String(int(misses)) + "/" + juce::String(count) + "; budget us " +
                                       juce::String(block * 1e6 / rate, 2) + "; prepare ms " +
                                       juce::String(prepareMs, 1);
+                if (const auto workingSet = workingSetMiB(); workingSet >= 0.)
+                    report += "; process RSS MiB " + juce::String(workingSet, 1);
 #if JUCE_MAC
-                mach_task_basic_info_data_t info{};
-                mach_msg_type_number_t length = MACH_TASK_BASIC_INFO_COUNT;
-                if (task_info(mach_task_self(), MACH_TASK_BASIC_INFO, reinterpret_cast<task_info_t>(&info),
-                              &length) == KERN_SUCCESS)
-                    report +=
-                        "; process RSS MiB " + juce::String(double(info.resident_size) / (1024 * 1024), 1);
                 if (startAudit && stopAudit)
                 {
                     report += "; callback heap calls " + juce::String(static_cast<juce::int64>(heapCalls));
@@ -1003,7 +1019,7 @@ class DspBenchmark : public juce::UnitTest
             beginTest("Two-bank fade, Fs " + juce::String(rate, 0) + " | block 64");
             std::vector<double> timings;
             unsigned long long heapCalls = 0;
-            double maxRss = 0;
+            double maxRss = -1.;
             for (int run = 0; run < 4; ++run)
             {
                 Buffer actual(source);
@@ -1043,16 +1059,8 @@ class DspBenchmark : public juce::UnitTest
                         if (i >= startFade + int(rate * 0.05))
                             break;
                         timings.push_back(Micros(end - start).count());
-#if JUCE_MAC
                         if (i % 1024 == 0)
-                        {
-                            mach_task_basic_info_data_t info{};
-                            mach_msg_type_number_t length = MACH_TASK_BASIC_INFO_COUNT;
-                            if (task_info(mach_task_self(), MACH_TASK_BASIC_INFO,
-                                          reinterpret_cast<task_info_t>(&info), &length) == KERN_SUCCESS)
-                                maxRss = std::max(maxRss, double(info.resident_size) / (1024 * 1024));
-                        }
-#endif
+                            maxRss = std::max(maxRss, workingSetMiB());
                     }
                 }
                 expect(startFade >= 0 && startFade + int(rate * 0.05) < frames, "Observed entire transition");
@@ -1070,7 +1078,7 @@ class DspBenchmark : public juce::UnitTest
                            juce::String(timings[count * 99 / 100], 2) + "/" +
                            juce::String(timings.back(), 2) + "; deadline misses " +
                            juce::String(int(overruns)) + "; sampled process RSS MiB " +
-                           juce::String(maxRss, 1));
+                           (maxRss >= 0. ? juce::String(maxRss, 1) : juce::String("unavailable")));
             }
 #if JUCE_MAC
             if (startAudit && stopAudit)
@@ -1080,7 +1088,7 @@ class DspBenchmark : public juce::UnitTest
                 expect(heapCalls == 0);
             }
 #else
-            juce::ignoreUnused(heapCalls, maxRss);
+            juce::ignoreUnused(heapCalls);
 #endif
         }
     }

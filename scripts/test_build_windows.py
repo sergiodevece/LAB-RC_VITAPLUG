@@ -4,6 +4,7 @@ import struct
 import tempfile
 import unittest
 from unittest.mock import patch
+import zipfile
 
 
 class WindowsBundleTests(unittest.TestCase):
@@ -68,6 +69,40 @@ class WindowsBundleTests(unittest.TestCase):
                 log.write_text(successful.replace(old, new), encoding="utf-8")
                 with self.assertRaisesRegex(ValueError, "pluginval"):
                     verify_pluginval_log(log)
+
+    def test_steinberg_validator_requires_nonempty_success(self):
+        from build_windows import verify_steinberg_log
+        log = Path(self.temp.name) / "steinberg-validator.log"
+        log.write_text("Result: 219 tests passed, 0 tests failed\n", encoding="utf-8")
+        self.assertEqual(verify_steinberg_log(log), 219)
+        for result in ("Result: 0 tests passed, 0 tests failed", "Result: 23 tests passed, 1 tests failed", ""):
+            with self.subTest(result=result):
+                log.write_text(result, encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "VST3 Validator"):
+                    verify_steinberg_log(log)
+
+    def test_release_zip_contains_installer_bundle_and_verified_checksum(self):
+        from build_windows import package, sha256
+        root = Path(self.temp.name)
+        for relative in ("scripts/windows/install.ps1", "docs/WINDOWS_SMOKE.md", "README.md", "CHANGELOG.md",
+                         "LICENSE.md", "build/dependencies/juce/LICENSE.md",
+                         "build/dependencies/juce/modules/juce_audio_processors_headless/format_types/"
+                         "VST3_SDK/LICENSE.txt", "evidence/benchmark.log"):
+            fixture = root / relative
+            fixture.parent.mkdir(parents=True, exist_ok=True)
+            fixture.write_text(relative, encoding="utf-8")
+        with patch("build_windows.ROOT", root):
+            package(self.bundle, self.binary, root / "evidence", "PASS", "PENDIENTE")
+        release = root / "dist/LAB-RC-Windows-x64-VST3.zip"
+        self.assertEqual(release.with_suffix(".zip.sha256").read_text().split()[0], sha256(release))
+        with zipfile.ZipFile(release) as archive:
+            self.assertIsNone(archive.testzip())
+            for relative in ("install.ps1", "INSTALACION.md", "README.md", "CHANGELOG.md", "INFORME.md",
+                             "evidence/benchmark.log", self.binary.relative_to(root).as_posix()):
+                self.assertIn(f"{release.stem}/{relative}", archive.namelist())
+            receipt = json.loads(archive.read(f"{release.stem}/build-info.json"))
+            self.assertEqual(receipt["binary_sha256"], sha256(self.binary))
+            self.assertEqual(receipt["steinberg_validator"], "PENDIENTE")
 
 
 if __name__ == "__main__":

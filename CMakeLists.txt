@@ -117,6 +117,11 @@ if(BUILD_TESTING)
         target_sources(labrc_tests PRIVATE Tests/ProcessorTests.cpp Tests/UITests.cpp)
         target_compile_definitions(labrc_tests PRIVATE LABRC_TEST_GUI=1)
         labrc_link_shared_code(labrc_tests)
+
+        add_executable(labrc_final_touch_regression Tests/FinalTouchRegression.cpp)
+        labrc_link_shared_code(labrc_final_touch_regression)
+        set_target_properties(labrc_final_touch_regression PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests")
     else()
         target_link_libraries(labrc_tests PRIVATE labrc_dsp
             juce::juce_dsp juce::juce_audio_formats)

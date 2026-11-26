@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare two actual local macOS Release processor builds; no host, network or installed AU."""
+"""Capture and compare Release shared-code processor renders outside a plugin host."""
 import argparse
 from array import array
 import csv
@@ -52,17 +52,18 @@ def capture(args):
     dest.mkdir(exist_ok=True,parents=True)
     if any((dest/name).exists() for name in ('manifest.json','samples.f32','segments.tsv')):
         raise ValueError('Render destination must be fresh; choose another output directory')
-    executable = link(build,dest)
+    executable = args.executable.resolve(strict=True) if args.executable else link(build,dest)
     if args.make_legacy:
         if legacy.exists(): raise ValueError('Preserving existing legacy fixture')
         subprocess.run([executable,'legacy',legacy],check=True)
     if not legacy.is_file(): raise FileNotFoundError(legacy)
     subprocess.run([executable,'render',dest,legacy,args.mode],check=True)
-    with (dest/'performance.tsv').open('w') as output:
-        output.write('rate\tblock\tcallbacks\tmean_us\tp95_us\tp99_us\tmax_us\toverruns\trss_mib\n'); output.flush()
-        for rate in (48000,96000,192000):
-            for block in (64,256):
-                subprocess.run([executable,'bench',str(rate),str(block),args.mode],stdout=output,check=True)
+    if not args.render_only:
+        with (dest/'performance.tsv').open('w') as output:
+            output.write('rate\tblock\tcallbacks\tmean_us\tp95_us\tp99_us\tmax_us\toverruns\trss_mib\n'); output.flush()
+            for rate in (48000,96000,192000):
+                for block in (64,256):
+                    subprocess.run([executable,'bench',str(rate),str(block),args.mode],stdout=output,check=True)
     segments=rows(dest); expected_offset=0; checks={}; switch={}
     if len(segments)!=6*(9*4+3): raise ValueError('Missing segments')
     with (dest/'samples.f32').open('rb') as audio:
@@ -85,6 +86,11 @@ def capture(args):
 
 def compare(args):
     a,b=args.reference,args.candidate
+    tolerance = args.peak_tolerance
+    if tolerance is not None and (not math.isfinite(tolerance) or tolerance < 0.):
+        raise ValueError('Peak tolerance must be finite and nonnegative')
+    if sys.byteorder != 'little':
+        raise ValueError('Comparison requires a little-endian host')
     ref,other=rows(a),rows(b)
     if ref!=other: raise ValueError('Layouts, order, rate, latency or duration differ')
     manifests=[json.loads((d/'manifest.json').read_text()) for d in (a,b)]
@@ -98,12 +104,19 @@ def compare(args):
             if ba==bb: continue
             left,right=array('f'),array('f');left.frombytes(ba);right.frombytes(bb)
             count=sum(x!=y for x,y in zip(memoryview(ba).cast('I'),memoryview(bb).cast('I')))
-            local=sum((x-y)**2 for x,y in zip(left,right)); p=max(abs(x-y) for x,y in zip(left,right));peak=max(peak,p);sum_sq+=local
+            local=sum((x-y)**2 for x,y in zip(left,right)); p=max(abs(x-y) for x,y in zip(left,right))
+            if not math.isfinite(local) or not math.isfinite(p):
+                raise ValueError('Nonfinite residual in ' + row['name'])
+            peak=max(peak,p);sum_sq+=local
             failures.append({'rate':row['rate'],'segment':row['name'],'changed_sample_bits':count,'peak':p,'rms':math.sqrt(local/n)})
             bit_differences+=count
         if sa.read(1) or sb.read(1):raise ValueError('Trailing samples')
     report={'reference':manifests[0]['label'],'candidate':manifests[1]['label'],'segments':len(ref),'float_samples':all_count,'bit_different_floats':bit_differences,'peak_abs_residual':peak,'rms_residual':math.sqrt(sum_sq/all_count),'different_segments':failures}
-    args.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='different_segments'}));return int(bit_differences!=0)
+    passed = bit_differences == 0 if tolerance is None else peak <= tolerance
+    if tolerance is not None:
+        report['peak_tolerance'] = tolerance
+        report['within_peak_tolerance'] = passed
+    args.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='different_segments'}));return int(not passed)
 
 
 def paired_benchmark(args):
@@ -132,6 +145,9 @@ def paired_benchmark(args):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);subs=parser.add_subparsers(dest='action',required=True)
     record=subs.add_parser('capture'); record.add_argument('build',type=Path);record.add_argument('out',type=Path);record.add_argument('legacy',type=Path);record.add_argument('--label',required=True);record.add_argument('--mode',choices=('off','flat'),default='off');record.add_argument('--make-legacy',action='store_true')
+    record.add_argument('--executable', type=Path, help='Already built shared-code regression executable')
+    record.add_argument('--render-only', action='store_true', help='Skip the separate callback benchmark')
     diff=subs.add_parser('compare');diff.add_argument('reference',type=Path);diff.add_argument('candidate',type=Path);diff.add_argument('output',type=Path)
+    diff.add_argument('--peak-tolerance', type=float, help='Optional absolute residual limit; the default is bit identity')
     paired=subs.add_parser('paired');paired.add_argument('reference',type=Path);paired.add_argument('candidate',type=Path);paired.add_argument('output',type=Path)
     args=parser.parse_args();sys.exit({'capture':capture,'compare':compare,'paired':paired_benchmark}[args.action](args))

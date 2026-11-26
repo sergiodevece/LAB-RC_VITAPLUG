@@ -2,7 +2,16 @@
 
 ## Instalación del VST3 compilado
 
-Descomprime el paquete Release y cierra el DAW. Copia la carpeta completa LAB-RC.vst3 a %CommonProgramFiles%\VST3 y vuelve a escanear los módulos desde el DAW. La carpeta contiene el binario en Contents\x86_64-win\LAB-RC.vst3. Si ya tienes una copia de LAB-RC, guarda el bundle anterior antes de sustituirlo. [Ubicaciones VST3 de Steinberg](https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical%2BDocumentation/Locations%2BFormat/Plugin%2BLocations.html)
+Descomprime el paquete Release y cierra el DAW. Abre PowerShell x64 como administrador en la carpeta extraída. El instalador verifica el binario incluido y mantiene respaldo de una versión anterior al reemplazarla.
+
+~~~powershell
+powershell.exe -NoProfile -File .\install.ps1 -Action Install
+powershell.exe -NoProfile -File .\install.ps1 -Action Uninstall
+~~~
+
+Para restaurar el respaldo, usa la ruta que imprimió el instalador con `-Action Restore -BackupPath 'C:\…\LAB-RC.vst3'`. Puedes añadir `-WhatIf` para ver la operación prevista.
+
+También puedes copiar la carpeta completa LAB-RC.vst3 a C:\Program Files\Common Files\VST3. Guarda primero una copia del bundle anterior. Para desinstalar manualmente, retira esa carpeta con el DAW cerrado. Vuelve a escanear los módulos después de instalar o desinstalar. [Ubicaciones VST3 de Steinberg](https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical%2BDocumentation/Locations%2BFormat/Plugin%2BLocations.html)
 
 ## Smoke en el DAW x64
 
@@ -29,4 +38,4 @@ Expand-Archive ..\pluginval_Windows.zip ..\pluginval
 py -3 -B scripts/build_windows.py --juce-archive ..\juce-8.0.17-security.tar.gz --pluginval ..\pluginval\pluginval.exe
 ~~~
 
-El comando registra cada paso en build\windows-x64\validation-* y genera dist\LAB-RC-0.2.0-VST3-Windows-x64.zip con su SHA-256 al completar las comprobaciones.
+El comando registra cada paso en build\windows-x64\validation-* y genera dist\LAB-RC-Windows-x64-VST3.zip con su SHA-256 al completar las comprobaciones. Si tienes el VST3 Validator x64 de Steinberg, añade --steinberg-validator con la ruta a validator.exe. [VST3 Validator de Steinberg](https://steinbergmedia.github.io/vst3_dev_portal/pages/What+is+the+VST+3+SDK/Validator.html)

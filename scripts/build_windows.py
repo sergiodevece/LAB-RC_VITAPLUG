@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import platform
 import re
 import shutil
 import struct
@@ -17,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = re.search(r"^project\(LabRC VERSION ([\d.]+) ", (ROOT / "CMakeLists.txt").read_text(encoding="utf-8"),
                     re.MULTILINE).group(1)
 BUNDLE_NAME = "LAB-RC.vst3"
-PACKAGE_NAME = f"LAB-RC-{VERSION}-VST3-Windows-x64"
+PACKAGE_NAME = "LAB-RC-Windows-x64-VST3"
 
 
 def sha256(path):
@@ -99,7 +100,15 @@ def verify_pluginval_log(log):
         raise ValueError(f"pluginval no confirmó el éxito para LAB-RC {VERSION}: {log}")
 
 
-def package(bundle, binary, evidence, validator):
+def verify_steinberg_log(log):
+    results = re.findall(r"^Result:\s+(\d+) tests passed,\s+(\d+) tests failed\s*$",
+                         log.read_text(encoding="utf-8"), re.MULTILINE)
+    if len(results) != 1 or int(results[0][0]) == 0 or int(results[0][1]) != 0:
+        raise ValueError(f"VST3 Validator no confirmó pruebas satisfactorias: {log}")
+    return int(results[0][0])
+
+
+def package(bundle, binary, evidence, pluginval_status, steinberg_status):
     destination = ROOT / "dist"
     destination.mkdir(exist_ok=True)
     output = destination / f"{PACKAGE_NAME}.zip"
@@ -107,18 +116,34 @@ def package(bundle, binary, evidence, validator):
         stage = Path(temporary)
         shutil.copytree(bundle, stage / BUNDLE_NAME)
         shutil.copytree(evidence, stage / "evidence")
+        shutil.copy2(ROOT / "scripts/windows/install.ps1", stage / "install.ps1")
         shutil.copy2(ROOT / "docs/WINDOWS_SMOKE.md", stage / "INSTALACION.md")
+        shutil.copy2(ROOT / "README.md", stage)
         shutil.copy2(ROOT / "CHANGELOG.md", stage)
         shutil.copy2(ROOT / "LICENSE.md", stage)
         juce = ROOT / "build/dependencies/juce"
         shutil.copy2(juce / "LICENSE.md", stage / "JUCE-LICENSE.md")
         sdk = juce / "modules/juce_audio_processors_headless/format_types/VST3_SDK"
         shutil.copy2(sdk / "LICENSE.txt", stage / "VST3-SDK-LICENSE.txt")
+        binary_hash = sha256(binary)
         (stage / "build-info.json").write_text(json.dumps({
             "version": VERSION, "architecture": "Windows x64", "configuration": "Release",
-            "toolchain": "Visual Studio 2022 / MSVC", "binary_sha256": sha256(binary),
-            "ctest": "PASS", "pluginval": validator, "daw_smoke": "PENDING",
+            "host_os": platform.platform(), "host_architecture": platform.machine(),
+            "toolchain": "Visual Studio 2022 / MSVC", "binary_sha256": binary_hash,
+            "ctest": "PASS", "pluginval": pluginval_status, "steinberg_validator": steinberg_status,
+            "daw_smoke": "PENDING",
         }, indent=2) + "\n", encoding="utf-8")
+        (stage / "INFORME.md").write_text(
+            f"# LAB-RC {VERSION} · Windows x64 Release\n\n"
+            f"- Entorno de compilación: {platform.platform()} ({platform.machine()}).\n"
+            "- MSVC de Visual Studio 2022. Versión del compilador en el registro de configuración.\n"
+            "- Integridad de IR y gráficos, CTest Release y formato PE32+ AMD64: PASS.\n"
+            f"- pluginval: {pluginval_status}.\n"
+            f"- Steinberg VST3 Validator: {steinberg_status}.\n"
+            "- CPU y memoria: consultar evidence/benchmark.log con las mediciones del runner.\n"
+            "- Comparación entre plataformas: el informe independiente acompaña la entrega si se ejecuta.\n"
+            "- Smoke en un DAW Windows 10/11 y comprobación visual HiDPI: pendientes.\n"
+            f"- SHA-256 del binario: {binary_hash}.\n", encoding="utf-8")
         hashes = "".join(f"{sha256(path)}  {path.relative_to(stage).as_posix()}\n"
                          for path in sorted(stage.rglob("*")) if path.is_file())
         (stage / "SHA256SUMS.txt").write_text(hashes, encoding="utf-8")
@@ -132,15 +157,17 @@ def package(bundle, binary, evidence, validator):
                 raise ValueError(f"Error de CRC en {failed}")
         staged_zip.replace(output)
     output.with_suffix(".zip.sha256").write_text(f"{sha256(output)}  {output.name}\n", encoding="ascii")
-    print(f"VST3 listo para smoke: {output}")
+    return output
 
 
-def build_windows(juce_archive, pluginval):
+def build_windows(juce_archive, pluginval, steinberg_validator):
     for tool in ("cmake", "ctest"):
         if not shutil.which(tool):
             raise ValueError(f"No se encontró {tool} en PATH")
     if pluginval is not None:
         pluginval = pluginval.resolve(strict=True)
+    if steinberg_validator is not None:
+        steinberg_validator = steinberg_validator.resolve(strict=True)
     juce_archive = juce_archive.resolve(strict=True)
     build = ROOT / "build/windows-x64"
     build.mkdir(parents=True, exist_ok=True)
@@ -152,15 +179,17 @@ def build_windows(juce_archive, pluginval):
                evidence / "integrity.log")
     run_logged(["cmake", "-S", ".", "-B", str(build), "-G", "Visual Studio 17 2022", "-A", "x64",
                 "-DBUILD_TESTING=ON", "-DLABRC_BUILD_PLUGIN=ON"], evidence / "configure.log")
-    run_logged(["cmake", "--build", str(build), "--config", "Release", "--target",
-                "LabRC_VST3", "labrc_tests", "--parallel", "4"], evidence / "build.log")
+    run_logged(["cmake", "--build", str(build), "--config", "Release", "--target", "LabRC_VST3",
+                "labrc_tests", "labrc_final_touch_regression", "--parallel", "4"], evidence / "build.log")
     run_logged(["ctest", "--test-dir", str(build), "-C", "Release", "--output-on-failure",
                 "--no-tests=error"], evidence / "ctest.log")
+    run_logged([str(build / "tests/Release/labrc_tests.exe"), "--benchmark"],
+               evidence / "benchmark.log")
     bundle = build / "LabRC_artefacts/Release/VST3" / BUNDLE_NAME
     dumpbin = find_dumpbin(build)
     binary = verify_bundle(bundle, dumpbin)
     run_logged([str(dumpbin), "/headers", "/exports", "/dependents", str(binary)], evidence / "pe.log")
-    validator = "PENDING: pluginval.exe not supplied"
+    pluginval_status = "PENDIENTE (pluginval.exe no disponible)"
     if pluginval is not None:
         log = evidence / "pluginval.log"
         run_logged([str(pluginval), "--strictness-level", "5", "--random-seed", "314159",
@@ -168,19 +197,26 @@ def build_windows(juce_archive, pluginval):
                     "--block-sizes", "1,32,64,127,128,256,512,1024,2048",
                     "--timeout-ms", "120000", "--validate", str(bundle)], log)
         verify_pluginval_log(log)
-        validator = "PASS (strictness 5)"
-    package(bundle, binary, evidence, validator)
+        pluginval_status = "PASS (nivel 5)"
+    steinberg_status = "PENDIENTE (validator.exe no disponible)"
+    if steinberg_validator is not None:
+        log = evidence / "steinberg-validator.log"
+        run_logged([str(steinberg_validator), str(bundle)], log)
+        steinberg_status = f"PASS ({verify_steinberg_log(log)} pruebas)"
+    release = package(bundle, binary, evidence, pluginval_status, steinberg_status)
+    print(f"VST3 compilado y empaquetado: {release}")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--juce-archive", type=Path, required=True, help="Archivo JUCE local fijado por SHA-256")
     parser.add_argument("--pluginval", type=Path, help="pluginval.exe local, opcional")
+    parser.add_argument("--steinberg-validator", type=Path, help="VST3 Validator x64 de Steinberg, opcional")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("La compilación VST3 Windows x64 requiere un entorno Windows con MSVC x64.")
     try:
-        build_windows(args.juce_archive, args.pluginval)
+        build_windows(args.juce_archive, args.pluginval, args.steinberg_validator)
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         parser.exit(1, f"LAB-RC Windows: {error}\n")
 
