@@ -1,0 +1,62 @@
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 48000 | block 1 | EQ OUT...
+callback us mean/p95/p99/max 1.60/0.30/0.80/712.60; deadline misses 2252/288000; budget us 20.83; prepare ms 311.9; process RSS MiB 36.6
+Completed tests in Live Room callback timings / Fs 48000 | block 1 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 48000 | block 64 | EQ OUT...
+callback us mean/p95/p99/max 89.17/362.90/403.70/626.50; deadline misses 0/4500; budget us 1333.33; prepare ms 306.8; process RSS MiB 34.5
+Completed tests in Live Room callback timings / Fs 48000 | block 64 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 48000 | block 256 | EQ OUT...
+callback us mean/p95/p99/max 349.60/586.10/976.70/1077.10; deadline misses 0/1125; budget us 5333.33; prepare ms 304.2; process RSS MiB 34.5
+Completed tests in Live Room callback timings / Fs 48000 | block 256 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 1 | EQ OUT...
+callback us mean/p95/p99/max 2.03/0.40/0.80/699.10; deadline misses 4620/576000; budget us 10.42; prepare ms 139.4; process RSS MiB 61.7
+Completed tests in Live Room callback timings / Fs 96000 | block 1 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 64 | EQ OUT...
+callback us mean/p95/p99/max 116.63/420.80/464.30/831.00; deadline misses 16/9000; budget us 666.67; prepare ms 138.7; process RSS MiB 57.3
+Completed tests in Live Room callback timings / Fs 96000 | block 64 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 64 | EQ IN fixed...
+callback us mean/p95/p99/max 115.50/417.90/454.70/699.40; deadline misses 10/9000; budget us 666.67; prepare ms 139.6; process RSS MiB 57.3
+Completed tests in Live Room callback timings / Fs 96000 | block 64 | EQ IN fixed
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 64 | EQ IN/OUT and all gains automated...
+callback us mean/p95/p99/max 117.79/419.90/459.90/767.50; deadline misses 6/9000; budget us 666.67; prepare ms 139.0; process RSS MiB 57.3
+Completed tests in Live Room callback timings / Fs 96000 | block 64 | EQ IN/OUT and all gains automated
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 256 | EQ OUT...
+callback us mean/p95/p99/max 459.99/699.50/1096.40/1157.30; deadline misses 0/2250; budget us 2666.67; prepare ms 139.6; process RSS MiB 57.3
+Completed tests in Live Room callback timings / Fs 96000 | block 256 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 1 | EQ OUT...
+callback us mean/p95/p99/max 2.88/0.50/0.80/5474.70; deadline misses 9414/1152000; budget us 5.21; prepare ms 730.6; process RSS MiB 112.5
+Completed tests in Live Room callback timings / Fs 192000 | block 1 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 64 | EQ OUT...
+callback us mean/p95/p99/max 169.10/521.30/568.50/1221.00; deadline misses 2139/18000; budget us 333.33; prepare ms 731.1; process RSS MiB 103.8
+Completed tests in Live Room callback timings / Fs 192000 | block 64 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 64 | EQ IN fixed...
+callback us mean/p95/p99/max 172.06/526.90/663.30/1884.10; deadline misses 2379/18000; budget us 333.33; prepare ms 731.0; process RSS MiB 103.8
+Completed tests in Live Room callback timings / Fs 192000 | block 64 | EQ IN fixed
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 64 | EQ IN/OUT and all gains automated...
+callback us mean/p95/p99/max 170.64/522.40/567.30/880.90; deadline misses 2229/18000; budget us 333.33; prepare ms 739.5; process RSS MiB 103.8
+Completed tests in Live Room callback timings / Fs 192000 | block 64 | EQ IN/OUT and all gains automated
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 256 | EQ OUT...
+callback us mean/p95/p99/max 674.35/909.20/1310.80/1471.60; deadline misses 20/4500; budget us 1333.33; prepare ms 730.7; process RSS MiB 103.7
+Completed tests in Live Room callback timings / Fs 192000 | block 256 | EQ OUT
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Two-bank fade, Fs 96000 | block 64...
+fade callbacks 300; us mean/p95/p99/max 156.31/425.00/560.80/722.30; deadline misses 1; sampled process RSS MiB 106.7
+Completed tests in Live Room callback timings / Two-bank fade, Fs 96000 | block 64
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Two-bank fade, Fs 192000 | block 64...
+fade callbacks 600; us mean/p95/p99/max 237.32/632.50/875.90/1104.50; deadline misses 299; sampled process RSS MiB 200.0
+Completed tests in Live Room callback timings / Two-bank fade, Fs 192000 | block 64
+LAB-RC: 15 sections, 21 checks passed, 0 failed

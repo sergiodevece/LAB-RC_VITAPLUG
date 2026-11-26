@@ -1,4 +1,6 @@
 Assets/ImplementationKit/** -text
 Assets/FinalTouch/** -text
 CI-inputs/** -text
+docs/prompts/** -text
+docs/reports/windows-native-0.2.0/** -text
 Tests/FinalTouchRegression.cpp text eol=lf

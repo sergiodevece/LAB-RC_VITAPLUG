@@ -1,0 +1,172 @@
+MSBuild version 17.14.60+43b635718 for .NET Framework
+
+  Checking File Globs
+  1>Checking Build System
+  Building VST3 manifest helper for LabRC
+  Generating LabRC_artefacts/JuceLibraryCode/LabRC_resources.rc
+  -- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.20348.
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  LabRC_rc_lib.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC_rc_lib.dir\Release\LabRC_rc_lib.lib
+  -- The CXX compiler identification is MSVC 19.44.35230.0
+  -- Detecting CXX compiler ABI info
+  -- Detecting CXX compiler ABI info - done
+  -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
+  -- Detecting CXX compile features
+  -- Detecting CXX compile features - done
+  -- Configuring done (1.2s)
+  -- Generating done (0.0s)
+  -- Build files have been written to: D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/build/windows-x64/vst3_helpers/LabRC
+  MSBuild version 17.14.60+43b635718 for .NET Framework
+  
+    1>Checking Build System
+    Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/build/dependencies/juce/extras/Build/CMake/juce_vst3_helper/CMakeLists.txt
+    juce_VST3ManifestHelper.cpp
+    vst3_helper.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\vst3_helpers\LabRC\vst3_helper.exe
+    Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/build/dependencies/juce/extras/Build/CMake/juce_vst3_helper/CMakeLists.txt
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  Generating juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData1.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData2.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData3.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData4.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData5.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData6.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData7.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData8.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData9.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData10.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData11.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData12.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData13.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData14.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/BinaryData15.cpp, juce_binarydata_LabRCAssets/JuceLibraryCode/LabRCAssets.h
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  MatrixBank.cpp
+  RoomMixer.cpp
+  juce_dsp.cpp
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  BinaryData1.cpp
+  BinaryData2.cpp
+  juce_audio_formats.cpp
+  BinaryData3.cpp
+  BinaryData4.cpp
+  BinaryData5.cpp
+  BinaryData6.cpp
+  juce_audio_basics.cpp
+  BinaryData7.cpp
+  juce_core.cpp
+  BinaryData8.cpp
+  juce_core_CompilationTime.cpp
+  Generating Code...
+  BinaryData9.cpp
+  BinaryData10.cpp
+  BinaryData11.cpp
+  BinaryData12.cpp
+  BinaryData13.cpp
+  BinaryData14.cpp
+  BinaryData15.cpp
+  Generating Code...
+  LabRCAssets.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Release\LabRCAssets.lib
+  labrc_dsp.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Release\labrc_dsp.lib
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  PluginProcessor.cpp
+  Resources.cpp
+  PluginEditor.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         with [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         [ [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:             _Ty=int [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         ] [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC.vcxproj]
+  (compiling source file '../../Source/PluginProcessor.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(3630,56):
+      the template instantiation context (the oldest one first) is
+          D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\Source\PluginProcessor.cpp(84,16):
+          see reference to function template instantiation 'std::unique_ptr<juce::AudioParameterFloat,std::default_delete<juce::AudioParameterFloat>> std::make_unique<juce::AudioParameterFloat,LabRCProcessor::makeLayout::ID,const char(&)[6],juce::NormalisableRange<float>,int,0>(LabRCProcessor::makeLayout::ID &&,const char (&)[6],juce::NormalisableRange<float> &&,int &&)' being compiled
+  
+  VintageComponents.cpp
+  juce_audio_processors.cpp
+  juce_gui_extra.cpp
+  juce_gui_basics.cpp
+  juce_gui_basics_2.cpp
+  juce_gui_basics_3.cpp
+  juce_gui_basics_4.cpp
+  juce_gui_basics_5.cpp
+  juce_graphics.cpp
+  juce_graphics_Harfbuzz.cpp
+  juce_events.cpp
+  juce_core.cpp
+  juce_core_CompilationTime.cpp
+  juce_data_structures.cpp
+  juce_audio_processors_headless.cpp
+  juce_audio_processors_headless_ara.cpp
+  juce_audio_processors_headless_lv2_libs.cpp
+  juce_audio_basics.cpp
+  juce_audio_utils.cpp
+  juce_audio_formats.cpp
+  juce_audio_devices.cpp
+  juce_dsp.cpp
+  juce_graphics_Sheenbidi.c
+  LabRC.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC_artefacts\Release\LAB-RC_SharedCode.lib
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  juce_audio_plugin_client_AAX.cpp
+  juce_audio_plugin_client_AAX_utils.cpp
+  juce_audio_plugin_client_ARA.cpp
+  juce_audio_plugin_client_LV2.cpp
+  juce_audio_plugin_client_Standalone.cpp
+  juce_audio_plugin_client_Unity.cpp
+  juce_audio_plugin_client_VST2.cpp
+  juce_audio_plugin_client_VST3.cpp
+     Creating library D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/build/windows-x64/LabRC_artefacts/Release/VST3/LAB-RC.lib and object D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/build/windows-x64/LabRC_artefacts/Release/VST3/LAB-RC.exp
+  LabRC_VST3.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC_artefacts\Release\VST3\LAB-RC.vst3\Contents\x86_64-win\LAB-RC.vst3
+  removing moduleinfo.json
+  creating D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/build/windows-x64/LabRC_artefacts/Release/VST3/LAB-RC.vst3/Contents/Resources/moduleinfo.json
+MSBuild version 17.14.60+43b635718 for .NET Framework
+
+  Checking File Globs
+  LabRCAssets.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Release\LabRCAssets.lib
+  labrc_dsp.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Release\labrc_dsp.lib
+  LabRC.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC_artefacts\Release\LAB-RC_SharedCode.lib
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  TestMain.cpp
+  DSPTests.cpp
+  ProcessorTests.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244: 'initializing': conversion from '_Ty' to '_Ty2', possible loss of data [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         with [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         [ [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:             _Ty=int [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         ] [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         and [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         [ [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:             _Ty2=float [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         ] [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+  (compiling source file '../../Tests/ProcessorTests.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54):
+      the template instantiation context (the oldest one first) is
+          D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\Tests\ProcessorTests.cpp(62,13):
+          see reference to function template instantiation 'std::pair<const char *,float>::pair<const char(&)[5],int,0>(_Other1,_Other2 &&) noexcept' being compiled
+          with
+          [
+              _Other1=const char (&)[5],
+              _Other2=int
+          ]
+              D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\Tests\ProcessorTests.cpp(62,13):
+              see the first reference to 'std::pair<const char *,float>::pair' in '`anonymous-namespace'::ProcessorTests::runTest'
+  
+  UITests.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244: 'initializing': conversion from '_Ty' to '_Ty2', possible loss of data [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         with [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         [ [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:             _Ty=int [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         ] [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         and [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         [ [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:             _Ty2=float [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54): warning C4244:         ] [D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\labrc_tests.vcxproj]
+  (compiling source file '../../Tests/UITests.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\utility(274,54):
+      the template instantiation context (the oldest one first) is
+          D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\Tests\UITests.cpp(298,13):
+          see reference to function template instantiation 'std::pair<const char *,float>::pair<const char(&)[5],int,0>(_Other1,_Other2 &&) noexcept' being compiled
+          with
+          [
+              _Other1=const char (&)[5],
+              _Other2=int
+          ]
+              D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\Tests\UITests.cpp(298,13):
+              see the first reference to 'std::pair<const char *,float>::pair' in '`anonymous-namespace'::UITests::runTest'
+  
+  labrc_tests.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Tests\Release\labrc_tests.exe
+MSBuild version 17.14.60+43b635718 for .NET Framework
+
+  Checking File Globs
+  LabRCAssets.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Release\LabRCAssets.lib
+  labrc_dsp.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Release\labrc_dsp.lib
+  LabRC.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\LabRC_artefacts\Release\LAB-RC_SharedCode.lib
+  Building Custom Rule D:/a/LAB-RC_VITAPLUG/LAB-RC_VITAPLUG/CMakeLists.txt
+  FinalTouchRegression.cpp
+  labrc_final_touch_regression.vcxproj -> D:\a\LAB-RC_VITAPLUG\LAB-RC_VITAPLUG\build\windows-x64\Tests\Release\labrc_final_touch_regression.exe

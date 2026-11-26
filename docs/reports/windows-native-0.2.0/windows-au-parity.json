@@ -1,0 +1,1651 @@
+{
+  "reference": "0.2.0-eq-off",
+  "candidate": "Windows-x64-Release-MSVC-EQ-OUT",
+  "segments": 234,
+  "float_samples": 213520746,
+  "bit_different_floats": 158886358,
+  "peak_abs_residual": 3.5762786865234375e-07,
+  "rms_residual": 4.801214036803412e-09,
+  "different_segments": [
+    {
+      "rate": "44100",
+      "segment": "0-ears-L",
+      "changed_sample_bits": 236387,
+      "peak": 5.21540641784668e-08,
+      "rms": 5.312424835116561e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-ears-R",
+      "changed_sample_bits": 236368,
+      "peak": 5.960464477539063e-08,
+      "rms": 4.986293831660613e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-ears-mono",
+      "changed_sample_bits": 235578,
+      "peak": 8.940696716308594e-08,
+      "rms": 7.688028596816573e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-ears-stereo-burst",
+      "changed_sample_bits": 235068,
+      "peak": 1.7881393432617188e-07,
+      "rms": 7.873215221631813e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "0-front-L",
+      "changed_sample_bits": 236389,
+      "peak": 3.725290298461914e-08,
+      "rms": 5.247779046164123e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-front-R",
+      "changed_sample_bits": 236250,
+      "peak": 3.725290298461914e-08,
+      "rms": 5.071193727151389e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-front-mono",
+      "changed_sample_bits": 235504,
+      "peak": 4.470348358154297e-08,
+      "rms": 7.66607315087341e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-front-stereo-burst",
+      "changed_sample_bits": 235862,
+      "peak": 1.7881393432617188e-07,
+      "rms": 7.87421972720748e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "0-floor-L",
+      "changed_sample_bits": 236129,
+      "peak": 7.450580596923828e-08,
+      "rms": 5.55658672265827e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-floor-R",
+      "changed_sample_bits": 236319,
+      "peak": 7.450580596923828e-08,
+      "rms": 5.327670943612826e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-floor-mono",
+      "changed_sample_bits": 235683,
+      "peak": 8.940696716308594e-08,
+      "rms": 8.454312899661214e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "0-floor-stereo-burst",
+      "changed_sample_bits": 235966,
+      "peak": 2.384185791015625e-07,
+      "rms": 8.444479256739695e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "1-ears-L",
+      "changed_sample_bits": 313152,
+      "peak": 5.960464477539063e-08,
+      "rms": 4.436085154044433e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-ears-R",
+      "changed_sample_bits": 313202,
+      "peak": 5.960464477539063e-08,
+      "rms": 4.668254810494611e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-ears-mono",
+      "changed_sample_bits": 311947,
+      "peak": 7.450580596923828e-08,
+      "rms": 6.935408290570445e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-ears-stereo-burst",
+      "changed_sample_bits": 312440,
+      "peak": 1.4156103134155273e-07,
+      "rms": 6.893518872129346e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "1-front-L",
+      "changed_sample_bits": 313246,
+      "peak": 2.9802322387695312e-08,
+      "rms": 4.60698019411008e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-front-R",
+      "changed_sample_bits": 313291,
+      "peak": 2.9802322387695312e-08,
+      "rms": 4.5242618399183234e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-front-mono",
+      "changed_sample_bits": 312026,
+      "peak": 3.725290298461914e-08,
+      "rms": 6.966138555372332e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-front-stereo-burst",
+      "changed_sample_bits": 313066,
+      "peak": 1.341104507446289e-07,
+      "rms": 6.92135345329245e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "1-floor-L",
+      "changed_sample_bits": 313167,
+      "peak": 7.450580596923828e-08,
+      "rms": 4.6391321295958263e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-floor-R",
+      "changed_sample_bits": 313129,
+      "peak": 7.450580596923828e-08,
+      "rms": 4.547868179205354e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-floor-mono",
+      "changed_sample_bits": 311812,
+      "peak": 8.940696716308594e-08,
+      "rms": 7.087068373432308e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "1-floor-stereo-burst",
+      "changed_sample_bits": 313839,
+      "peak": 1.341104507446289e-07,
+      "rms": 6.999321251292623e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "2-ears-L",
+      "changed_sample_bits": 376143,
+      "peak": 2.9802322387695312e-08,
+      "rms": 6.15589493302504e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-ears-R",
+      "changed_sample_bits": 376473,
+      "peak": 2.9802322387695312e-08,
+      "rms": 5.865929529158469e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-ears-mono",
+      "changed_sample_bits": 374037,
+      "peak": 4.470348358154297e-08,
+      "rms": 9.296050377899115e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-ears-stereo-burst",
+      "changed_sample_bits": 384778,
+      "peak": 1.4202669262886047e-07,
+      "rms": 9.161900298464997e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "2-front-L",
+      "changed_sample_bits": 376231,
+      "peak": 5.21540641784668e-08,
+      "rms": 5.910889436973053e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-front-R",
+      "changed_sample_bits": 376462,
+      "peak": 5.21540641784668e-08,
+      "rms": 5.744852879254887e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-front-mono",
+      "changed_sample_bits": 374408,
+      "peak": 5.960464477539063e-08,
+      "rms": 8.934602402838327e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-front-stereo-burst",
+      "changed_sample_bits": 384109,
+      "peak": 1.4901161193847656e-07,
+      "rms": 8.787384175078758e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "2-floor-L",
+      "changed_sample_bits": 376335,
+      "peak": 8.940696716308594e-08,
+      "rms": 6.263834451616579e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-floor-R",
+      "changed_sample_bits": 376518,
+      "peak": 8.940696716308594e-08,
+      "rms": 6.288239436731207e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-floor-mono",
+      "changed_sample_bits": 374608,
+      "peak": 7.450580596923828e-08,
+      "rms": 9.26282852860081e-10
+    },
+    {
+      "rate": "44100",
+      "segment": "2-floor-stereo-burst",
+      "changed_sample_bits": 384955,
+      "peak": 1.4901161193847656e-07,
+      "rms": 9.32132129147732e-09
+    },
+    {
+      "rate": "44100",
+      "segment": "legacy-recall-controls",
+      "changed_sample_bits": 73366,
+      "peak": 3.5762786865234375e-07,
+      "rms": 5.6314816012511384e-08
+    },
+    {
+      "rate": "44100",
+      "segment": "room-switch-0",
+      "changed_sample_bits": 81712,
+      "peak": 2.086162567138672e-07,
+      "rms": 4.1175380482532434e-08
+    },
+    {
+      "rate": "44100",
+      "segment": "room-switch-1",
+      "changed_sample_bits": 81712,
+      "peak": 2.086162567138672e-07,
+      "rms": 4.1175380482532434e-08
+    },
+    {
+      "rate": "48000",
+      "segment": "0-ears-L",
+      "changed_sample_bits": 250550,
+      "peak": 5.960464477539063e-08,
+      "rms": 4.2730476080953025e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-ears-R",
+      "changed_sample_bits": 250528,
+      "peak": 3.725290298461914e-08,
+      "rms": 4.0949241023323953e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-ears-mono",
+      "changed_sample_bits": 249890,
+      "peak": 5.960464477539063e-08,
+      "rms": 6.487231400072377e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-ears-stereo-burst",
+      "changed_sample_bits": 249795,
+      "peak": 1.4901161193847656e-07,
+      "rms": 6.733893849739339e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "0-front-L",
+      "changed_sample_bits": 250740,
+      "peak": 3.725290298461914e-08,
+      "rms": 4.2767201192507163e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-front-R",
+      "changed_sample_bits": 250918,
+      "peak": 2.9802322387695312e-08,
+      "rms": 4.1835937257939195e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-front-mono",
+      "changed_sample_bits": 250026,
+      "peak": 4.470348358154297e-08,
+      "rms": 6.467896370560566e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-front-stereo-burst",
+      "changed_sample_bits": 251199,
+      "peak": 1.4528632164001465e-07,
+      "rms": 6.681851739236632e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "0-floor-L",
+      "changed_sample_bits": 250442,
+      "peak": 2.9802322387695312e-08,
+      "rms": 4.5431373554589484e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-floor-R",
+      "changed_sample_bits": 251027,
+      "peak": 5.21540641784668e-08,
+      "rms": 4.5053184480881493e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-floor-mono",
+      "changed_sample_bits": 250269,
+      "peak": 8.940696716308594e-08,
+      "rms": 7.067230055341726e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "0-floor-stereo-burst",
+      "changed_sample_bits": 250172,
+      "peak": 1.7881393432617188e-07,
+      "rms": 7.13208582375743e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "1-ears-L",
+      "changed_sample_bits": 342753,
+      "peak": 3.725290298461914e-08,
+      "rms": 3.583423945009133e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-ears-R",
+      "changed_sample_bits": 342535,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.5770271916731335e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-ears-mono",
+      "changed_sample_bits": 341444,
+      "peak": 4.470348358154297e-08,
+      "rms": 5.489105154771091e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-ears-stereo-burst",
+      "changed_sample_bits": 341380,
+      "peak": 1.043081283569336e-07,
+      "rms": 5.6419175407664545e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "1-front-L",
+      "changed_sample_bits": 342459,
+      "peak": 2.2351741790771484e-08,
+      "rms": 3.82397760918646e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-front-R",
+      "changed_sample_bits": 342751,
+      "peak": 2.2351741790771484e-08,
+      "rms": 3.714620130341856e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-front-mono",
+      "changed_sample_bits": 341451,
+      "peak": 2.2351741790771484e-08,
+      "rms": 5.925616886640723e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-front-stereo-burst",
+      "changed_sample_bits": 342436,
+      "peak": 1.1175870895385742e-07,
+      "rms": 5.972585482921718e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "1-floor-L",
+      "changed_sample_bits": 342489,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.7752020876945635e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-floor-R",
+      "changed_sample_bits": 342546,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.649024967409422e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-floor-mono",
+      "changed_sample_bits": 340954,
+      "peak": 2.9802322387695312e-08,
+      "rms": 5.704754864475049e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "1-floor-stereo-burst",
+      "changed_sample_bits": 342903,
+      "peak": 1.1175870895385742e-07,
+      "rms": 5.934981637734132e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "2-ears-L",
+      "changed_sample_bits": 406572,
+      "peak": 2.2351741790771484e-08,
+      "rms": 4.975696456819986e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-ears-R",
+      "changed_sample_bits": 406982,
+      "peak": 2.2351741790771484e-08,
+      "rms": 4.724925788588045e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-ears-mono",
+      "changed_sample_bits": 404679,
+      "peak": 2.9802322387695312e-08,
+      "rms": 7.616289261165433e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-ears-stereo-burst",
+      "changed_sample_bits": 416782,
+      "peak": 1.341104507446289e-07,
+      "rms": 7.572627169835333e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "2-front-L",
+      "changed_sample_bits": 406610,
+      "peak": 2.2351741790771484e-08,
+      "rms": 4.867826805019334e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-front-R",
+      "changed_sample_bits": 406736,
+      "peak": 2.2351741790771484e-08,
+      "rms": 4.70029207221962e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-front-mono",
+      "changed_sample_bits": 404975,
+      "peak": 2.9802322387695312e-08,
+      "rms": 7.526522673097369e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-front-stereo-burst",
+      "changed_sample_bits": 416861,
+      "peak": 1.1920928955078125e-07,
+      "rms": 7.558361610094116e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "2-floor-L",
+      "changed_sample_bits": 406686,
+      "peak": 3.725290298461914e-08,
+      "rms": 4.932014349512652e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-floor-R",
+      "changed_sample_bits": 406869,
+      "peak": 2.9802322387695312e-08,
+      "rms": 5.016904097538749e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-floor-mono",
+      "changed_sample_bits": 405329,
+      "peak": 4.470348358154297e-08,
+      "rms": 7.72254707992422e-10
+    },
+    {
+      "rate": "48000",
+      "segment": "2-floor-stereo-burst",
+      "changed_sample_bits": 417223,
+      "peak": 1.341104507446289e-07,
+      "rms": 7.746256802475878e-09
+    },
+    {
+      "rate": "48000",
+      "segment": "legacy-recall-controls",
+      "changed_sample_bits": 79616,
+      "peak": 3.5762786865234375e-07,
+      "rms": 4.9264420084543475e-08
+    },
+    {
+      "rate": "48000",
+      "segment": "room-switch-0",
+      "changed_sample_bits": 88713,
+      "peak": 2.086162567138672e-07,
+      "rms": 3.6755143945902924e-08
+    },
+    {
+      "rate": "48000",
+      "segment": "room-switch-1",
+      "changed_sample_bits": 88713,
+      "peak": 2.086162567138672e-07,
+      "rms": 3.6755143945902924e-08
+    },
+    {
+      "rate": "88200",
+      "segment": "0-ears-L",
+      "changed_sample_bits": 432898,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.7773673969427e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-ears-R",
+      "changed_sample_bits": 432995,
+      "peak": 3.725290298461914e-08,
+      "rms": 2.566118432532601e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-ears-mono",
+      "changed_sample_bits": 430589,
+      "peak": 4.470348358154297e-08,
+      "rms": 4.058317673369857e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-ears-stereo-burst",
+      "changed_sample_bits": 430879,
+      "peak": 1.1920928955078125e-07,
+      "rms": 4.188211303345097e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "0-front-L",
+      "changed_sample_bits": 432934,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.679506724210104e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-front-R",
+      "changed_sample_bits": 433369,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.6091996804571594e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-front-mono",
+      "changed_sample_bits": 431218,
+      "peak": 3.255991032347083e-08,
+      "rms": 4.0502442336667706e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-front-stereo-burst",
+      "changed_sample_bits": 435616,
+      "peak": 1.1175870895385742e-07,
+      "rms": 4.2572574796614525e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "0-floor-L",
+      "changed_sample_bits": 433098,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.9314787807198166e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-floor-R",
+      "changed_sample_bits": 432833,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.8446980459069414e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-floor-mono",
+      "changed_sample_bits": 431947,
+      "peak": 1.4901161193847656e-07,
+      "rms": 4.932760932222071e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "0-floor-stereo-burst",
+      "changed_sample_bits": 432546,
+      "peak": 1.4901161193847656e-07,
+      "rms": 4.60915561606462e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "1-ears-L",
+      "changed_sample_bits": 601806,
+      "peak": 1.862645149230957e-08,
+      "rms": 2.1386166823916302e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-ears-R",
+      "changed_sample_bits": 601666,
+      "peak": 3.3527612686157227e-08,
+      "rms": 2.2541074859844273e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-ears-mono",
+      "changed_sample_bits": 599355,
+      "peak": 3.725290298461914e-08,
+      "rms": 3.38173562325862e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-ears-stereo-burst",
+      "changed_sample_bits": 601705,
+      "peak": 6.705522537231445e-08,
+      "rms": 3.489054237980205e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "1-front-L",
+      "changed_sample_bits": 601568,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.2931575367573864e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-front-R",
+      "changed_sample_bits": 602186,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.3172682239128556e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-front-mono",
+      "changed_sample_bits": 599173,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.6644985295898544e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-front-stereo-burst",
+      "changed_sample_bits": 602599,
+      "peak": 6.705522537231445e-08,
+      "rms": 3.6799903540387548e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "1-floor-L",
+      "changed_sample_bits": 601700,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.484982340160529e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-floor-R",
+      "changed_sample_bits": 601715,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.4462568221243827e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-floor-mono",
+      "changed_sample_bits": 598827,
+      "peak": 1.4901161193847656e-07,
+      "rms": 4.264063055646342e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "1-floor-stereo-burst",
+      "changed_sample_bits": 604537,
+      "peak": 8.195638656616211e-08,
+      "rms": 3.863486181203002e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "2-ears-L",
+      "changed_sample_bits": 742851,
+      "peak": 4.470348358154297e-08,
+      "rms": 3.0599429177151247e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-ears-R",
+      "changed_sample_bits": 743687,
+      "peak": 4.470348358154297e-08,
+      "rms": 2.9580092226567113e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-ears-mono",
+      "changed_sample_bits": 738777,
+      "peak": 7.450580596923828e-08,
+      "rms": 4.743910229188474e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-ears-stereo-burst",
+      "changed_sample_bits": 753428,
+      "peak": 8.940696716308594e-08,
+      "rms": 4.785752116239414e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "2-front-L",
+      "changed_sample_bits": 743359,
+      "peak": 7.450580596923828e-08,
+      "rms": 3.057925792160758e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-front-R",
+      "changed_sample_bits": 743219,
+      "peak": 7.450580596923828e-08,
+      "rms": 2.97365141580591e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-front-mono",
+      "changed_sample_bits": 739708,
+      "peak": 5.960464477539063e-08,
+      "rms": 4.6118357984255855e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-front-stereo-burst",
+      "changed_sample_bits": 754407,
+      "peak": 8.940696716308594e-08,
+      "rms": 4.767119190667643e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "2-floor-L",
+      "changed_sample_bits": 743372,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.9744059396090463e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-floor-R",
+      "changed_sample_bits": 743518,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.057360968864466e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-floor-mono",
+      "changed_sample_bits": 739717,
+      "peak": 4.470348358154297e-08,
+      "rms": 4.6041966421992573e-10
+    },
+    {
+      "rate": "88200",
+      "segment": "2-floor-stereo-burst",
+      "changed_sample_bits": 755034,
+      "peak": 8.940696716308594e-08,
+      "rms": 4.753930294184669e-09
+    },
+    {
+      "rate": "88200",
+      "segment": "legacy-recall-controls",
+      "changed_sample_bits": 146569,
+      "peak": 2.682209014892578e-07,
+      "rms": 4.2377333963444854e-08
+    },
+    {
+      "rate": "88200",
+      "segment": "room-switch-0",
+      "changed_sample_bits": 163228,
+      "peak": 1.6391277313232422e-07,
+      "rms": 3.2352398382866514e-08
+    },
+    {
+      "rate": "88200",
+      "segment": "room-switch-1",
+      "changed_sample_bits": 163228,
+      "peak": 1.6391277313232422e-07,
+      "rms": 3.2352398382866514e-08
+    },
+    {
+      "rate": "96000",
+      "segment": "0-ears-L",
+      "changed_sample_bits": 475614,
+      "peak": 1.4901161193847656e-08,
+      "rms": 2.0801859803572697e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-ears-R",
+      "changed_sample_bits": 475918,
+      "peak": 1.56724127009511e-08,
+      "rms": 2.033847508344627e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-ears-mono",
+      "changed_sample_bits": 473976,
+      "peak": 5.960464477539063e-08,
+      "rms": 3.4268856604505016e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-ears-stereo-burst",
+      "changed_sample_bits": 477246,
+      "peak": 1.043081283569336e-07,
+      "rms": 3.53600440604345e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "0-front-L",
+      "changed_sample_bits": 476171,
+      "peak": 1.6763806343078613e-08,
+      "rms": 2.12425584951812e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-front-R",
+      "changed_sample_bits": 476167,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.1590742956366893e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-front-mono",
+      "changed_sample_bits": 475286,
+      "peak": 4.470348358154297e-08,
+      "rms": 3.467902466646584e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-front-stereo-burst",
+      "changed_sample_bits": 481002,
+      "peak": 1.1920928955078125e-07,
+      "rms": 3.6637504352696814e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "0-floor-L",
+      "changed_sample_bits": 475346,
+      "peak": 4.470348358154297e-08,
+      "rms": 2.2609016726231496e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-floor-R",
+      "changed_sample_bits": 475892,
+      "peak": 4.470348358154297e-08,
+      "rms": 2.1843339851465593e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-floor-mono",
+      "changed_sample_bits": 475270,
+      "peak": 5.960464477539063e-08,
+      "rms": 3.6248309541208143e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "0-floor-stereo-burst",
+      "changed_sample_bits": 480200,
+      "peak": 1.0943040251731873e-07,
+      "rms": 3.755493835822581e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "1-ears-L",
+      "changed_sample_bits": 657473,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.6850213617715296e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-ears-R",
+      "changed_sample_bits": 656698,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.7509510394864885e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-ears-mono",
+      "changed_sample_bits": 655433,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.773651176318206e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-ears-stereo-burst",
+      "changed_sample_bits": 658230,
+      "peak": 6.705522537231445e-08,
+      "rms": 2.8904983703827243e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "1-front-L",
+      "changed_sample_bits": 657118,
+      "peak": 1.6763806343078613e-08,
+      "rms": 1.8549286820989553e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-front-R",
+      "changed_sample_bits": 657513,
+      "peak": 1.6763806343078613e-08,
+      "rms": 1.839367648476048e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-front-mono",
+      "changed_sample_bits": 655311,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.012065923862296e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-front-stereo-burst",
+      "changed_sample_bits": 660768,
+      "peak": 5.960464477539063e-08,
+      "rms": 3.075767864192617e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "1-floor-L",
+      "changed_sample_bits": 656843,
+      "peak": 4.470348358154297e-08,
+      "rms": 1.8630267865559e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-floor-R",
+      "changed_sample_bits": 656815,
+      "peak": 4.470348358154297e-08,
+      "rms": 1.8396346283619238e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-floor-mono",
+      "changed_sample_bits": 655191,
+      "peak": 5.960464477539063e-08,
+      "rms": 3.0188360515733903e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "1-floor-stereo-burst",
+      "changed_sample_bits": 660984,
+      "peak": 7.450580596923828e-08,
+      "rms": 3.122799293132422e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "2-ears-L",
+      "changed_sample_bits": 801136,
+      "peak": 7.450580596923828e-09,
+      "rms": 2.362404264750518e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-ears-R",
+      "changed_sample_bits": 801536,
+      "peak": 7.450580596923828e-09,
+      "rms": 2.280125023211697e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-ears-mono",
+      "changed_sample_bits": 798798,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.8323296038653967e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-ears-stereo-burst",
+      "changed_sample_bits": 814837,
+      "peak": 8.940696716308594e-08,
+      "rms": 3.93049209539331e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "2-front-L",
+      "changed_sample_bits": 801425,
+      "peak": 1.9363142200745642e-08,
+      "rms": 2.3664576004430807e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-front-R",
+      "changed_sample_bits": 800715,
+      "peak": 1.9363142200745642e-08,
+      "rms": 2.3136115532795606e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-front-mono",
+      "changed_sample_bits": 799731,
+      "peak": 2.9802322387695312e-08,
+      "rms": 3.708908209442001e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-front-stereo-burst",
+      "changed_sample_bits": 815030,
+      "peak": 7.450580596923828e-08,
+      "rms": 3.947064395156487e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "2-floor-L",
+      "changed_sample_bits": 801319,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.34335532841211e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-floor-R",
+      "changed_sample_bits": 801517,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.391501390833665e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-floor-mono",
+      "changed_sample_bits": 799594,
+      "peak": 5.960464477539063e-08,
+      "rms": 3.8606017032127673e-10
+    },
+    {
+      "rate": "96000",
+      "segment": "2-floor-stereo-burst",
+      "changed_sample_bits": 816054,
+      "peak": 7.450580596923828e-08,
+      "rms": 3.999367316092451e-09
+    },
+    {
+      "rate": "96000",
+      "segment": "legacy-recall-controls",
+      "changed_sample_bits": 158585,
+      "peak": 3.2782554626464844e-07,
+      "rms": 3.7909048838961796e-08
+    },
+    {
+      "rate": "96000",
+      "segment": "room-switch-0",
+      "changed_sample_bits": 176473,
+      "peak": 1.6391277313232422e-07,
+      "rms": 2.8679256788481554e-08
+    },
+    {
+      "rate": "96000",
+      "segment": "room-switch-1",
+      "changed_sample_bits": 176473,
+      "peak": 1.6391277313232422e-07,
+      "rms": 2.8679256788481554e-08
+    },
+    {
+      "rate": "176400",
+      "segment": "0-ears-L",
+      "changed_sample_bits": 843290,
+      "peak": 3.725290298461914e-08,
+      "rms": 1.4636930739577061e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-ears-R",
+      "changed_sample_bits": 842597,
+      "peak": 4.470348358154297e-08,
+      "rms": 1.3914706433261702e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-ears-mono",
+      "changed_sample_bits": 837551,
+      "peak": 7.450580596923828e-08,
+      "rms": 2.2213562120928817e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-ears-stereo-burst",
+      "changed_sample_bits": 838427,
+      "peak": 7.450580596923828e-08,
+      "rms": 2.230799895812675e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "0-front-L",
+      "changed_sample_bits": 844497,
+      "peak": 2.60770320892334e-08,
+      "rms": 1.4085605573585361e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-front-R",
+      "changed_sample_bits": 843520,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.3895879509610757e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-front-mono",
+      "changed_sample_bits": 839036,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.1406131175461267e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-front-stereo-burst",
+      "changed_sample_bits": 842872,
+      "peak": 6.705522537231445e-08,
+      "rms": 2.243641572102368e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "0-floor-L",
+      "changed_sample_bits": 843365,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.5114145091314653e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-floor-R",
+      "changed_sample_bits": 843732,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.4396810259496883e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-floor-mono",
+      "changed_sample_bits": 841245,
+      "peak": 4.470348358154297e-08,
+      "rms": 2.2891172635581297e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "0-floor-stereo-burst",
+      "changed_sample_bits": 842315,
+      "peak": 7.82310962677002e-08,
+      "rms": 2.3237022175087083e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "1-ears-L",
+      "changed_sample_bits": 1179879,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.1351624510895509e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-ears-R",
+      "changed_sample_bits": 1178438,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.1706772596737893e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-ears-mono",
+      "changed_sample_bits": 1173265,
+      "peak": 3.725290298461914e-08,
+      "rms": 1.791535881577167e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-ears-stereo-burst",
+      "changed_sample_bits": 1176071,
+      "peak": 4.470348358154297e-08,
+      "rms": 1.8182003905123392e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "1-front-L",
+      "changed_sample_bits": 1179799,
+      "peak": 1.1175870895385742e-08,
+      "rms": 1.1952522204953744e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-front-R",
+      "changed_sample_bits": 1179927,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.189712165596223e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-front-mono",
+      "changed_sample_bits": 1173230,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.8592496255637597e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-front-stereo-burst",
+      "changed_sample_bits": 1181040,
+      "peak": 4.470348358154297e-08,
+      "rms": 1.9280151833428728e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "1-floor-L",
+      "changed_sample_bits": 1179677,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.241581429660878e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-floor-R",
+      "changed_sample_bits": 1180488,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.2313846587069906e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-floor-mono",
+      "changed_sample_bits": 1174429,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.9365669323362324e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "1-floor-stereo-burst",
+      "changed_sample_bits": 1185840,
+      "peak": 5.21540641784668e-08,
+      "rms": 1.973378045168106e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "2-ears-L",
+      "changed_sample_bits": 1479445,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.5625603871328734e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-ears-R",
+      "changed_sample_bits": 1481353,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.5036818381698586e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-ears-mono",
+      "changed_sample_bits": 1471927,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.417004985540102e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-ears-stereo-burst",
+      "changed_sample_bits": 1494803,
+      "peak": 5.21540641784668e-08,
+      "rms": 2.461112575337413e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "2-front-L",
+      "changed_sample_bits": 1480654,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.5307722749504308e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-front-R",
+      "changed_sample_bits": 1480537,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.4990314704155503e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-front-mono",
+      "changed_sample_bits": 1473294,
+      "peak": 1.4901161193847656e-08,
+      "rms": 2.3263761127947536e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-front-stereo-burst",
+      "changed_sample_bits": 1494968,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.398797431905424e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "2-floor-L",
+      "changed_sample_bits": 1480732,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.576149136293953e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-floor-R",
+      "changed_sample_bits": 1481764,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.625847814153142e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-floor-mono",
+      "changed_sample_bits": 1474145,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.4468813173193025e-10
+    },
+    {
+      "rate": "176400",
+      "segment": "2-floor-stereo-burst",
+      "changed_sample_bits": 1497513,
+      "peak": 5.21540641784668e-08,
+      "rms": 2.5387560643318322e-09
+    },
+    {
+      "rate": "176400",
+      "segment": "legacy-recall-controls",
+      "changed_sample_bits": 293368,
+      "peak": 2.1979212760925293e-07,
+      "rms": 3.270501647688572e-08
+    },
+    {
+      "rate": "176400",
+      "segment": "room-switch-0",
+      "changed_sample_bits": 327759,
+      "peak": 1.4156103134155273e-07,
+      "rms": 2.420499729550659e-08
+    },
+    {
+      "rate": "176400",
+      "segment": "room-switch-1",
+      "changed_sample_bits": 327759,
+      "peak": 1.4156103134155273e-07,
+      "rms": 2.420499729550659e-08
+    },
+    {
+      "rate": "192000",
+      "segment": "0-ears-L",
+      "changed_sample_bits": 915668,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.2240674945984955e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-ears-R",
+      "changed_sample_bits": 915041,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.201968572618633e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-ears-mono",
+      "changed_sample_bits": 911370,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.9410973440162201e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-ears-stereo-burst",
+      "changed_sample_bits": 914693,
+      "peak": 6.705522537231445e-08,
+      "rms": 2.0085911719011076e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "0-front-L",
+      "changed_sample_bits": 917275,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.2210168018351114e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-front-R",
+      "changed_sample_bits": 917490,
+      "peak": 2.60770320892334e-08,
+      "rms": 1.2166059832026367e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-front-mono",
+      "changed_sample_bits": 913756,
+      "peak": 3.725290298461914e-08,
+      "rms": 1.9141696311512424e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-front-stereo-burst",
+      "changed_sample_bits": 922308,
+      "peak": 7.450580596923828e-08,
+      "rms": 1.9491376292703284e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "0-floor-L",
+      "changed_sample_bits": 915596,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.2732876187945762e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-floor-R",
+      "changed_sample_bits": 915818,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.2350948247785549e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-floor-mono",
+      "changed_sample_bits": 913894,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.9968990319278968e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "0-floor-stereo-burst",
+      "changed_sample_bits": 916443,
+      "peak": 5.960464477539063e-08,
+      "rms": 2.0572907806519364e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "1-ears-L",
+      "changed_sample_bits": 1281053,
+      "peak": 1.862645149230957e-08,
+      "rms": 9.608086242024422e-11
+    },
+    {
+      "rate": "192000",
+      "segment": "1-ears-R",
+      "changed_sample_bits": 1280764,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.0009490396140591e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-ears-mono",
+      "changed_sample_bits": 1275725,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.553921044198162e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-ears-stereo-burst",
+      "changed_sample_bits": 1284150,
+      "peak": 3.725290298461914e-08,
+      "rms": 1.6174515142289823e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "1-front-L",
+      "changed_sample_bits": 1281548,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.0444636422368166e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-front-R",
+      "changed_sample_bits": 1282286,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.045664104789219e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-front-mono",
+      "changed_sample_bits": 1276363,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.6811643922388406e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-front-stereo-burst",
+      "changed_sample_bits": 1290283,
+      "peak": 4.842877388000488e-08,
+      "rms": 1.701759483412449e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "1-floor-L",
+      "changed_sample_bits": 1281330,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.0560190977710191e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-floor-R",
+      "changed_sample_bits": 1280373,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.0254076241474633e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-floor-mono",
+      "changed_sample_bits": 1276055,
+      "peak": 2.9802322387695312e-08,
+      "rms": 1.6465571753829397e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "1-floor-stereo-burst",
+      "changed_sample_bits": 1291589,
+      "peak": 4.0978193283081055e-08,
+      "rms": 1.7053846903711621e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "2-ears-L",
+      "changed_sample_bits": 1602408,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.3315453866980903e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-ears-R",
+      "changed_sample_bits": 1603108,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.288332698240463e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-ears-mono",
+      "changed_sample_bits": 1596169,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.0884628675662836e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-ears-stereo-burst",
+      "changed_sample_bits": 1620797,
+      "peak": 4.842877388000488e-08,
+      "rms": 2.1306030983193425e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "2-front-L",
+      "changed_sample_bits": 1602678,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.3194724203395904e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-front-R",
+      "changed_sample_bits": 1602388,
+      "peak": 2.2351741790771484e-08,
+      "rms": 1.2931117111152328e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-front-mono",
+      "changed_sample_bits": 1596311,
+      "peak": 2.2351741790771484e-08,
+      "rms": 2.059194219660659e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-front-stereo-burst",
+      "changed_sample_bits": 1621289,
+      "peak": 4.470348358154297e-08,
+      "rms": 2.095858972913106e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "2-floor-L",
+      "changed_sample_bits": 1604391,
+      "peak": 1.4901161193847656e-08,
+      "rms": 1.3214777125630782e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-floor-R",
+      "changed_sample_bits": 1603960,
+      "peak": 1.862645149230957e-08,
+      "rms": 1.3687138669435097e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-floor-mono",
+      "changed_sample_bits": 1598546,
+      "peak": 2.9802322387695312e-08,
+      "rms": 2.1209718487566878e-10
+    },
+    {
+      "rate": "192000",
+      "segment": "2-floor-stereo-burst",
+      "changed_sample_bits": 1625084,
+      "peak": 4.470348358154297e-08,
+      "rms": 2.240069401032001e-09
+    },
+    {
+      "rate": "192000",
+      "segment": "legacy-recall-controls",
+      "changed_sample_bits": 318956,
+      "peak": 2.086162567138672e-07,
+      "rms": 3.115933971277864e-08
+    },
+    {
+      "rate": "192000",
+      "segment": "room-switch-0",
+      "changed_sample_bits": 355316,
+      "peak": 1.341104507446289e-07,
+      "rms": 2.2147140752443482e-08
+    },
+    {
+      "rate": "192000",
+      "segment": "room-switch-1",
+      "changed_sample_bits": 355316,
+      "peak": 1.341104507446289e-07,
+      "rms": 2.2147140752443482e-08
+    }
+  ],
+  "peak_tolerance": 2e-05,
+  "within_peak_tolerance": true
+}

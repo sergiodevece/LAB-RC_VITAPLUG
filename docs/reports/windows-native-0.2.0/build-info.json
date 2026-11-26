@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "architecture": "Windows x64",
+  "configuration": "Release",
+  "host_os": "Windows-2022Server-10.0.20348-SP0",
+  "host_architecture": "AMD64",
+  "toolchain": "Visual Studio 2022 / MSVC",
+  "binary_sha256": "a4a116e794d5b30393b5a8a9fc4deb48309daf975400ec67cbb8b5f5b88eaedc",
+  "ctest": "PASS",
+  "pluginval": "PASS (nivel 5)",
+  "steinberg_validator": "PASS (47 pruebas)",
+  "daw_smoke": "PENDING"
+}
