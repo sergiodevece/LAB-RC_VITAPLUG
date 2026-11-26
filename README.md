@@ -38,6 +38,8 @@ El driver puede ejecutar ambas arquitecturas, tests, capturas y paquete: `python
 
 También existe `mac-dsp` para pruebas sin editor y `mac-sanitize` para ASan/UBSan. Los comandos y resultados realmente ejecutados están en `docs/reports/`.
 
+En Windows x64, `scripts/build_windows.py` compila el VST3 Release con MSVC, verifica el bundle y empaqueta el resultado tras CTest. [Compilación, instalación y smoke de Windows](docs/WINDOWS_SMOKE.md)
+
 ## Audio
 
 Se admiten entradas mono→estéreo y estéreo→estéreo; float32. Mono duplica la entrada a unidad en las dos columnas de la matriz. Orden WAV `[LL, LR, RL, RR]`:
