@@ -16,6 +16,8 @@ jobs:
     if: ${{ github.event.repository.private }}
     runs-on: windows-2022
     timeout-minutes: 55
+    env:
+      PYTHONUTF8: '1'
     defaults:
       run:
         shell: pwsh
@@ -35,7 +37,9 @@ jobs:
           $revision = '9fad9770f2ae8542ab1a548a68c1ad1ac690abe0' # v3.8.0_build_66
           git init $sdk
           if ($LASTEXITCODE -ne 0) { throw 'SDK repository setup failed.' }
-          git -C $sdk fetch --depth=1 https://github.com/steinbergmedia/vst3sdk.git $revision
+          git -C $sdk remote add origin https://github.com/steinbergmedia/vst3sdk.git
+          if ($LASTEXITCODE -ne 0) { throw 'SDK origin setup failed.' }
+          git -C $sdk fetch --depth=1 origin $revision
           if ($LASTEXITCODE -ne 0) { throw 'Pinned Steinberg SDK source unavailable.' }
           git -C $sdk checkout --detach FETCH_HEAD
           if ($LASTEXITCODE -ne 0) { throw 'SDK checkout failed.' }

@@ -42,7 +42,7 @@ def read_float_wav(path):
 
 
 def verify(root):
-    manifest = json.loads((root / "manifest.json").read_text())
+    manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     pngs, wavs = 0, 0
     for entry in manifest["files"]:
         path = root / entry["path"]
@@ -86,7 +86,7 @@ def verify(root):
 
 
 def verify_final_touch(root, reference):
-    manifest = json.loads((root / "manifest.json").read_text())
+    manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     reference_bytes = reference.read_bytes()
     if hashlib.sha256(reference_bytes).hexdigest() != manifest["reference_sha256"]:
         raise ValueError("La referencia vintage no coincide con el manifiesto Final Touch")
