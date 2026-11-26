@@ -34,19 +34,19 @@ struct EditorGeometry
     static EditorGeometry forSize (double width, double height) noexcept
     {
         EditorGeometry result;
-        result.scale = std::max (0.0, std::min (width / 1586.0, height / 992.0));
+        result.scale = std::max (0.0, std::min (width / 1586.0, height / 1058.0));
         const auto x = (width - 1586.0 * result.scale) * .5;
-        const auto y = (height - 992.0 * result.scale) * .5;
+        const auto y = (height - 1058.0 * result.scale) * .5;
         const auto rect = [=] (double rx, double ry, double rw, double rh)
         { return Rect { x + rx * result.scale, y + ry * result.scale, rw * result.scale, rh * result.scale }; };
         result.header = rect (30, 12, 1526, 80);
-        result.input = rect (25, 104, 201, 564);
-        result.output = rect (1358, 104, 201, 564);
+        result.input = rect (25, 104, 201, 484);
+        result.output = rect (1358, 104, 201, 484);
         result.tabs = rect (246, 115, 1088, 60);
-        result.stage = rect (244, 184, 1096, 431);
-        result.sceneFooter = rect (244, 616, 1096, 40);
-        result.pairs = {{ rect (25, 678, 503, 224), rect (539, 678, 489, 224), rect (1040, 678, 519, 224) }};
-        result.footer = rect (25, 921, 1534, 57);
+        result.stage = rect (244, 184, 1096, 350);
+        result.sceneFooter = rect (244, 535, 1096, 40);
+        result.pairs = {{ rect (25, 598, 503, 370), rect (539, 598, 489, 370), rect (1040, 598, 519, 370) }};
+        result.footer = rect (25, 987, 1534, 57);
         return result;
     }
 };

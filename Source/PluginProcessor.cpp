@@ -5,7 +5,10 @@
 #include <cstdlib>
 
 namespace {
-constexpr std::array<const char*,14> ids{{"room","inputDb","outputDb","mixPercent","earsDb","frontDb","floorDb","earsMute","frontMute","floorMute","earsSolo","frontSolo","floorSolo","bypass"}};
+constexpr std::array<const char*,26> ids{{"room","inputDb","outputDb","mixPercent","earsDb","frontDb","floorDb","earsMute","frontMute","floorMute","earsSolo","frontSolo","floorSolo","bypass",
+    "earsEqLowDb","earsEqMidDb","earsEqHighDb","earsEqEnabled",
+    "frontEqLowDb","frontEqMidDb","frontEqHighDb","frontEqEnabled",
+    "floorEqLowDb","floorEqMidDb","floorEqHighDb","floorEqEnabled"}};
 
 class RoomChoice final : public juce::AudioParameterChoice {
 public:
@@ -59,6 +62,20 @@ double number(const juce::var& value,double fallback) {
     const double parsed=std::strtod(start,&end);
     return end!=start && end && *end=='\0' && std::isfinite(parsed) ? parsed : fallback;
 }
+
+juce::NormalisableRange<float> eqGainRange() {
+    // Quantise around zero so the neutral detent is exactly the identity.
+    using Range = juce::NormalisableRange<float>;
+    const Range::ValueRemapFunction linear;
+    Range range{-12.f, 12.f, linear, linear, [](float minimum, float maximum, float value) {
+        if (!std::isfinite(value))
+            return 0.f;
+        const auto bounded = juce::jlimit(minimum, maximum, value);
+        return static_cast<float>(std::round(static_cast<double>(bounded) * 10.0) / 10.0);
+    }};
+    range.interval = 0.1f;
+    return range;
+}
 }
 juce::AudioProcessorValueTreeState::ParameterLayout LabRCProcessor::makeLayout(labrc::RoomMixer& mixer) {
     using ID=juce::ParameterID;
@@ -72,6 +89,17 @@ juce::AudioProcessorValueTreeState::ParameterLayout LabRCProcessor::makeLayout(l
         l.add(std::make_unique<juce::AudioParameterFloat>(ID{ids[4+i],1},ids[4+i],juce::NormalisableRange<float>{-60,6,0.1f},initial[i]));
     for(size_t i=7;i<14;++i)
         l.add(std::make_unique<juce::AudioParameterBool>(ID{ids[i],1},ids[i],false));
+    constexpr std::array<const char*,3> pairs {"EARS","FRONT","FLOOR"};
+    constexpr std::array<const char*,3> bands {"Low","Mid","High"};
+    for(size_t pair=0; pair<pairs.size(); ++pair) {
+        const size_t first=14+4*pair;
+        for(size_t band=0;band<bands.size();++band)
+            l.add(std::make_unique<juce::AudioParameterFloat>(ID{ids[first+band],2},
+                juce::String(pairs[pair])+" EQ "+bands[band],eqGainRange(),0.f,
+                juce::AudioParameterFloatAttributes().withLabel("dB")));
+        l.add(std::make_unique<juce::AudioParameterBool>(ID{ids[first+3],2},
+                juce::String(pairs[pair])+" EQ In",false));
+    }
     return l;
 }
 LabRCProcessor::LabRCProcessor()
@@ -105,6 +133,9 @@ labrc::Parameters LabRCProcessor::readParameters() const noexcept {
     p.inputDb=load(1);p.outputDb=load(2);p.mixPercent=load(3);
     for(size_t i=0;i<3;++i) {
         p.pairDb[i]=load(4+i);p.mute[i]=load(7+i)>=0.5f;p.solo[i]=load(10+i)>=0.5f;
+        const size_t first=14+4*i;
+        for(size_t band=0;band<3;++band) p.eqDb[i][band]=load(first+band);
+        p.eqEnabled[i]=load(first+3)>=0.5f;
     }
     p.bypass=load(13)>=0.5f;
     return p;
@@ -169,11 +200,9 @@ void LabRCProcessor::setMicsVisible(bool visible) {
     beginUserGesture("Microphone markers");
     undoManager.perform(new MicsChange(showMics,visible));
 }
-void LabRCProcessor::setEditorSize(int width,int height) {
-    const int w=juce::jlimit(800,1586,width);
-    int h=juce::jlimit(500,992,height);
-    if(std::abs(static_cast<double>(w)/h-1586.0/992.0)>0.015)
-        h=juce::jlimit(500,992,juce::roundToInt(w*992.0/1586.0));
+void LabRCProcessor::setEditorSize(int width,int) {
+    const int w=juce::jlimit(1024,1586,width);
+    const int h=juce::jlimit(684,1058,juce::roundToInt(w*1058.0/1586.0));
     viewSize.store((static_cast<std::uint64_t>(h)<<32u)|static_cast<std::uint32_t>(w));
 }
 juce::Point<int> LabRCProcessor::editorSize() const {
@@ -232,6 +261,7 @@ void LabRCProcessor::getStateInformation(juce::MemoryBlock& block) {
     state.setProperty("version",1,nullptr);
     state.setProperty("micsVisible",showMics.load(),nullptr);
     const auto size=editorSize();
+    state.setProperty("editorLayoutVersion",2,nullptr);
     state.setProperty("editorWidth",size.x,nullptr);
     state.setProperty("editorHeight",size.y,nullptr);
     state.addChild(apvts.copyState(),-1,nullptr);
@@ -264,9 +294,11 @@ void LabRCProcessor::setStateInformation(const void* data,int bytes) {
     const auto apply=[&] {
         apvts.replaceState(clean);
         showMics.store(envelope?number(saved.getProperty("micsVisible"),1.0)>=0.5:true);
-        const auto width=envelope?number(saved.getProperty("editorWidth"),1180):1180;
-        const auto height=envelope?number(saved.getProperty("editorHeight"),738):738;
-        setEditorSize(static_cast<int>(juce::jlimit(800.0,1586.0,width)),static_cast<int>(juce::jlimit(500.0,992.0,height)));
+        // Envelope v1 has additive fields; only the editor coordinate system changed.
+        const bool legacySize=envelope && !saved.hasProperty("editorLayoutVersion");
+        const double savedWidth=envelope ? number(saved.getProperty("editorWidth"),legacySize?1180.:1280.) : 1280.;
+        const double width=legacySize ? savedWidth*(1280./1180.) : savedWidth;
+        setEditorSize(juce::roundToInt(juce::jlimit(1024.,1586.,width)),0);
         undoResetPending=true;
         const auto* mm=juce::MessageManager::getInstanceWithoutCreating();
         if(mm==nullptr || mm->isThisTheMessageThread()) reconcileUndo();

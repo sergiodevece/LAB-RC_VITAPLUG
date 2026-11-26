@@ -4,4 +4,7 @@
 namespace labrc {
 juce::AudioBuffer<float> loadMatrixIR(int room,int pair);
 juce::Image roomImage(int room);
+juce::Image drumKitImage();
+juce::Image metalTexture();
+juce::Image screwImage();
 }

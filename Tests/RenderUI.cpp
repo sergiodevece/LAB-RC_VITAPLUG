@@ -1,4 +1,5 @@
 #include "PluginProcessor.h"
+#include "UI/EditorGeometry.h"
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <iostream>
 #include <memory>
@@ -7,12 +8,11 @@
 namespace
 {
 void writeSnapshot(juce::AudioProcessorEditor& editor, const juce::File& output,
-                   int width, int height, float scale)
+                   juce::Rectangle<int> area, float scale)
 {
-    editor.setSize(width, height);
-    const auto snapshot = editor.createComponentSnapshot(editor.getLocalBounds(), true, scale);
-    if(snapshot.isNull() || snapshot.getWidth() != juce::roundToInt(width * scale)
-                         || snapshot.getHeight() != juce::roundToInt(height * scale))
+    const auto snapshot = editor.createComponentSnapshot(area, true, scale);
+    if(snapshot.isNull() || snapshot.getWidth() != juce::roundToInt(area.getWidth() * scale)
+                         || snapshot.getHeight() != juce::roundToInt(area.getHeight() * scale))
         throw std::runtime_error("Invalid component snapshot dimensions");
     juce::PNGImageFormat png;
     const auto stream = output.createOutputStream();
@@ -41,6 +41,7 @@ int main(int argc, char** argv)
         if(folder.createDirectory().failed())
             throw std::runtime_error("Cannot create screenshots directory");
         LabRCProcessor processor;
+        const auto initialSize = processor.editorSize();
         auto* room = processor.apvts.getParameter("room");
         if(room == nullptr)
             throw std::runtime_error("Room parameter missing");
@@ -51,14 +52,25 @@ int main(int argc, char** argv)
             std::unique_ptr<juce::AudioProcessorEditor> editor(processor.createEditor());
             if(editor == nullptr)
                 throw std::runtime_error("Processor returned no editor");
-            writeSnapshot(*editor, folder.getChildFile(juce::String(names[index]) + "-min.png"),
-                          800, 500, 1.f);
-            writeSnapshot(*editor, folder.getChildFile(juce::String(names[index]) + "-default.png"),
-                          1180, 738, 1.f);
-            writeSnapshot(*editor, folder.getChildFile(juce::String(names[index]) + "-max.png"),
-                          1586, 992, 1.f);
-            writeSnapshot(*editor, folder.getChildFile(juce::String(names[index]) + "-default@2x.png"),
-                          1180, 738, 2.f);
+            const auto save = [&](const char* suffix, int width, int height, float scale) {
+                editor->setSize(width, height);
+                writeSnapshot(*editor, folder.getChildFile(juce::String(names[index]) + suffix),
+                              editor->getLocalBounds(), scale);
+            };
+            auto* constrainer = editor->getConstrainer();
+            if(constrainer == nullptr)
+                throw std::runtime_error("Editor resize bounds missing");
+            save("-min.png", constrainer->getMinimumWidth(), constrainer->getMinimumHeight(), 1.f);
+            save("-default.png", initialSize.x, initialSize.y, 1.f);
+            save("-default@2x.png", initialSize.x, initialSize.y, 2.f);
+            save("-max.png", constrainer->getMaximumWidth(), constrainer->getMaximumHeight(), 1.f);
+            if(index == 0)
+            {
+                const auto strip = labrc::ui::EditorGeometry::forSize(editor->getWidth(), editor->getHeight()).pairs.front();
+                const auto detail = juce::Rectangle<int>(juce::roundToInt(strip.x), juce::roundToInt(strip.y),
+                                                         juce::roundToInt(strip.width), juce::roundToInt(strip.height));
+                writeSnapshot(*editor, folder.getChildFile("controls-detail.png"), detail, 2.f);
+            }
         }
         return 0;
     }

@@ -1,4 +1,5 @@
 #include "RoomMixer.h"
+#include "PairEqualiser.h"
 #include "MatrixBank.h"
 #include <chrono>
 #include <thread>
@@ -54,6 +55,7 @@ struct RoomMixer::Impl
     std::array<std::array<float, MatrixBank::latency>, 4> delay{};
     Smoother inputGain, outputGain, mix, bypass;
     std::array<Smoother, 3> pairGain;
+    std::array<PairEqualiser, 3> pairEQ;
     std::array<std::atomic<float>, 10> meters{};
 
     Impl()
@@ -118,6 +120,8 @@ struct RoomMixer::Impl
         bypass.reset(rate, 0.020);
         for (auto& smooth : pairGain)
             smooth.reset(rate, 0.020);
+        for (auto& eq : pairEQ)
+            eq.prepare(rate);
         firstBlock = true;
         latency.store(MatrixBank::latency);
         tail.store(4.5 + MatrixBank::latency / rate);
@@ -192,6 +196,8 @@ struct RoomMixer::Impl
         for (int i = 0; i < 3; ++i)
             set(pairGain[i],
                 p.mute[i] || (solo && !p.solo[i]) ? 0.f : gain(p.pairDb[i], defaults[i], -60, 6));
+        for (size_t i = 0; i < pairEQ.size(); ++i)
+            pairEQ[i].targets(p.eqDb[i], p.eqEnabled[i], firstBlock);
         firstBlock = false;
     }
 
@@ -266,7 +272,10 @@ struct RoomMixer::Impl
                             bypassGain = bypass.getNextValue();
                 std::array<float, 3> gains;
                 for (int pair = 0; pair < 3; ++pair)
+                {
                     gains[pair] = pairGain[pair].getNextValue();
+                    pairEQ[pair].advance();
+                }
                 for (int c = 0; c < 2; ++c)
                 {
                     const float u = input.getSample(c, i);
@@ -282,7 +291,7 @@ struct RoomMixer::Impl
                         const float old = wet.getSample(k, i);
                         const float combined =
                             incoming < 0 ? old : (1.f - fade) * old + fade * nextWet.getSample(k, i);
-                        const float level = finite(combined * gains[pair]);
+                        const float level = finite(pairEQ[pair].process(c, combined) * gains[pair]);
                         ambience += level;
                         peaks[4 + k] = std::max(peaks[4 + k], std::abs(level));
                     }

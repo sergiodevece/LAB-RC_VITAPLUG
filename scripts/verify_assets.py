@@ -85,12 +85,42 @@ def verify(root):
     return summary
 
 
+def verify_final_touch(root, reference):
+    manifest = json.loads((root / "manifest.json").read_text())
+    reference_bytes = reference.read_bytes()
+    if hashlib.sha256(reference_bytes).hexdigest() != manifest["reference_sha256"]:
+        raise ValueError("La referencia vintage no coincide con el manifiesto Final Touch")
+    originals = manifest["resources"]
+    materials = manifest["static_details"]
+    expected_names = {"kentucky_clean.png", "center_field_clean.png", "live_room_clean.png", "boost_this.png"}
+    if len(originals) != 4 or {entry["file"] for entry in originals} != expected_names:
+        raise ValueError("Inventario de salas y batería incompleto")
+    if len(materials) != 2 or {entry["file"] for entry in materials} != {"approved_metal.png", "approved_screw.png"}:
+        raise ValueError("Inventario de materiales estáticos incompleto")
+    for entry in originals + materials:
+        name = entry["file"]
+        raw = (root / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != entry["sha256"]:
+            raise ValueError(f"SHA256 no coincide: {name}")
+        if raw[:8] != b"\x89PNG\r\n\x1a\n" or raw[12:16] != b"IHDR":
+            raise ValueError(f"PNG inválido: {name}")
+        width, height, _, color_type = struct.unpack_from(">IIBB", raw, 16)
+        if (width, height) != (entry["width"], entry["height"]):
+            raise ValueError(f"Dimensiones PNG: {name}")
+        if name in expected_names and color_type != (6 if name == "boost_this.png" else 2):
+            raise ValueError(f"Canales inesperados: {name}")
+        print(f"PASS Final Touch {name} {width}×{height} {entry['sha256']}")
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1] / "Assets/ImplementationKit")
+    parser.add_argument("--final-touch", type=Path, help="Comprueba también los recursos gráficos de 0.2.0")
     args = parser.parse_args()
     try:
         verify(args.root)
+        if args.final_touch:
+            verify_final_touch(args.final_touch, args.root / "assets/design/approved_vintage.png")
     except (OSError, ValueError, KeyError, struct.error) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         sys.exit(1)

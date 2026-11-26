@@ -28,7 +28,7 @@ def main():
         run(sys.executable, "-B", ROOT / "scripts/prepare_juce.py", "--archive", args.juce_archive)
     if not (ROOT / "build/dependencies/juce/.labrc-archive-sha256").is_file():
         parser.error("JUCE missing: provide --juce-archive pointing to the already local pinned archive")
-    run(sys.executable, "-B", ROOT / "scripts/verify_assets.py")
+    run(sys.executable, "-B", ROOT / "scripts/verify_assets.py", "--final-touch", ROOT / "Assets/FinalTouch")
     run("cmake", "--version")
     architectures = ("arm64", "x86_64") if args.arch == "universal" else (args.arch,)
     for architecture in architectures:
@@ -39,10 +39,11 @@ def main():
     if args.screenshots:
         if args.arch not in ("arm64", "universal"):
             parser.error("--screenshots is supported after the arm64 editor build")
-        run(ROOT / "build/mac-arm64/tools/labrc_render_ui", "--output", ROOT / "build/evidence/screenshots")
-        run(sys.executable, "-B", ROOT / "scripts/check_screenshots.py", ROOT / "build/evidence/screenshots")
+        screenshots = ROOT / "docs/screenshots/final-touch"
+        run(ROOT / "build/mac-arm64/tools/labrc_render_ui", "--output", screenshots)
+        run(sys.executable, "-B", ROOT / "scripts/check_screenshots.py", screenshots)
     if args.package:
-        run(sys.executable, "-B", ROOT / "scripts/package_macos.py")
+        run(sys.executable, "-B", ROOT / "scripts/package_macos.py", "--au-only")
 
 
 if __name__ == "__main__":

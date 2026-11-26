@@ -1,5 +1,7 @@
 # Gates de aceptación LAB-RC 0.1.0
 
+El propietario comunicó el 26-11-2026 que el smoke de 0.1.0 en Logic fue perfecto y aprobó su carácter acústico. Los resultados de Final Touch se registran aparte.
+
 Registro de resultados reales. PENDIENTE no equivale a PASS. Los logs conservan comandos y fallos; el informe final se actualiza tras la verificación.
 
 | Gate | Estado actual | Evidencia / condición |
@@ -15,7 +17,7 @@ Registro de resultados reales. PENDIENTE no equivale a PASS. Los logs conservan 
 | 3: AU universal y VST3 macOS | PASS local | arm64+x86_64, lipo/minos/codesign ad hoc, pluginval doble SUCCESS |
 | 3: auval/instalación local | PASS, autorizados por el propietario | AU instalado; auval estricto SUCCESS en arm64 y x86_64 |
 | 3: VST3 Windows x64 | PENDIENTE | No hay entorno Windows; no CI remoto autorizado |
-| 3: escucha/smoke Logic | PENDIENTE | Usuario en Logic 12.2; instalado aquí 13.0. Matriz de abajo |
+| 3: escucha/smoke Logic | APROBADO POR EL PROPIETARIO | Primera evaluación sonora en Logic Pro comunicada el 26-11-2026 |
 | 4: documentación/paquetes | ENTREGA LOCAL | Informes sellados, AU y fuentes en dist; comprobar sidecars .zip.sha256 y manifiestos internos |
 | Distribución pública | NO AUTORIZADA | Sin push/GitHub. Derechos/licencias públicos pendientes |
 

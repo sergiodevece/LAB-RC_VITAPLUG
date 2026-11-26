@@ -27,7 +27,19 @@ juce::AudioBuffer<float> loadMatrixIR(int room,int pair) {
 }
 juce::Image roomImage(int room) {
     int size=0;
-    const auto* data=resource(juce::String(rooms[juce::jlimit(0,2,room)])+"_png",size);
+    const auto* data=resource(juce::String(rooms[juce::jlimit(0,2,room)])+"_clean_png",size);
+    return juce::ImageFileFormat::loadFrom(data,static_cast<size_t>(size));
+}
+juce::Image drumKitImage() {
+    int size=0; const auto* data=resource("boost_this_png",size);
+    return juce::ImageFileFormat::loadFrom(data,static_cast<size_t>(size));
+}
+juce::Image metalTexture() {
+    int size=0; const auto* data=resource("approved_metal_png",size);
+    return juce::ImageFileFormat::loadFrom(data,static_cast<size_t>(size));
+}
+juce::Image screwImage() {
+    int size=0; const auto* data=resource("approved_screw_png",size);
     return juce::ImageFileFormat::loadFrom(data,static_cast<size_t>(size));
 }
 }

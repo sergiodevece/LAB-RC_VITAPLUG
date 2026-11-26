@@ -29,11 +29,13 @@ public:
                 error=std::max(error,std::abs(embedded.getSample(c,n)-original.getSample(c,n)));
             expectEquals(error,0.0f);
         }
-        beginTest("Embedded photographs decode the original pixels");
-        for(int room=0;room<3;++room) {
-            auto original=juce::ImageFileFormat::loadFrom(juce::File(juce::String::fromUTF8(LABRC_KIT_ROOT))
-                .getChildFile("assets/rooms/").getChildFile(juce::String(roomNames[room])+".png"));
-            auto embedded=labrc::roomImage(room);
+        beginTest("Embedded clean room photographs and transparent drum kit decode the approved pixels");
+        const auto photos=juce::File(juce::String::fromUTF8(LABRC_FINAL_ASSET_ROOT));
+        for(int resource=0;resource<4;++resource) {
+            const bool kit=resource==3;
+            const auto file=kit?juce::String("boost_this.png"):juce::String(roomNames[resource])+"_clean.png";
+            const auto original=juce::ImageFileFormat::loadFrom(photos.getChildFile(file));
+            auto embedded=kit?labrc::drumKitImage():labrc::roomImage(resource);
             expect(embedded.isValid());
             expectEquals(embedded.getWidth(),original.getWidth());
             expectEquals(embedded.getHeight(),original.getHeight());
@@ -135,7 +137,7 @@ public:
         expectWithinAbsoluteError(copy.apvts.getRawParameterValue("inputDb")->load(),18.f,0.0001f);
         restore("<LABRC_STATE version=\"1\" micsVisible=\"0\" editorWidth=\"99999\" editorHeight=\"1\"><PARAMETERS/></LABRC_STATE>");
         expect(!copy.micsVisible());
-        expect(copy.editorSize().x<=1586 && copy.editorSize().y>=500);
+        expect(copy.editorSize().x<=1586 && copy.editorSize().y>=684);
         expect(!copy.undoManager.canUndo());
         beginTest("A different instance remains untouched by state and undo");
         expectWithinAbsoluteError(p.apvts.getRawParameterValue("mixPercent")->load(),26.7f,0.001f);
@@ -254,15 +256,174 @@ public:
                 "<LABRC_STATE version=\"1\"><PARAMETERS><WRONG id=\"inputDb\" value=\"-2\"/></PARAMETERS></LABRC_STATE>"})
         {
             LabRCProcessor p;
-            p.setMicsVisible(false); p.setEditorSize(800,500); p.setParameterFromUser("inputDb",10);
+            p.setMicsVisible(false); p.setEditorSize(1024,684); p.setParameterFromUser("inputDb",10);
             restoreOnHost(p,packed(invalid));
             expectWithinAbsoluteError(p.apvts.getRawParameterValue("inputDb")->load(),10.f,0.001f);
-            expect(!p.micsVisible()); expectEquals(p.editorSize().x,800);
+            expect(!p.micsVisible()); expectEquals(p.editorSize().x,1024);
             expect(p.undoUser()); expectWithinAbsoluteError(p.apvts.getRawParameterValue("inputDb")->load(),0.f,0.001f);
         }
     }
 };
 static RecallTests recallTests;
+
+class EQStateTests final : public juce::UnitTest
+{
+  public:
+    EQStateTests() : UnitTest("Final Touch parameter identity and recall", "Processor") {}
+    void runTest() override
+    {
+        beginTest(
+            "New parameter IDs are unique, separate from the original AU version group and automatable");
+        LabRCProcessor p;
+        expectEquals(p.getParameters().size(), 26);
+        std::array<juce::String, 12> names;
+        int index = 0;
+        bool complete = true;
+        for (const auto* pair : {"ears", "front", "floor"})
+            for (const auto* suffix : {"EqLowDb", "EqMidDb", "EqHighDb", "EqEnabled"})
+            {
+                const auto name = juce::String(pair) + suffix;
+                names[index++] = name;
+                auto* parameter = p.apvts.getParameter(name);
+                expect(parameter != nullptr, name);
+                if (parameter == nullptr)
+                {
+                    complete = false;
+                    continue;
+                }
+                expect(parameter->isAutomatable());
+                expectEquals(parameter->getVersionHint(), 2);
+                expectWithinAbsoluteError(p.apvts.getRawParameterValue(name)->load(), 0.f, 1e-5f);
+                if (!name.endsWith("Enabled"))
+                {
+                    const auto& r = parameter->getNormalisableRange();
+                    expectEquals(r.start, -12.f);
+                    expectEquals(r.end, 12.f);
+                    expectWithinAbsoluteError(r.interval, 0.1f, 1e-6f);
+                }
+            }
+        if (!complete)
+            return;
+        for (const auto* name :
+             {"room", "inputDb", "outputDb", "mixPercent", "earsDb", "frontDb", "floorDb", "earsMute",
+              "frontMute", "floorMute", "earsSolo", "frontSolo", "floorSolo", "bypass"})
+            expectEquals(p.apvts.getParameter(name)->getVersionHint(), 1);
+        beginTest("Host automation and user edits return each EQ band to an exact zero");
+        for (size_t k = 0; k < names.size(); ++k)
+        {
+            if (k % 4 == 3)
+                continue;
+            auto& parameter = *p.apvts.getParameter(names[k]);
+            const auto* raw = p.apvts.getRawParameterValue(names[k]);
+            parameter.setValueNotifyingHost(parameter.convertTo0to1(12.f));
+            parameter.setValueNotifyingHost(parameter.convertTo0to1(0.f));
+            expectEquals(raw->load(), 0.f, names[k] + " host return to flat");
+            p.setParameterFromUser(names[k], -12.f);
+            p.setParameterFromUser(names[k], 0.f);
+            expectEquals(raw->load(), 0.f, names[k] + " edit return to flat");
+        }
+        beginTest("All twelve store, duplicate and reset in one reversible transaction");
+        std::array<float, 12> expected{};
+        for (size_t k = 0; k < names.size(); ++k)
+        {
+            expected[k] = (k % 4 == 3) ? 1.f : (-11.2f + float(k));
+            p.setParameterFromUser(names[k], expected[k]);
+        }
+        p.setParameterFromUser("room", 2.f);
+        juce::MemoryBlock saved;
+        p.getStateInformation(saved);
+        LabRCProcessor restored;
+        restored.setStateInformation(saved.getData(), static_cast<int>(saved.getSize()));
+        auto verify = [&](const LabRCProcessor& proc, const std::array<float, 12>& values)
+        {
+            for (size_t k = 0; k < names.size(); ++k)
+                expectWithinAbsoluteError(proc.apvts.getRawParameterValue(names[k])->load(), values[k],
+                                          0.001f, names[k]);
+        };
+        verify(restored, expected);
+        restored.setParameterFromUser("room", 1.f);
+        verify(restored, expected);
+        restored.resetParameters();
+        verify(restored, {});
+        expect(restored.undoUser());
+        verify(restored, expected);
+        verify(p, expected);
+        expect(restored.redoUser());
+        verify(restored, {});
+        beginTest("Legacy partial schemas explicitly restore flat/out even after a previous non-flat preset");
+        for (const auto& xmlText :
+             {juce::String("<PARAMETERS><PARAM id=\"inputDb\" value=\"7.3\"/></PARAMETERS>"),
+              juce::String("<LABRC_STATE version=\"1\" micsVisible=\"0\"><PARAMETERS><PARAM id=\"inputDb\" "
+                           "value=\"7.3\"/></PARAMETERS></LABRC_STATE>")})
+        {
+            restored.setStateInformation(saved.getData(), static_cast<int>(saved.getSize()));
+            auto xml = juce::XmlDocument::parse(xmlText);
+            juce::MemoryBlock legacy;
+            juce::AudioProcessor::copyXmlToBinary(*xml, legacy);
+            restored.setStateInformation(legacy.getData(), static_cast<int>(legacy.getSize()));
+            verify(restored, {});
+            expectWithinAbsoluteError(restored.apvts.getRawParameterValue("inputDb")->load(), 7.3f, 1e-4f);
+            expect(!restored.canUndoUser());
+        }
+        beginTest("A 0.1 editor width migrates once and a Final Touch editor width recalls exactly");
+        auto restoreSize = [&](int width, int height)
+        {
+            auto xml = juce::XmlDocument::parse("<LABRC_STATE version='1' editorWidth='" +
+                                                juce::String(width) + "' editorHeight='" +
+                                                juce::String(height) + "'><PARAMETERS/></LABRC_STATE>");
+            juce::MemoryBlock block;
+            juce::AudioProcessor::copyXmlToBinary(*xml, block);
+            restored.setStateInformation(block.getData(), static_cast<int>(block.getSize()));
+        };
+        restoreSize(1180, 738);
+        expect(restored.editorSize() == juce::Point<int>(1280, 854));
+        restoreSize(800, 500);
+        expect(restored.editorSize() == juce::Point<int>(1024, 684));
+        restoreSize(1586, 992);
+        expect(restored.editorSize() == juce::Point<int>(1586, 1058));
+        restored.setEditorSize(1240, 827);
+        restored.getStateInformation(saved);
+        LabRCProcessor resized;
+        resized.setStateInformation(saved.getData(), static_cast<int>(saved.getSize()));
+        expect(resized.editorSize() == juce::Point<int>(1240, 827));
+        beginTest(
+            "The processor routes host EQ automation to an individual wet pair without adding user undo");
+        for (int pair = 0; pair < 3; ++pair)
+        {
+            auto capture = [&](bool eq)
+            {
+                LabRCProcessor proc;
+                auto set = [&](const juce::String& name, float v)
+                {
+                    auto* param = proc.apvts.getParameter(name);
+                    param->setValueNotifyingHost(param->convertTo0to1(v));
+                };
+                const auto prefix = juce::String(pair == 0 ? "ears" : pair == 1 ? "front" : "floor");
+                set(prefix + "Solo", 1);
+                set(prefix + "Db", 0);
+                set(prefix + "EqEnabled", eq ? 1.f : 0.f);
+                set(prefix + "EqLowDb", 12);
+                set(prefix + "EqMidDb", 12);
+                set(prefix + "EqHighDb", 12);
+                proc.setRateAndBufferSizeDetails(96000, 127);
+                proc.prepareToPlay(96000, 127);
+                expectEquals(proc.getLatencySamples(), 128);
+                juce::AudioBuffer<float> b(2, 24000);
+                b.clear();
+                b.setSample(0, 0, 1);
+                juce::MidiBuffer midi;
+                proc.processBlock(b, midi);
+                expect(!proc.canUndoUser());
+                return b;
+            };
+            auto direct = capture(false), coloured = capture(true);
+            for (int c = 0; c < 2; ++c)
+                coloured.addFrom(c, 0, direct, c, 0, direct.getNumSamples(), -1.f);
+            expect(coloured.getMagnitude(0, coloured.getNumSamples()) > 0.001f);
+        }
+    }
+};
+EQStateTests eqStateTests;
 
 class ProcessorAudioTests final : public juce::UnitTest {
 public:

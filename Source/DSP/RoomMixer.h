@@ -13,6 +13,8 @@ struct Parameters
     std::array<float, 3> pairDb{{-6, -3, -9}};
     std::array<bool, 3> mute{}, solo{};
     bool bypass = false;
+    std::array<std::array<float, 3>, 3> eqDb{}; // pair, then LOW/MID/HIGH
+    std::array<bool, 3> eqEnabled{};
 };
 
 struct MeterValues

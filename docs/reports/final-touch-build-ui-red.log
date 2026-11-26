@@ -1,0 +1,9 @@
+[ 29%] Built target LabRCAssets
+[ 43%] Built target labrc_dsp
+[ 91%] Built target LabRC
+[ 92%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/TestMain.cpp.o
+[ 94%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/DSPTests.cpp.o
+[ 96%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/ProcessorTests.cpp.o
+[ 98%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/UITests.cpp.o
+[100%] Linking CXX executable tests/labrc_tests
+[100%] Built target labrc_tests

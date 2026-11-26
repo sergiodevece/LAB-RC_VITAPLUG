@@ -1,19 +1,23 @@
 # LAB-RC · Manza’s Rooms & Chambers
 
-**A Tribute to Steve Albini · VITALAB / VITAPLUG · 0.1.0 · desarrollo local**
+**A Tribute to Steve Albini · VITALAB / VITAPLUG · 0.2.0 Final Touch**
 
 Mezclador de microfonía ambiental C++17/JUCE. Kentucky y Center Field (Studio A) y Live Room (Studio B) utilizan las nueve matrices wet v0.6 originales del kit. Es un homenaje independiente con respuestas **sintéticas**; no es una captura de Electrical Audio ni un producto oficial.
 
-Las referencias v0.5 fueron aprobadas mediante escucha por el propietario. La equivalencia matemática v0.6 no sustituye la escucha del plugin en un DAW. El estado de cada gate se registra en [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md).
+El propietario aprobó el carácter acústico de 0.1.0 tras probar el AU en Logic Pro y validó las tres capturas de Final Touch. 0.2.0 añade una EQ estéreo por pareja. Se conserva 0.1.0 como referencia para la comparación con las tres EQ desactivadas. La escucha de 0.2.0 en Logic queda pendiente. [Informe de Final Touch](docs/FINAL_TOUCH_REPORT.md)
 
-El propietario ha validado la distribución funcional de la interfaz, pero **no ha aprobado el acabado gráfico**: todavía arrastra rasgos del prototipo descartado. La UI queda congelada en esta fase. Se prioriza un AU instalable para el smoke físico en Logic Pro. El diseño industrial definitivo y una EQ de tres bandas por pareja se reservan para una segunda iteración posterior a la aprobación sonora/funcional; esta versión no incorpora EQ.
+## Origin & Authenticity — The Steve Albini Legacy
+
+**ES.** Las posiciones de las parejas de micrófonos respecto a la batería se basan en los apuntes personales que Sergio Devece (SerxDev), creador de LAB-RC junto a Compañero (ChatGPT), tomó durante el seminario de Steve Albini en Studios La Fabrique, en Saint-Rémy-de-Provence. Mix With The Masters organizó el seminario del 19 al 25 de febrero de 2018. Los apuntes recogen las enseñanzas de microfonía. Las coordenadas complementarias se estimaron para completar el modelo de LAB-RC. Las salas e IR se sintetizaron para el plugin tomando Electrical Audio como inspiración. LAB-RC es un homenaje independiente. [Archivo del seminario](https://mixwiththemasters.com/events/history/seminars)
+
+**EN.** The microphone pairs’ placement around the drum kit draws on the personal notes that Sergio Devece (SerxDev), who created LAB-RC with Compañero (ChatGPT), took at Steve Albini’s seminar at Studios La Fabrique in Saint-Rémy-de-Provence. Mix With The Masters ran the seminar from February 19 to 25, 2018. The notes document the microphone techniques taught there. Additional coordinates were estimated to complete the LAB-RC model. The rooms and impulse responses were synthesized for the plugin, with Electrical Audio as inspiration. LAB-RC is an independent tribute. [Seminar archive](https://mixwiththemasters.com/events/history/seminars)
 
 ## Compilación local reproducible
 
 Herramientas utilizadas: CMake/CTest 4.4.3, Apple clang 21.0.0, JUCE 8.0.17 del archivo local fijado por SHA-256. CMake mínimo 3.22; C++17. No hay descarga automática de dependencias ni conexiones de red del plugin.
 
 ```sh
-python3 scripts/verify_assets.py
+python3 scripts/verify_assets.py --final-touch Assets/FinalTouch
 python3 scripts/prepare_juce.py --archive /ruta/local/juce-8.0.17-security.tar.gz
 ```
 
@@ -43,7 +47,15 @@ yL = xL * hLL + xR * hRL
 yR = xL * hLR + xR * hRR
 ```
 
-Cada pareja EARS/FRONT/FLOOR tiene ganancia posterior a convolución y MUTE/SOLO. Mute prevalece; se permiten varios solos. Las ganancias son globales entre salas. MIX es lineal: 0% dry, 100% wet. Los trims afectan a la ruta procesada; BYPASS entrega la entrada original a unidad, compensada por la latencia computacional. No hay limitador ni igualación oculta de salas.
+Cada pareja EARS, FRONT y FLOOR tiene una EQ estéreo enlazada tras la convolución y el fundido de sala. Le siguen su fader, MUTE/SOLO y medidor. Mute prevalece y se permiten varios solos. Los ajustes de cada pareja se conservan al cambiar de sala. MIX es lineal de 0 % dry a 100 % wet. BYPASS entrega la entrada original a unidad, compensada por la latencia de cálculo. La señal dry queda fuera de la EQ.
+
+| Banda | Curva | Frecuencia | Ganancia |
+|---|---|---:|---:|
+| LOW | Estante bajo, S = 1 | 100 Hz | ±12 dB |
+| MID | Campana, Q = 0,7 | 1 kHz | ±12 dB |
+| HIGH | Estante alto, S = 1 | 8 kHz | ±12 dB |
+
+Los controles arrancan a 0 dB con EQ IN desactivado. Las transiciones de ganancia y de EQ IN duran 20 ms. La EQ conserva la latencia de 128 muestras del motor. Los realces pueden aumentar el nivel de pico.
 
 Los motores y recursos se preparan fuera del callback; el procesamiento conserva los retardos físicos de las IR. Ganancias y bypass usan rampas de 20 ms; el cambio de sala atenúa la cola anterior mediante crossfade complementario de 50 ms. No se promete spillover íntegro. Las parejas muteadas siguen procesando para conservar continuidad. Se reportan al host latencia computacional y tail conservador.
 
@@ -55,9 +67,9 @@ El procesamiento propio no asigna/libera memoria, toma mutex ni accede a archivo
 
 ## Interfaz y estado
 
-Chasis vintage basado en `approved_vintage.png`, con controles dinámicos independientes. Las tres fotografías aprobadas se muestran íntegras con contain; MICS solo muestra u oculta seis marcadores gráficos aproximados. No cambia sonido ni posición acústica.
+La referencia visual de Final Touch es `LAB-RC_REFERENCIA_VINTAGE_APROBADA.png`. Tres fondos originales sin batería conservan su proporción. El PNG transparente BOOST THIS se compone encima, con ajustes de escala, perspectiva, luz y sombra por sala. MICS muestra u oculta los seis marcadores de las posiciones fijas.
 
-Parámetros DSP automatizables y estado versionado por instancia. Los gestos de usuario tienen undo/redo local; la automatización del host no genera acciones de undo en el plugin. RESET agrupa su cambio en una sola transacción. La visibilidad de marcadores y el tamaño se guardan como preferencias por instancia.
+Parámetros DSP automatizables y estado versionado por instancia. Los gestos de usuario tienen undo/redo local. RESET agrupa los ajustes en una sola transacción. Los proyectos de 0.1.0 recuperan sus valores previos y reciben las tres EQ desactivadas a 0 dB. La visibilidad de marcadores y el tamaño se guardan como preferencias por instancia. Las posiciones fijas siguen siendo parte del diseño. El movimiento de micrófonos queda como posible investigación futura.
 
 ## Validación y distribución
 

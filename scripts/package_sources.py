@@ -8,9 +8,10 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+from verify_macos import EXPECTED_VERSION
 
 ROOT = Path(__file__).resolve().parents[1]
-NAME = "LAB-RC-0.1.0-sources"
+NAME = f"LAB-RC-{EXPECTED_VERSION}-sources"
 DIRECTORIES = ("Source", "Tests", "Assets", "cmake", "scripts", "docs")
 FILES = ("README.md", "LICENSE.md", "CHANGELOG.md", "CMakeLists.txt", "CMakePresets.json")
 EXCLUDED = {"build", ".git", ".superpowers", "dist", "__pycache__", ".DS_Store", "qa-review.diff"}
@@ -49,12 +50,13 @@ def archive_entry(archive, relative, data, executable=False):
 
 
 def make_package():
-    subprocess.run([sys.executable, "-B", str(ROOT / "scripts/verify_assets.py")], cwd=ROOT, check=True)
+    subprocess.run([sys.executable, "-B", str(ROOT / "scripts/verify_assets.py"),
+                    "--final-touch", str(ROOT / "Assets/FinalTouch")], cwd=ROOT, check=True)
     paths = source_paths()
     destination = ROOT / "dist" / (NAME + ".zip")
     destination.parent.mkdir(exist_ok=True)
     (ROOT / "build").mkdir(exist_ok=True)
-    manifest = {"product": "LAB-RC", "version": "0.1.0", "files": [],
+    manifest = {"product": "LAB-RC", "version": EXPECTED_VERSION, "files": [],
                 "JUCE": "External pinned local JUCE 8.0.17-security; dependency not included",
                 "JUCE_archive_sha256": "d37bab9f2330c50f42ba979575f6b55d5d3b23fa94221c2e57cac3abb69ac6d9"}
     with tempfile.TemporaryDirectory(prefix="labrc-source-package-", dir=ROOT / "build") as temporary:

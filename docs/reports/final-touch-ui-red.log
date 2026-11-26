@@ -1,0 +1,60 @@
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Console anchors, exact inverse, contain and minimum editor geometry...
+Completed tests in UI geometry and console controls / Console anchors, exact inverse, contain and minimum editor geometry
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Output knob remains reachable behind the transparent mix container at every size...
+Completed tests in UI geometry and console controls / Output knob remains reachable behind the transparent mix container at every size
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Every EQ band is editable and each EQ IN reflects its own persistent parameter...
+!!! Test 1 failed: Editable EQ band: earsEqLowDb
+!!! Test 2 failed: Editable EQ band: earsEqMidDb
+!!! Test 3 failed: Editable EQ band: earsEqHighDb
+!!! Test 4 failed: Real EQ IN control: earsEqEnabled
+!!! Test 5 failed: Editable EQ band: frontEqLowDb
+!!! Test 6 failed: Editable EQ band: frontEqMidDb
+!!! Test 7 failed: Editable EQ band: frontEqHighDb
+!!! Test 8 failed: Real EQ IN control: frontEqEnabled
+!!! Test 9 failed: Editable EQ band: floorEqLowDb
+!!! Test 10 failed: Editable EQ band: floorEqMidDb
+!!! Test 11 failed: Editable EQ band: floorEqHighDb
+!!! Test 12 failed: Real EQ IN control: floorEqEnabled
+
+FAILED!!  12 tests failed, out of a total of 12
+
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Output knob remains reachable behind the transparent mix container at every size...
+Completed tests in UI geometry and console controls / Output knob remains reachable behind the transparent mix container at every size
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Numeric entry changes the real parameter once and rejects malformed numbers...
+Completed tests in UI geometry and console controls / Numeric entry changes the real parameter once and rejects malformed numbers
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Room selection keeps global faders and the six stable marker components...
+Completed tests in UI geometry and console controls / Room selection keeps global faders and the six stable marker components
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / MICS is an undoable instance preference and has no audio parameter side effects...
+Completed tests in UI geometry and console controls / MICS is an undoable instance preference and has no audio parameter side effects
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Host parameter updates reach controls without adding user undo...
+Completed tests in UI geometry and console controls / Host parameter updates reach controls without adding user undo
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / GUI observes host parameters only at GUI refresh, with no synchronous listener push...
+Completed tests in UI geometry and console controls / GUI observes host parameters only at GUI refresh, with no synchronous listener push
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Worker automation of every parameter reaches the next GUI frame without user undo...
+Completed tests in UI geometry and console controls / Worker automation of every parameter reaches the next GUI frame without user undo
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Numeric editing survives GUI frames and automation, then cancels or commits normally...
+Completed tests in UI geometry and console controls / Numeric editing survives GUI frames and automation, then cancels or commits normally
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Mic label bounds stay on the original photograph at minimum size in every room...
+Completed tests in UI geometry and console controls / Mic label bounds stay on the original photograph at minimum size in every room
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Open editor recalls instance size and cannot undo changes from the previous restored state...
+!!! Test 3 failed: Expected value: 738, Actual value: 787
+!!! Test 5 failed: A subsequent manual resize takes precedence -- Expected value: 800, Actual value: 1024
+!!! Test 6 failed: Expected value: 800, Actual value: 1024
+
+FAILED!!  3 tests failed, out of a total of 6
+
+LAB-RC: 13 sections, 2237 checks passed, 15 failed

@@ -1,4 +1,5 @@
 #include "VintageComponents.h"
+#include "IndustrialSurface.h"
 #include "../PluginProcessor.h"
 #include "../Resources.h"
 #include <cmath>
@@ -10,7 +11,9 @@ namespace
 {
 constexpr const char* pairNames[] { "EARS", "FRONT", "FLOOR" };
 constexpr const char* pairIDs[] { "ears", "front", "floor" };
-constexpr const char* pairDescriptions[] { "RIBBON - STEREO", "LARGE DIAPHRAGM - STEREO", "SMALL DIAPHRAGM - STEREO" };
+constexpr const char* pairDescriptions[] { "RIBBON", "LARGE DIAPHRAGM", "SMALL DIAPHRAGM" };
+constexpr const char* bandNames[] { "LOW", "MID", "HIGH" };
+constexpr const char* bandIDs[] { "Low", "Mid", "High" };
 juce::Rectangle<float> boundsOf (const juce::Component& c) { return c.getLocalBounds().toFloat(); }
 void focusRing (juce::Graphics& g, juce::Rectangle<float> bounds)
 {
@@ -59,7 +62,7 @@ juce::Colour pairColour (int pair)
 }
 juce::Font font (float height, bool serif, bool bold)
 {
-    return juce::Font (juce::FontOptions (serif ? "Georgia" : juce::Font::getDefaultSansSerifFontName(),
+    return juce::Font (juce::FontOptions (serif ? "Times New Roman" : juce::Font::getDefaultSansSerifFontName(),
                                         height, bold ? juce::Font::bold : juce::Font::plain));
 }
 void lettering (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds,
@@ -71,86 +74,24 @@ void lettering (juce::Graphics& g, const juce::String& text, juce::Rectangle<flo
     if (textWidth > bounds.getWidth() - 2)
         textFont.setHorizontalScale (std::max (.55f, (bounds.getWidth() - 2) / textWidth));
     g.setFont (textFont);
+    g.setColour (juce::Colour (0xa0060905));
+    g.drawText (text, bounds.translated (0, .8f), justification, true);
+    g.setColour (cream());
     g.drawText (text, bounds, justification, true);
 }
 void patina (juce::Graphics& g, juce::Rectangle<float> bounds, float scale, int seed)
 {
-    // Fixed seed: paint does not shimmer or accumulate a generated texture file.
-    juce::Random random (static_cast<juce::int64> (seed));
-    const auto count = static_cast<int> (bounds.getWidth() * bounds.getHeight() / std::max (1.0f, 230.0f * scale * scale));
-    for (int i = 0; i < count; ++i)
-    {
-        const auto x = bounds.getX() + random.nextFloat() * bounds.getWidth();
-        const auto y = bounds.getY() + random.nextFloat() * bounds.getHeight();
-        const auto edge = std::min ({ x - bounds.getX(), bounds.getRight() - x, y - bounds.getY(), bounds.getBottom() - y });
-        const auto onEdge = edge < 4.0f * scale;
-        const auto grain = i % 3 == 0 ? juce::Colour (0xff060e09) : juce::Colour (0xffb0b18b);
-        g.setColour ((onEdge ? gold() : grain).withAlpha (onEdge ? .60f : .035f + random.nextFloat() * .07f));
-        g.fillRect (x, y, (.35f + random.nextFloat() * (onEdge ? 3.0f : 1.4f)) * scale,
-                    (.35f + random.nextFloat() * 1.1f) * scale);
-    }
-    for (int pit = 0; pit < 90; ++pit)
-    {
-        const auto x = bounds.getX() + random.nextFloat() * bounds.getWidth();
-        const auto y = bounds.getY() + random.nextFloat() * bounds.getHeight();
-        const auto radius = (.5f + random.nextFloat() * 1.2f) * scale;
-        g.setColour (juce::Colour (0xff050b07).withAlpha (.20f));
-        g.fillEllipse (x, y, radius * 2, radius);
-        g.setColour (juce::Colour (0xffb7a16c).withAlpha (.10f));
-        g.drawLine (x, y + radius, x + radius, y + radius, .5f * scale);
-    }
-    // Small irregular losses in the paint follow the metal edges and screw wear.
-    for (int i = 0; i < 110; ++i)
-    {
-        const auto along = random.nextFloat();
-        const auto length = (1.0f + random.nextFloat() * 8.0f) * scale;
-        const auto inset = (1.0f + random.nextFloat() * 2.0f) * scale;
-        g.setColour (gold().withAlpha (.25f + random.nextFloat() * .40f));
-        if (i % 2 == 0)
-        {
-            const auto x = bounds.getX() + along * (bounds.getWidth() - length);
-            const auto y = i % 4 == 0 ? bounds.getY() + inset : bounds.getBottom() - inset;
-            g.drawLine (x, y, x + length, y + (random.nextFloat() - .5f) * scale, (.5f + random.nextFloat() * 1.1f) * scale);
-        }
-        else
-        {
-            const auto y = bounds.getY() + along * (bounds.getHeight() - length);
-            const auto x = i % 4 == 1 ? bounds.getX() + inset : bounds.getRight() - inset;
-            g.drawLine (x, y, x + (random.nextFloat() - .5f) * scale, y + length, (.5f + random.nextFloat() * 1.1f) * scale);
-        }
-    }
+    industrial::wear (g, bounds, scale, seed);
 }
 void screw (juce::Graphics& g, float x, float y, float radius)
 {
-    g.setColour (juce::Colours::black.withAlpha (.7f));
-    g.fillEllipse (x - radius + 1, y - radius + 2, radius * 2, radius * 2);
-    g.setGradientFill (juce::ColourGradient (juce::Colour (0xffb09360), x - radius, y - radius,
-                                            juce::Colour (0xff372c1a), x + radius, y + radius, false));
-    g.fillEllipse (x - radius, y - radius, radius * 2, radius * 2);
-    g.setColour (juce::Colour (0xffd0b47b).withAlpha (.6f));
-    g.drawEllipse (x - radius + 1, y - radius + 1, radius * 2 - 2, radius * 2 - 2, .8f);
-    g.setColour (juce::Colour (0xff19180f));
-    g.drawLine (x - radius * .55f, y + radius * .24f, x + radius * .55f, y - radius * .24f, std::max (1.0f, radius * .22f));
+    industrial::screw (g, x, y, radius);
 }
 void panel (juce::Graphics& g, juce::Rectangle<float> bounds, float scale, bool screws)
 {
-    g.setColour (juce::Colours::black.withAlpha (.7f));
-    g.fillRoundedRectangle (bounds.translated (0, 2 * scale).expanded (1.0f * scale), 11 * scale);
-    g.setGradientFill (juce::ColourGradient (juce::Colour (0xff2d3323), bounds.getX(), bounds.getY(),
-                                            juce::Colour (0xff171e14), bounds.getRight(), bounds.getBottom(), false));
-    g.fillRoundedRectangle (bounds, 10 * scale);
-    g.setColour (juce::Colour (0xffb4945e));
-    g.drawRoundedRectangle (bounds.reduced (1.5f * scale), 9 * scale, 1.5f * scale);
-    g.setColour (juce::Colour (0xff080e09));
-    g.drawRoundedRectangle (bounds.reduced (4 * scale), 7 * scale, 2.0f * scale);
-    g.setColour (cream().withAlpha (.2f));
-    g.drawRoundedRectangle (bounds.reduced (6 * scale), 6 * scale, .7f * scale);
-    patina (g, bounds.reduced (2 * scale), scale, static_cast<int> (bounds.getWidth() * 17));
-    if (screws)
-        for (auto x : { bounds.getX() + 15 * scale, bounds.getRight() - 15 * scale })
-            for (auto y : { bounds.getY() + 15 * scale, bounds.getBottom() - 15 * scale })
-                screw (g, x, y, 5.5f * scale);
+    industrial::panel (g, bounds, scale, screws);
 }
+
 }
 
 VintageLookAndFeel::VintageLookAndFeel()
@@ -170,52 +111,30 @@ void VintageLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int 
     const auto size = static_cast<float> (std::min (width, height));
     const auto cx = x + width * .5f, cy = y + height * .5f;
     const auto r = size * .37f;
-    for (int tick = 0; tick <= 10; ++tick)
+    const auto bakelite = static_cast<bool> (slider.getProperties()["labrcBakelite"]);
+    const auto ticks = bakelite ? 4 : 10;
+    for (int tick = 0; tick <= ticks; ++tick)
     {
-        const auto angle = start + (end - start) * tick / 10.0f;
-        g.setColour (theme::cream().withAlpha (.8f));
-        g.drawLine (cx + std::sin (angle) * r * 1.20f, cy - std::cos (angle) * r * 1.20f,
-                    cx + std::sin (angle) * r * 1.36f, cy - std::cos (angle) * r * 1.36f, std::max (.7f, size / 100));
+        const auto a = start + (end - start) * tick / ticks;
+        g.setColour (theme::cream().withAlpha (tick == ticks / 2 ? .95f : .65f));
+        g.drawLine (cx + std::sin (a) * r * 1.18f, cy - std::cos (a) * r * 1.18f,
+                    cx + std::sin (a) * r * 1.34f, cy - std::cos (a) * r * 1.34f, std::max (.7f, size / 100));
     }
-    g.setColour (juce::Colours::black.withAlpha (.65f));
-    g.fillEllipse (cx - r - 3, cy - r + 2, r * 2 + 6, r * 2 + 6);
-    g.setGradientFill (juce::ColourGradient (juce::Colour (0xffeddbb7), cx - r, cy - r,
-                                            juce::Colour (0xff3c3023), cx + r, cy + r, false));
-    g.fillEllipse (cx - r, cy - r, r * 2, r * 2);
-    g.setColour (theme::cream().withAlpha (.8f));
-    g.drawEllipse (cx - r, cy - r, r * 2, r * 2, std::max (.7f, size / 90));
-    const auto face = r * .91f;
-    juce::ColourGradient brushed (juce::Colour (0xffe8d7b9), cx - face * .40f, cy - face * .62f,
-                                  juce::Colour (0xff736248), cx + face * .7f, cy + face * .8f, false);
-    brushed.addColour (.32, juce::Colour (0xffbfa985));
-    brushed.addColour (.50, juce::Colour (0xff9c896a));
-    brushed.addColour (.72, juce::Colour (0xffd0bc97));
-    g.setGradientFill (brushed);
-    g.fillEllipse (cx - face, cy - face, face * 2, face * 2);
-    // Fine radial brushing catches a directional light; broad concentric rings would look moulded.
-    for (int stroke = 0; stroke < 240; ++stroke)
-    {
-        const auto angle = stroke * juce::MathConstants<float>::twoPi / 240;
-        const auto sheen = .025f + .045f * std::abs (std::cos (angle - .6f));
-        g.setColour ((stroke % 2 == 0 ? juce::Colours::white : juce::Colours::black).withAlpha (sheen));
-        g.drawLine (cx + std::sin (angle) * face * .10f, cy - std::cos (angle) * face * .10f,
-                    cx + std::sin (angle) * face * .98f, cy - std::cos (angle) * face * .98f, .35f);
-    }
-    g.setColour (juce::Colour (0xfff2dfbb).withAlpha (.7f));
-    juce::Path rimLight;
-    rimLight.addArc (cx - face, cy - face, face * 2, face * 2, 3.7f, 5.7f, true);
-    g.strokePath (rimLight, juce::PathStrokeType (std::max (.6f, size * .008f)));
     const auto angle = start + (end - start) * proportion;
-    g.setColour (juce::Colour (0xff201d13));
-    g.drawLine (cx + std::sin (angle) * r * .24f, cy - std::cos (angle) * r * .24f,
-                cx + std::sin (angle) * r * .83f, cy - std::cos (angle) * r * .83f, std::max (1.7f, size * .033f));
+    if (bakelite)
+    {
+        industrial::bakeliteKnob (g, cx, cy + 2, r * .94f, angle);
+        g.setColour (theme::cream());
+        g.setFont (theme::font (std::max (8.0f, size * .14f)));
+        g.drawText ("0", juce::Rectangle<float> (cx - 6, static_cast<float> (y), 12, std::max (9.0f, size * .18f)), juce::Justification::centred);
+    }
+    else industrial::metalKnob (g, cx, cy, r, angle);
     if (slider.isMouseOverOrDragging())
     {
-        g.setColour (theme::cream().withAlpha (.5f));
-        g.drawEllipse (cx - r - 1, cy - r - 1, r * 2 + 2, r * 2 + 2, 1.0f);
+        g.setColour (theme::cream().withAlpha (.4f));
+        g.drawEllipse (cx - r - 1, cy - r - 1, r * 2 + 2, r * 2 + 2, 1);
     }
-    if (slider.hasKeyboardFocus (true)) focusRing (g, { static_cast<float> (x), static_cast<float> (y),
-                                                       static_cast<float> (width), static_cast<float> (height) });
+    if (slider.hasKeyboardFocus (true)) focusRing (g, slider.getLocalBounds().toFloat());
 }
 int VintageLookAndFeel::getSliderThumbRadius (juce::Slider& slider)
 {
@@ -224,7 +143,7 @@ int VintageLookAndFeel::getSliderThumbRadius (juce::Slider& slider)
 void VintageLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, int width, int height,
                                           float sliderPos, float, float, juce::Slider::SliderStyle, juce::Slider& slider)
 {
-    const auto scale = std::max (.4f, height / 172.0f);
+    const auto scale = std::max (.4f, width / 132.0f);
     const auto trackX = x + width * .72f;
     const auto top = static_cast<float> (y), bottom = static_cast<float> (y + height);
     g.setColour (juce::Colour (0xff090e09));
@@ -340,12 +259,28 @@ void VintageButton::paintButton (juce::Graphics& g, bool over, bool down)
     if (down) body = body.translated (0, scale);
     const auto lit = on && (kind == Kind::solo || kind == Kind::room || kind == Kind::normal);
     const auto base = on && kind == Kind::mute ? juce::Colour (0xff8b3f2e)
-                                              : lit ? juce::Colour (0xff987439) : juce::Colour (0xff343b2a);
+                                              : lit ? juce::Colour (0xffa27c3b) : juce::Colour (0xff252c1e);
+    if (on)
+    {
+        g.setColour ((kind == Kind::mute ? juce::Colour (0xffa95638) : theme::gold()).withAlpha (.20f));
+        g.fillRoundedRectangle (body.expanded (2 * scale), 6 * scale);
+    }
     g.setColour (juce::Colours::black.withAlpha (.7f));
     g.fillRoundedRectangle (body.translated (0, 2 * scale), 4 * scale);
     g.setGradientFill (juce::ColourGradient (base.brighter (.22f), body.getX(), body.getY(),
                                             base.darker (.35f), body.getX(), body.getBottom(), false));
     g.fillRoundedRectangle (body, 4 * scale);
+    if (! on)
+    {
+        g.setTiledImageFill (industrial::surfaceTexture(), 0, 0, 1);
+        g.fillRoundedRectangle (body.reduced (2 * scale), 3 * scale);
+        if (kind == Kind::mute || kind == Kind::solo)
+        {
+            g.setGradientFill (juce::ColourGradient (juce::Colour (0xb080795e), body.getX(), body.getY(),
+                                                    juce::Colour (0xa02b2c22), body.getRight(), body.getBottom(), false));
+            g.fillRoundedRectangle (body.reduced (2 * scale), 3 * scale);
+        }
+    }
     g.setColour (on ? juce::Colour (0xffe8bf6d) : theme::gold().withAlpha (.85f));
     g.drawRoundedRectangle (body, 4 * scale, on ? 1.5f * scale : .9f * scale);
     g.setColour (theme::cream().withAlpha (on ? .7f : .2f));
@@ -402,6 +337,7 @@ ParameterControl::ParameterControl (LabRCProcessor& p, juce::String id, juce::St
 {
     setInterceptsMouseClicks (false, true);
     setComponentID (parameterID);
+    slider.getProperties().set ("labrcBakelite", parameterID.contains ("Eq") && parameterID.endsWith ("Db"));
     slider.setComponentID (parameterID + "Slider");
     slider.setName (parameterName);
     slider.setTitle (parameterName);
@@ -448,6 +384,8 @@ ParameterControl::~ParameterControl()
 }
 juce::String ParameterControl::formattedValue (double value) const
 {
+    value = std::round (value * 10.0) / 10.0;
+    if (value == 0.0) value = 0.0; // Canonicalise the display sign, including slider-interval roundoff.
     return (value > 0 && parameterID != "mixPercent" ? "+" : "") + juce::String (value, 1)
            + (parameterID == "mixPercent" ? " %" : " dB");
 }
@@ -477,6 +415,10 @@ void ParameterControl::layout (juce::Rectangle<int> sliderArea, juce::Rectangle<
     readout.setBounds (readoutArea);
     auto typeface = theme::font (std::max (10.0f, readoutArea.getHeight() * .60f), false, true);
     typeface.setTypefaceName (juce::Font::getDefaultMonospacedFontName());
+    const auto longest = std::max (juce::GlyphArrangement::getStringWidth (typeface, formattedValue (slider.getMinimum())),
+                                    juce::GlyphArrangement::getStringWidth (typeface, formattedValue (slider.getMaximum())));
+    if (longest > readoutArea.getWidth() - 8)
+        typeface.setHeight (typeface.getHeight() * (readoutArea.getWidth() - 8) / longest);
     readout.setFont (typeface);
 }
 
@@ -502,19 +444,25 @@ void StereoMeter::paint (juce::Graphics& g)
 {
     const auto area = boundsOf (*this);
     const auto scale = area.getHeight() / 195.0f;
-    const auto top = 7.0f * scale, bottom = area.getHeight() - 19 * scale;
+    const auto textFont = theme::font (juce::jlimit (9.0f, 12.0f, area.getHeight() * .065f));
+    const auto labelHeight = textFont.getHeight() + 2;
+    const auto top = labelHeight * .5f + 2, bottom = area.getHeight() - textFont.getHeight() - 7;
     const auto meterHeight = bottom - top;
-    const auto left = area.getWidth() * .48f;
-    const auto columnWidth = std::max (5.0f, area.getWidth() * .17f);
+    const auto labelWidth = std::ceil (juce::GlyphArrangement::getStringWidth (textFont, "-48")) + 3;
+    const auto columnWidth = juce::jlimit (5.0f, 12.0f, area.getWidth() * .15f);
     const auto gap = std::max (3.0f, columnWidth * .42f);
-    g.setFont (theme::font (std::max (8.0f, 12.0f * scale)));
+    const auto frame = juce::jlimit (1.0f, 2.0f, scale * 1.5f);
+    const auto blockWidth = labelWidth + 5 + frame * 2 + columnWidth * 2 + gap;
+    const auto start = std::max (0.0f, (area.getWidth() - blockWidth) * .5f);
+    const auto left = start + labelWidth + 5 + frame;
+    g.setFont (textFont);
     for (auto db : { 0, -6, -12, -24, -48 })
     {
-        if (db == -6 && area.getHeight() < 120) continue;
+        if (db == -6 && meterHeight * .1f < textFont.getHeight() + 1) continue;
         g.setColour (theme::cream().withAlpha (.8f));
         const auto y = top + -db / 60.0f * meterHeight;
-        g.drawText (juce::String (db), juce::Rectangle<float> (0, y - 7 * scale, left - 6 * scale, 14 * scale),
-                    juce::Justification::centredRight);
+        g.drawText (juce::String (db), juce::Rectangle<float> (start, y - labelHeight * .5f, labelWidth, labelHeight),
+                    juce::Justification::centredRight, false);
     }
     constexpr int segments = 30;
     const auto step = meterHeight / segments;
@@ -523,9 +471,9 @@ void StereoMeter::paint (juce::Graphics& g)
     {
         const auto x = left + channel * (columnWidth + gap);
         g.setColour (juce::Colour (0xff050b06));
-        g.fillRect (x - 3 * scale, top - 4 * scale, columnWidth + 6 * scale, meterHeight + 8 * scale);
+        g.fillRect (x - frame, top - frame, columnWidth + frame * 2, meterHeight + frame * 2);
         g.setColour (theme::gold().withAlpha (.7f));
-        g.drawRect (x - 3 * scale, top - 4 * scale, columnWidth + 6 * scale, meterHeight + 8 * scale, .7f);
+        g.drawRect (x - frame, top - frame, columnWidth + frame * 2, meterHeight + frame * 2, .7f);
         for (int segment = 0; segment < segments; ++segment)
         {
             const auto threshold = -60.0f + segment * 2.0f;
@@ -538,7 +486,7 @@ void StereoMeter::paint (juce::Graphics& g)
         g.setColour (now < clippedUntil[static_cast<std::size_t> (channel)] ? juce::Colour (0xffff6a3c) : juce::Colour (0xff2a2014));
         g.fillRect (x, top - 3.0f * scale, columnWidth, std::max (1.0f, 1.8f * scale));
         g.setColour (theme::cream().withAlpha (.85f));
-        g.drawText (channel == 0 ? "L" : "R", juce::Rectangle<float> (x - 2, bottom + 5 * scale, columnWidth + 4, 14 * scale),
+        g.drawText (channel == 0 ? "L" : "R", juce::Rectangle<float> (x - 2, area.getHeight() - labelHeight, columnWidth + 4, labelHeight),
                     juce::Justification::centred);
     }
 }
@@ -546,6 +494,8 @@ void StereoMeter::paint (juce::Graphics& g)
 RoomScene::RoomScene()
 {
     setName ("Approved room photograph and virtual microphone positions");
+    setComponentID ("roomScene");
+    addAndMakeVisible (drumLayer);
     for (int i = 0; i < 3; ++i) images[static_cast<std::size_t> (i)] = labrc::roomImage (i);
     for (int i = 0; i < 6; ++i)
     {
@@ -604,11 +554,15 @@ void RoomScene::resized()
 {
     const auto& image = images[static_cast<std::size_t> (room)];
     const auto photo = fitContain ({ 0, 0, static_cast<double> (getWidth()), static_cast<double> (getHeight()) }, image.getWidth(), image.getHeight());
-    const auto scale = std::max (.5, getHeight() / 431.0);
+    drumLayer.setBounds (getLocalBounds());
+    drumLayer.setScene (room, photo);
+    const auto scale = std::max (.55, getHeight() / 350.0);
     for (int i = 0; i < 6; ++i)
     {
         const auto p = markerPoint (room, i, photo);
-        const auto desiredWidth = i < 2 ? 102 * scale : std::max (62.0, 102 * scale);
+        const auto mate = markerPoint (room, i % 2 == 0 ? i + 1 : i - 1, photo);
+        const auto desiredWidth = i < 2 ? std::min (102 * scale, std::abs (mate.x - p.x) * .94)
+                                       : std::max (62.0, 102 * scale);
         const auto maximumWidth = 2.0 * std::max (0.0, std::min (p.x - photo.x, photo.right() - p.x)) - 4.0;
         const auto w = std::max (1, static_cast<int> (std::floor (std::min (desiredWidth, maximumWidth))));
         const auto h = std::max (26, juce::roundToInt (30 * scale));
@@ -618,7 +572,7 @@ void RoomScene::resized()
 
 PairStrip::PairStrip (LabRCProcessor& p, int index)
     : processor (p), pair (index), gain (p, juce::String (pairIDs[index]) + "Db", juce::String (pairNames[index]) + " gain", true),
-      mute ("M", VintageButton::Kind::mute), solo ("S", VintageButton::Kind::solo)
+      mute ("M", VintageButton::Kind::mute), solo ("S", VintageButton::Kind::solo), eqIn ("EQ IN")
 {
     setComponentID (juce::String (pairIDs[index]) + "Strip");
     setName (juce::String (pairNames[index]) + " microphone pair");
@@ -639,8 +593,35 @@ PairStrip::PairStrip (LabRCProcessor& p, int index)
         };
         addAndMakeVisible (*button);
     }
+    for (int band = 0; band < 3; ++band)
+    {
+        const auto id = juce::String (pairIDs[index]) + "Eq" + bandIDs[band] + "Db";
+        eq[static_cast<std::size_t> (band)] = std::make_unique<ParameterControl> (p, id, juce::String (pairNames[index]) + " " + bandNames[band] + " EQ", false);
+        addAndMakeVisible (*eq[static_cast<std::size_t> (band)]);
+    }
+    const auto enabledID = juce::String (pairIDs[index]) + "EqEnabled";
+    eqIn.setComponentID (enabledID);
+    eqIn.setTitle (juce::String (pairNames[index]) + " EQ in");
+    eqIn.setTooltip ("Enable " + juce::String (pairNames[index]) + " LOW / MID / HIGH EQ. Gains remain stored when EQ is out.");
+    eqIn.onClick = [this, enabledID]
+    {
+        processor.beginParameterGesture (enabledID, juce::String (pairNames[pair]) + " EQ in");
+        processor.setParameterFromUser (enabledID, processor.apvts.getRawParameterValue (enabledID)->load() >= .5f ? 0.0f : 1.0f);
+        processor.endParameterGesture (enabledID);
+        refreshFromParameters();
+    };
+    addAndMakeVisible (eqIn);
     addAndMakeVisible (gain);
     addAndMakeVisible (meter);
+    meter.setName (juce::String (pairNames[index]) + " stereo peak meter");
+    refreshFromParameters();
+}
+void PairStrip::refreshFromParameters()
+{
+    gain.refreshFromParameter();
+    for (auto& control : eq) control->refreshFromParameter();
+    const auto enabled = processor.apvts.getRawParameterValue (juce::String (pairIDs[pair]) + "EqEnabled")->load() >= .5f;
+    eqIn.setToggleState (enabled, juce::dontSendNotification);
 }
 void PairStrip::setPresentation (bool muted, bool soloed, bool active, bool bypass, bool highlight)
 {
@@ -654,31 +635,53 @@ void PairStrip::setPresentation (bool muted, bool soloed, bool active, bool bypa
 }
 void PairStrip::resized()
 {
-    const auto sx = getWidth() / 503.0f, sy = getHeight() / 224.0f;
-    const auto rect = [=] (float x, float y, float w, float h)
-    { return juce::Rectangle<int> (juce::roundToInt (x * sx), juce::roundToInt (y * sy), juce::roundToInt (w * sx), juce::roundToInt (h * sy)); };
+    plateCache = {};
+    const auto geometry = PairGeometry::forSize (getWidth(), getHeight());
+    const auto rect = [] (Rect r)
+    { return juce::Rectangle<float> (static_cast<float> (r.x), static_cast<float> (r.y), static_cast<float> (r.width), static_cast<float> (r.height)).toNearestInt(); };
     gain.setBounds (getLocalBounds());
-    gain.layout (rect (254, 20, 132, 180), rect (43, 91, 118, 32));
-    const auto buttonHeight = std::max (28, juce::roundToInt (42 * sy));
-    mute.setBounds (rect (42, 133, 55, 42).withHeight (buttonHeight));
-    solo.setBounds (rect (103, 133, 55, 42).withHeight (buttonHeight));
-    meter.setBounds (rect (388, 25, 91, 177));
+    gain.layout (rect (geometry.fader), rect (geometry.gainReadout));
+    for (int band = 0; band < 3; ++band)
+    {
+        auto& control = *eq[static_cast<std::size_t> (band)];
+        control.setBounds (getLocalBounds());
+        control.layout (rect (geometry.eqKnobs[static_cast<std::size_t> (band)]), rect (geometry.eqReadouts[static_cast<std::size_t> (band)]));
+    }
+    mute.setBounds (rect (geometry.mute)); solo.setBounds (rect (geometry.solo));
+    eqIn.setBounds (rect (geometry.eqIn)); meter.setBounds (rect (geometry.meter));
 }
 void PairStrip::paint (juce::Graphics& g)
 {
-    const auto scale = getHeight() / 224.0f;
-    theme::panel (g, boundsOf (*this).reduced (1), scale);
-    const auto sx = getWidth() / 503.0f;
-    g.saveState();
-    g.addTransform (juce::AffineTransform::scale (sx, scale));
-    theme::lettering (g, pairNames[pair], { 43, 18, 212, 40 }, 32, true, true, juce::Justification::centredLeft);
-    theme::lettering (g, pairDescriptions[pair], { 43, 60, 245, 25 }, 13, false, false, juce::Justification::centredLeft);
-    g.setColour (routeActive && ! bypassed ? theme::pairColour (pair).brighter (.25f) : juce::Colour (0xff34402a));
-    g.fillEllipse (44, 189, 11, 11);
-    g.setColour (theme::cream().withAlpha (.9f));
-    g.setFont (theme::font (12));
-    g.drawText (bypassed ? "BYPASSED" : routeActive ? "ACTIVE" : "SILENCED", 65, 183, 170, 24, juce::Justification::centredLeft);
-    g.restoreState();
+    const auto scale = getHeight() / 370.0f;
+    const auto geometry = PairGeometry::forSize (getWidth(), getHeight());
+    const auto rect = [] (Rect r)
+    { return juce::Rectangle<float> (static_cast<float> (r.x), static_cast<float> (r.y), static_cast<float> (r.width), static_cast<float> (r.height)); };
+    const auto pixels = std::max (1.0f, g.getInternalContext().getPhysicalPixelScaleFactor());
+    const auto pixelWidth = juce::roundToInt (getWidth() * pixels), pixelHeight = juce::roundToInt (getHeight() * pixels);
+    if (plateCache.getWidth() != pixelWidth || plateCache.getHeight() != pixelHeight || plateScale != pixels)
+    {
+        plateScale = pixels;
+        plateCache = juce::Image (juce::Image::ARGB, pixelWidth, pixelHeight, true);
+        juce::Graphics plate (plateCache);
+        plate.addTransform (juce::AffineTransform::scale (pixels));
+        theme::panel (plate, boundsOf (*this).reduced (1), scale);
+        theme::lettering (plate, pairNames[pair], rect (geometry.title), std::max (20.0f, 34 * scale), true, true, juce::Justification::centredLeft);
+        auto description = rect (geometry.description);
+        theme::lettering (plate, pairDescriptions[pair], description.removeFromTop (description.getHeight() * .55f), std::max (10.0f, 13 * scale), false, false, juce::Justification::centredLeft);
+        theme::lettering (plate, "STEREO PAIR", description, std::max (10.0f, 12 * scale), false, false, juce::Justification::centredLeft);
+        for (int band = 0; band < 3; ++band)
+            theme::lettering (plate, bandNames[band], rect (geometry.eqLabels[static_cast<std::size_t> (band)]), std::max (11.0f, 14 * scale), false, true);
+        plate.setColour (theme::gold().withAlpha (.28f));
+        const auto separator = getWidth() * 162.0f / 503;
+        plate.drawLine (separator, 24 * scale, separator, getHeight() - 25 * scale, .6f);
+    }
+    g.drawImage (plateCache, getLocalBounds().toFloat());
+    const auto status = rect (geometry.status);
+    const auto radius = std::max (3.0f, 5.0f * scale);
+    const auto centreX = status.getX() + radius, centreY = status.getCentreY();
+    g.setColour (routeActive && ! bypassed ? theme::pairColour (pair).brighter (.20f) : juce::Colour (0xff293728));
+    g.fillEllipse (centreX - radius, centreY - radius, radius * 2, radius * 2);
+    theme::lettering (g, bypassed ? "BYPASSED" : routeActive ? "ACTIVE" : "SILENCED", status.withTrimmedLeft (radius * 3), std::max (10.0f, 12 * scale), false, false, juce::Justification::centredLeft);
     if (highlighted)
     {
         g.setColour (theme::pairColour (pair).withAlpha (.75f));

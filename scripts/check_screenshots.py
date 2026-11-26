@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify all twelve renderer PNGs, including CRCs and no stale appended image."""
+"""Verify every Final Touch renderer PNG and exclude stale appended images."""
 import argparse
 import hashlib
 import json
@@ -31,8 +31,10 @@ def check_png(path: Path, expected_size):
         if kind == b"IEND":
             if position != len(data):
                 raise ValueError(f"PNG has {len(data) - position} trailing bytes, possibly an old appended snapshot: {path}")
-            if size != expected_size:
+            if expected_size is not None and size != expected_size:
                 raise ValueError(f"PNG dimensions {size}; expected {expected_size}: {path}")
+            if size is None or min(size) < 600:
+                raise ValueError(f"PNG lacks a full-size snapshot: {path}")
             return {"file": path.name, "width": size[0], "height": size[1],
                     "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
     raise ValueError(f"PNG has no complete IEND chunk: {path}")
@@ -41,9 +43,10 @@ def check_png(path: Path, expected_size):
 def check_directory(folder: Path):
     result = []
     for room in ("kentucky", "center-field", "live-room"):
-        for suffix, size in (("min", (800, 500)), ("default", (1180, 738)),
-                             ("max", (1586, 992)), ("default@2x", (2360, 1476))):
+        for suffix, size in (("min", (1024, 684)), ("default", (1280, 854)),
+                             ("max", (1586, 1058)), ("default@2x", (2560, 1708))):
             result.append(check_png(folder / f"{room}-{suffix}.png", size))
+    result.append(check_png(folder / "controls-detail.png", None))
     return result
 
 

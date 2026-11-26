@@ -56,9 +56,9 @@ private:
     double preparedRate=0;
     int preparedBlock=0, initialRoom=0;
     std::atomic<bool> audioStarted{false};
-    std::array<std::atomic<float>*,14> raw{};
+    std::array<std::atomic<float>*,26> raw{};
     std::atomic<bool> showMics{true};
-    std::atomic<std::uint64_t> viewSize{(std::uint64_t{738} << 32u) | 1180u};
+    std::atomic<std::uint64_t> viewSize{(std::uint64_t{854} << 32u) | 1280u};
     bool undoResetPending=false; // Protected by userStateLock.
     juce::String activeUserParameter, cancelledDrag;
     bool prepared=false;

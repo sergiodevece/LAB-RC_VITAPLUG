@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 EXPECTED_ID = "com.vitaplug.labrc"
-EXPECTED_VERSION = "0.1.0"
+EXPECTED_VERSION = "0.2.0"
 MINIMUMS = {"arm64": "11.0", "x86_64": "10.15"}
 
 

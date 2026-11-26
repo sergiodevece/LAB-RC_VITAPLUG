@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.22)
 if(CMAKE_HOST_APPLE AND NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum macOS version")
 endif()
-project(LabRC VERSION 0.1.0 LANGUAGES C CXX)
+project(LabRC VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,6 +17,8 @@ option(LABRC_BUILD_PLUGIN "Build plugin formats, processor/UI tests and renderer
 option(LABRC_ENABLE_SANITIZERS "ASan/UBSan for a local test build" OFF)
 set(LABRC_KIT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Assets/ImplementationKit" CACHE PATH
     "Read-only implementation kit used by offline tests")
+set(LABRC_FINAL_ASSET_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Assets/FinalTouch" CACHE PATH
+    "Original Final Touch backgrounds and transparent drum kit")
 set(JUCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/build/dependencies/juce" CACHE PATH
     "Local JUCE 8.0.17-security, prepared by scripts/prepare_juce.py")
 include(cmake/LocalJuce.cmake)
@@ -46,9 +48,11 @@ target_link_libraries(labrc_dsp PUBLIC labrc_build_options
     PRIVATE juce::juce_dsp juce::juce_audio_formats)
 
 if(LABRC_BUILD_PLUGIN)
-    set(labrc_assets)
+    set(labrc_assets "${LABRC_FINAL_ASSET_ROOT}/boost_this.png"
+        "${LABRC_FINAL_ASSET_ROOT}/approved_metal.png"
+        "${LABRC_FINAL_ASSET_ROOT}/approved_screw.png")
     foreach(room IN ITEMS kentucky center_field live_room)
-        list(APPEND labrc_assets "${LABRC_KIT_ROOT}/assets/rooms/${room}.png")
+        list(APPEND labrc_assets "${LABRC_FINAL_ASSET_ROOT}/${room}_clean.png")
         foreach(pair IN ITEMS EARS FRONT FLOOR)
             list(APPEND labrc_assets
                 "${LABRC_KIT_ROOT}/assets/ir/v06/${room}_${pair}_wet_matrix.wav")
@@ -107,7 +111,8 @@ endif()
 
 if(BUILD_TESTING)
     add_executable(labrc_tests Tests/TestMain.cpp Tests/DSPTests.cpp)
-    target_compile_definitions(labrc_tests PRIVATE LABRC_KIT_ROOT="${LABRC_KIT_ROOT}")
+    target_compile_definitions(labrc_tests PRIVATE LABRC_KIT_ROOT="${LABRC_KIT_ROOT}"
+        LABRC_FINAL_ASSET_ROOT="${LABRC_FINAL_ASSET_ROOT}")
     if(LABRC_BUILD_PLUGIN)
         target_sources(labrc_tests PRIVATE Tests/ProcessorTests.cpp Tests/UITests.cpp)
         target_compile_definitions(labrc_tests PRIVATE LABRC_TEST_GUI=1)

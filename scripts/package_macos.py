@@ -10,35 +10,43 @@ import subprocess
 import sys
 import tempfile
 import zipfile
-from verify_macos import bundle_info, verify_bundle
+from verify_macos import EXPECTED_VERSION, bundle_info, verify_bundle
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_NAME = "LAB-RC-0.1.0-macOS-universal"
+PACKAGE_NAME = f"LAB-RC-{EXPECTED_VERSION}-macOS-universal"
 FORMATS = {"AU": "LAB-RC.component", "VST3": "LAB-RC.vst3", "Standalone": "LAB-RC.app"}
 
 
 def au_validation_evidence(package):
-    record = ROOT / "docs/reports/installed-au.json"
+    record = ROOT / "docs/reports/final-touch-au.json"
     if not record.is_file():
-        return {"auval": "PENDING: no installed AU validation evidence"}
+        return {"auval": "PENDING: no temporary AU validation evidence"}
     evidence = json.loads(record.read_text())
     digest = hashlib.sha256(bundle_info(package / "AU/LAB-RC.component").read_bytes()).hexdigest()
     if digest != evidence.get("binary_sha256"):
-        raise ValueError("Packaged AU binary differs from the installed/validated AU evidence")
+        raise ValueError("Packaged AU binary differs from the temporarily validated AU evidence")
     statuses = {}
     for architecture in ("arm64", "x86_64"):
-        log = ROOT / "docs/reports" / ("auval-" + architecture + ".log")
-        statuses[architecture] = "PASS" if log.is_file() and "AU VALIDATION SUCCEEDED." in log.read_text(errors="replace") else "PENDING"
+        log = ROOT / "docs/reports" / ("final-touch-auval-" + architecture + ".log")
+        contents = log.read_text(errors="replace") if log.is_file() else ""
+        statuses[architecture] = "PASS" if (
+            f"Component Version: {EXPECTED_VERSION}" in contents and "AU VALIDATION SUCCEEDED." in contents
+        ) else "PENDING"
     return {"auval": statuses, "au_binary_sha256": digest,
-            "identical_to_installed_validated_au": True,
+            "identical_to_temporarily_validated_au": True,
             "user_authorized_install": bool(evidence.get("user_authorized_install")),
-            "logic_opened": bool(evidence.get("logic_opened"))}
+            "logic_opened": bool(evidence.get("logic_opened")),
+            "checkpoint_restored": bool(evidence.get("checkpoint_restored")),
+            "installation_state": ("0.1.0 checkpoint restored after validation"
+                                   if evidence.get("checkpoint_restored")
+                                   else "See temporary validation receipt; not a claim about the current installed AU")}
 
 
 def make_package(merge_only=False, au_only=False):
-    subprocess.run([sys.executable, "-B", str(ROOT / "scripts/verify_assets.py")], cwd=ROOT, check=True)
-    package_name = "LAB-RC-0.1.0-AU-universal" if au_only else PACKAGE_NAME
-    destination = ROOT / "build/universal" if merge_only else ROOT / "dist" / package_name
+    subprocess.run([sys.executable, "-B", str(ROOT / "scripts/verify_assets.py"),
+                    "--final-touch", str(ROOT / "Assets/FinalTouch")], cwd=ROOT, check=True)
+    package_name = f"LAB-RC-{EXPECTED_VERSION}-AU-universal" if au_only else PACKAGE_NAME
+    destination = ROOT / "build" / f"universal-{EXPECTED_VERSION}" if merge_only else ROOT / "dist" / package_name
     if destination.is_symlink() or (destination.exists() and not (destination / "build-verification.json").is_file()):
         raise ValueError(f"Refusing to replace an unrecognized package: {destination}")
     staging = Path(tempfile.mkdtemp(prefix="labrc-package-", dir=ROOT / "build"))
@@ -67,7 +75,7 @@ def make_package(merge_only=False, au_only=False):
             evidence.append(result)
         if merge_only:
             (package / "build-verification.json").write_text(json.dumps({
-                "version": "0.1.0", "candidate": True, "bundles": evidence,
+                "version": EXPECTED_VERSION, "candidate": True, "bundles": evidence,
                 "status": "Merged locally for validation; no distribution ZIP created",
             }, indent=2) + "\n")
             if destination.exists():
@@ -83,14 +91,16 @@ def make_package(merge_only=False, au_only=False):
         for name in ("README.md", "CHANGELOG.md", "LICENSE.md"):
             if (ROOT / name).is_file():
                 shutil.copy2(ROOT / name, package / name)
-        for pattern in ("docs/PROVENANCE.md", "docs/ACCEPTANCE.md", "docs/SMOKE_LOGIC.md",
-                        "docs/TEST_REPORT.md", "docs/reports/*.md",
-                        "docs/reports/*.log", "docs/reports/*.json", "docs/screenshots/*.png"):
+        for pattern in ("docs/PROVENANCE.md", "docs/FINAL_TOUCH_INSTALL.md", "docs/FINAL_TOUCH_REPORT.md",
+                        "docs/reports/final-touch-*", "docs/screenshots/final-touch/*.png"):
             for source in ROOT.glob(pattern):
+                if not source.is_file() or source.name.endswith("-validator"):
+                    continue  # pluginval's per-plugin file duplicates its full captured stdout log.
                 target = package / source.relative_to(ROOT)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)
         shutil.copy2(ROOT / "Assets/ImplementationKit/manifest.json", package / "asset-manifest.json")
+        shutil.copy2(ROOT / "Assets/FinalTouch/manifest.json", package / "final-touch-asset-manifest.json")
         juce_root = ROOT / "build/dependencies/juce"
         licenses = {
             "JUCE/LICENSE.md": "LICENSE.md",
@@ -111,16 +121,16 @@ def make_package(merge_only=False, au_only=False):
             "pluginval": "Validation tool only, not included or linked in this package",
         }, indent=2) + "\n")
         (package / "build-verification.json").write_text(json.dumps({
-            "version": "0.1.0", "bundles": evidence,
+            "version": EXPECTED_VERSION, "bundles": evidence,
             "format_scope": "AU universal macOS" if au_only else "AU, macOS VST3 and Standalone",
             "windows_vst3": "PENDING: no Windows build or smoke in this package",
             "logic_smoke": "PENDING: human host validation required",
             **au_validation_evidence(package),
-            "ui_finish": "Not approved; current functional UI provided for physical host smoke",
+            "ui_finish": "Final Touch screenshots and finish explicitly approved by owner; audio smoke remains pending",
             "signing": "Local ad-hoc only; no Developer ID signature or notarization",
         }, indent=2) + "\n")
         (package / "INSTALL.txt").write_text(
-            "LAB-RC 0.1.0 / Manza's Rooms & Chambers\n"
+            f"LAB-RC {EXPECTED_VERSION} Final Touch / Manza's Rooms & Chambers\n"
             "AU universal arm64 macOS 11.0 / x86_64 macOS 10.15.\n"
             + ("This package contains the AU and its install/remove scripts.\n" if au_only
                else "VST3 macOS and Standalone are auxiliary QA products.\n") +
@@ -131,8 +141,9 @@ def make_package(merge_only=False, au_only=False):
             "Remove only this AU:\n"
             "  bash scripts/uninstall_macos.sh\n"
             "No sudo, global Gatekeeper change, or automatic host launch.\n"
-            "Current functional UI is provided for smoke; artistic finish is not approved.\n"
-            "Human listening, host recall/automation and UI approval remain required.\n")
+            "See docs/FINAL_TOUCH_INSTALL.md for install, smoke and rollback.\n"
+            "Owner approved the Final Touch screenshots and finish.\n"
+            "Human 0.2.0 listening and host recall/automation remain required.\n")
         checksums = []
         for path in sorted(p for p in package.rglob("*") if p.is_file()):
             checksums.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.relative_to(package)}")
@@ -155,7 +166,7 @@ def make_package(merge_only=False, au_only=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--merge-only", action="store_true",
-                        help="Only create a build/universal validation candidate; no dist ZIP")
+                        help="Only create a universal validation candidate; no dist ZIP")
     parser.add_argument("--au-only", action="store_true", help="Prioritize the AU universal and scripts ZIP")
     args = parser.parse_args()
     if args.merge_only and args.au_only:

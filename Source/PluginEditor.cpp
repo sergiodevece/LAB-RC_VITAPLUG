@@ -25,6 +25,8 @@ LabRCEditor::LabRCEditor (LabRCProcessor& p)
     setLookAndFeel (&lookAndFeel);
     setWantsKeyboardFocus (true);
     setOpaque (true);
+    inputMeter.setName ("Input stereo peak meter");
+    outputMeter.setName ("Output stereo peak meter");
     for (auto* component : std::array<juce::Component*, 11> {{ &input, &output, &mix, &inputMeter, &outputMeter, &scene,
                                                               &bypass, &mics, &reset, &undo, &redo }})
         addAndMakeVisible (*component);
@@ -64,10 +66,10 @@ LabRCEditor::LabRCEditor (LabRCProcessor& p)
     selectRoom (juce::roundToInt (processor.apvts.getRawParameterValue ("room")->load (std::memory_order_relaxed)));
     refreshPresentation();
     setResizable (true, true);
-    setResizeLimits (800, 500, 1586, 992);
-    if (auto* constrainer = getConstrainer()) constrainer->setFixedAspectRatio (1586.0 / 992.0);
+    setResizeLimits (1024, 684, 1586, 1058);
+    if (auto* constrainer = getConstrainer()) constrainer->setFixedAspectRatio (1586.0 / 1058.0);
     const auto preferredSize = processor.editorSize();
-    setSize (juce::jlimit (800, 1586, preferredSize.x), juce::jlimit (500, 992, preferredSize.y));
+    setSize (juce::jlimit (1024, 1586, preferredSize.x), juce::jlimit (684, 1058, preferredSize.y));
     restoringSize = false;
     startTimerHz (30);
 }
@@ -85,6 +87,7 @@ void LabRCEditor::changeParameter (const juce::String& id, float actual, const j
 }
 void LabRCEditor::selectRoom (int index)
 {
+    chassisCache = {};
     selectedRoom = juce::jlimit (0, 2, index);
     scene.setRoom (selectedRoom);
     for (int i = 0; i < 3; ++i)
@@ -153,9 +156,10 @@ bool LabRCEditor::keyPressed (const juce::KeyPress& key)
 }
 void LabRCEditor::resized()
 {
+    chassisCache = {};
     const auto geometry = EditorGeometry::forSize (getWidth(), getHeight());
     const auto scale = static_cast<float> (geometry.scale);
-    const auto ox = (getWidth() - 1586 * scale) * .5f, oy = (getHeight() - 992 * scale) * .5f;
+    const auto ox = (getWidth() - 1586 * scale) * .5f, oy = (getHeight() - 1058 * scale) * .5f;
     const auto rect = [=] (float x, float y, float w, float h)
     { return juce::Rectangle<float> (ox + x * scale, oy + y * scale, w * scale, h * scale).toNearestInt(); };
     scene.setBounds (rectangle (geometry.stage));
@@ -172,27 +176,41 @@ void LabRCEditor::resized()
     const auto localRect = [=] (float x, float y, float w, float h)
     { return juce::Rectangle<float> (x * scale, y * scale, w * scale, h * scale).toNearestInt(); };
     input.layout (localRect (41, 43, 122, 112), localRect (40, 156, 128, 30));
-    output.layout (localRect (42, 43, 116, 112), localRect (38, 156, 131, 30));
-    mix.layout (localRect (51, 247, 100, 94), localRect (39, 339, 130, 29));
-    inputMeter.setBounds (rect (75, 370, 107, 210));
-    outputMeter.setBounds (rect (1403, 500, 112, 109));
-    bypass.setBounds (rect (1380, 610, 160, 44).withHeight (std::max (28, juce::roundToInt (44 * scale))));
-    mics.setBounds (rect (1220, 619, 104, 31).withHeight (std::max (28, juce::roundToInt (31 * scale))));
+    output.layout (localRect (42, 43, 116, 103), localRect (38, 149, 131, 28));
+    mix.layout (localRect (51, 223, 100, 64), localRect (39, 290, 130, 27));
+    inputMeter.setBounds (rect (75, 360, 107, 177));
+    outputMeter.setBounds (rect (1403, 427, 112, 110));
+    bypass.setBounds (rect (1380, 543, 160, 36).withHeight (std::max (30, juce::roundToInt (36 * scale))));
+    mics.setBounds (rect (1220, 538, 104, 31).withHeight (std::max (28, juce::roundToInt (31 * scale))));
     const auto footerButtonHeight = std::max (28, juce::roundToInt (36 * scale));
-    undo.setBounds (rect (1175, 931, 90, 36).withHeight (footerButtonHeight));
-    redo.setBounds (rect (1273, 931, 90, 36).withHeight (footerButtonHeight));
-    reset.setBounds (rect (1433, 931, 102, 36).withHeight (footerButtonHeight));
+    undo.setBounds (rect (1175, 998, 90, 36).withHeight (footerButtonHeight));
+    redo.setBounds (rect (1273, 998, 90, 36).withHeight (footerButtonHeight));
+    reset.setBounds (rect (1433, 998, 102, 36).withHeight (footerButtonHeight));
     if (! restoringSize) processor.setEditorSize (getWidth(), getHeight());
 }
 void LabRCEditor::paint (juce::Graphics& g)
 {
+    const auto pixels = std::max (1.0f, g.getInternalContext().getPhysicalPixelScaleFactor());
+    const auto width = juce::roundToInt (getWidth() * pixels), height = juce::roundToInt (getHeight() * pixels);
+    if (chassisCache.getWidth() != width || chassisCache.getHeight() != height || chassisScale != pixels)
+    {
+        chassisScale = pixels;
+        chassisCache = juce::Image (juce::Image::ARGB, width, height, true);
+        juce::Graphics plate (chassisCache);
+        plate.addTransform (juce::AffineTransform::scale (pixels));
+        paintChassis (plate);
+    }
+    g.drawImage (chassisCache, getLocalBounds().toFloat());
+}
+void LabRCEditor::paintChassis (juce::Graphics& g)
+{
     g.fillAll (juce::Colour (0xff0c100b));
     const auto layout = EditorGeometry::forSize (getWidth(), getHeight());
     const auto scale = static_cast<float> (layout.scale);
-    const auto ox = (getWidth() - 1586 * scale) * .5f, oy = (getHeight() - 992 * scale) * .5f;
+    const auto ox = (getWidth() - 1586 * scale) * .5f, oy = (getHeight() - 1058 * scale) * .5f;
     g.addTransform (juce::AffineTransform::scale (scale).translated (ox, oy));
-    theme::panel (g, { 2, 2, 1582, 988 }, 1.0f);
-    theme::patina (g, { 6, 6, 1574, 980 }, 1.0f, 739);
+    theme::panel (g, { 2, 2, 1582, 1054 }, 1.0f);
+    theme::patina (g, { 6, 6, 1574, 1046 }, 1.0f, 739);
     g.setColour (theme::gold().withAlpha (.8f));
     g.drawLine (18, 94, 1568, 94, 1.3f);
     g.drawLine (25, 97, 1561, 97, .5f);
@@ -213,26 +231,23 @@ void LabRCEditor::paint (juce::Graphics& g)
     g.drawLine (416, 72, 581, 72, 1.2f); g.drawLine (1017, 72, 1188, 72, 1.2f);
     theme::lettering (g, "L A B - R C", { 1330, 23, 210, 33 }, 28, true, true);
     theme::lettering (g, "R O O M  M I C R O P H O N E  M I X E R", { 1314, 56, 226, 25 }, 10);
-    theme::panel (g, { 25, 104, 201, 564 }, 1);
-    theme::panel (g, { 1358, 104, 201, 564 }, 1);
-    theme::panel (g, { 238, 107, 1110, 560 }, 1, false);
+    theme::panel (g, { 25, 104, 201, 484 }, 1);
+    theme::panel (g, { 1358, 104, 201, 484 }, 1);
+    theme::panel (g, { 238, 107, 1110, 481 }, 1, false);
     theme::lettering (g, "I N P U T", { 53, 117, 147, 33 }, 23, true, true);
     theme::lettering (g, "O U T P U T", { 1380, 117, 158, 33 }, 23, true, true);
     theme::lettering (g, "S T E R E O  I N", { 48, 334, 155, 33 }, 16, true, true);
-    theme::lettering (g, "M I X", { 1407, 331, 104, 34 }, 23, true, true);
-    theme::lettering (g, "P E A K  -  d B F S", { 50, 592, 151, 25 }, 11);
+    theme::lettering (g, "M I X", { 1407, 295, 104, 30 }, 23, true, true);
+    theme::lettering (g, "P E A K  -  d B F S", { 50, 548, 151, 25 }, 11);
     g.setColour (theme::gold().withAlpha (.7f));
-    for (auto x : { 50.0f, 1383.0f })
-    {
-        g.drawLine (x, 315, x + 151, 315, .7f);
-        g.drawLine (x, 317, x + 151, 317, .35f);
-    }
+    g.drawLine (50, 315, 201, 315, .7f);
+    g.drawLine (1383, 287, 1534, 287, .7f);
     theme::lettering (g, juce::String (roomStudios[selectedRoom]) + " / " + roomNames[selectedRoom],
-                       { 263, 619, 390, 31 }, 14, false, true, juce::Justification::centredLeft);
-    theme::lettering (g, "V I R T U A L  M I C  P O S I T I O N S", { 653, 619, 470, 31 }, 12);
+                       { 263, 538, 390, 31 }, 14, false, true, juce::Justification::centredLeft);
+    theme::lettering (g, "V I R T U A L  M I C  P O S I T I O N S", { 653, 538, 470, 31 }, 12);
     g.setColour (theme::gold().withAlpha (.6f));
-    g.drawLine (20, 918, 1566, 918, 1.1f);
-    theme::lettering (g, "D E S I G N E D  B Y  S E R X D E V  -  V I T A L A B", { 60, 933, 580, 30 }, 12,
+    g.drawLine (20, 985, 1566, 985, 1.1f);
+    theme::lettering (g, "D E S I G N E D  B Y  S E R X D E V  -  V I T A L A B", { 60, 1000, 580, 30 }, 12,
                        false, false, juce::Justification::centredLeft);
-    theme::lettering (g, "LAB-RC  0.1.0", { 716, 933, 204, 30 }, 12);
+    theme::lettering (g, "FINAL TOUCH  -  LAB-RC 0.2.0", { 690, 1000, 310, 30 }, 12);
 }

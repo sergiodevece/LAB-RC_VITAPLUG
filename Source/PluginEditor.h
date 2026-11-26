@@ -17,6 +17,7 @@ private:
     void refreshPresentation();
     void selectRoom (int);
     void changeParameter (const juce::String&, float, const juce::String&);
+    void paintChassis (juce::Graphics&);
     LabRCProcessor& processor;
     labrc::ui::VintageLookAndFeel lookAndFeel;
     juce::TooltipWindow tooltip;
@@ -28,5 +29,7 @@ private:
     labrc::ui::VintageButton bypass, mics, reset, undo, redo;
     int selectedRoom = 0, highlightedPair = -1;
     bool restoringSize = true;
+    juce::Image chassisCache;
+    float chassisScale = 0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LabRCEditor)
 };

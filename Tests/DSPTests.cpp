@@ -606,6 +606,276 @@ class DspTests : public juce::UnitTest
         }
     }
 };
+class PairEQTests final : public juce::UnitTest
+{
+  public:
+    PairEQTests() : UnitTest("Final Touch wet pair equalisation", "DSP") {}
+
+    // Published RBJ transfer functions in z^-1. Production need not share this representation.
+    static std::complex<double> reference(int band, double db, double frequency, double sr)
+    {
+        constexpr std::array<double, 3> centres{100, 1000, 8000};
+        const double w = 2 * juce::MathConstants<double>::pi * centres[band] / sr;
+        const double c = std::cos(w), s = std::sin(w), A = std::pow(10., db / 40.);
+        const double beta = std::sqrt(2 * A) * s;
+        std::array<double, 3> b{}, a{};
+        if (band == 0)
+        {
+            b = {A * ((A + 1) - (A - 1) * c + beta), 2 * A * ((A - 1) - (A + 1) * c),
+                 A * ((A + 1) - (A - 1) * c - beta)};
+            a = {(A + 1) + (A - 1) * c + beta, -2 * ((A - 1) + (A + 1) * c), (A + 1) + (A - 1) * c - beta};
+        }
+        else if (band == 1)
+        {
+            const double alpha = s / (2 * 0.7);
+            b = {1 + alpha * A, -2 * c, 1 - alpha * A};
+            a = {1 + alpha / A, -2 * c, 1 - alpha / A};
+        }
+        else
+        {
+            b = {A * ((A + 1) + (A - 1) * c + beta), -2 * A * ((A - 1) + (A + 1) * c),
+                 A * ((A + 1) + (A - 1) * c - beta)};
+            a = {(A + 1) - (A - 1) * c + beta, 2 * ((A - 1) - (A + 1) * c), (A + 1) - (A - 1) * c - beta};
+        }
+        const auto z = std::polar(1., -2 * juce::MathConstants<double>::pi * frequency / sr);
+        return (b[0] + z * (b[1] + z * b[2])) / (a[0] + z * (a[1] + z * a[2]));
+    }
+
+    static Buffer identity(int, int)
+    {
+        Buffer ir(4, 1);
+        ir.clear();
+        ir.setSample(0, 0, 1.f);
+        ir.setSample(3, 0, 1.f);
+        return ir;
+    }
+
+    void runTest() override
+    {
+        beginTest(
+            "Impulse responses match complex RBJ curves at six rates, including shelving and bell symmetry");
+        double maximum = 0., rightRatioError = 0.;
+        for (double fs : {44100., 48000., 88200., 96000., 176400., 192000.})
+        {
+            double worst = 0.;
+            for (int combination = 0; combination < 9; ++combination)
+            {
+                RoomMixer mixer;
+                mixer.prepare(fs, 127, 0, identity);
+                Parameters p;
+                p.pairDb.fill(0);
+                const int pair = combination % 3;
+                p.solo[pair] = true;
+                p.eqEnabled[pair] = true;
+                if (combination < 6)
+                    p.eqDb[pair][pair] = combination < 3 ? 12.f : -12.f;
+                else if (combination == 6)
+                    p.eqDb[pair] = {12, -12, 12};
+                else if (combination == 7)
+                    p.eqDb[pair] = {-12, 12, -12};
+                else
+                    p.eqDb[pair] = {12, 12, 12};
+                const int len = int(fs * 0.16), latency = mixer.latencySamples();
+                Buffer out(2, len + latency);
+                out.clear();
+                out.setSample(0, 0, 1);
+                out.setSample(1, 0, -0.5f);
+                Buffer baseline(out);
+                render(mixer, out, 2, p);
+                // The test WAV impulse lives on the 96 kHz source grid. At higher host
+                // rates its resampled transfer also appears in the measured wet response.
+                RoomMixer unfiltered;
+                unfiltered.prepare(fs, 127, 0, identity);
+                Parameters noEq = p;
+                noEq.eqEnabled.fill(false);
+                render(unfiltered, baseline, 2, noEq);
+                for (int i = 0; i < out.getNumSamples(); ++i)
+                    rightRatioError =
+                        std::max(rightRatioError, std::abs(out.getSample(1, i) + 0.5 * out.getSample(0, i)));
+                for (double hz : {0., 20., 100., 260., 500., 1000., 2000., 4300., 8000., 16000., fs * 0.5})
+                {
+                    const auto step = std::polar(1., -2 * juce::MathConstants<double>::pi * hz / fs);
+                    std::complex<double> z{1, 0}, measured{}, expected{};
+                    for (int i = 0; i < len; ++i)
+                    {
+                        measured += double(out.getSample(0, i + latency)) * z;
+                        expected += double(baseline.getSample(0, i + latency)) * z;
+                        z *= step;
+                    }
+                    for (int band = 0; band < 3; ++band)
+                        expected *= reference(band, p.eqDb[pair][band], hz, fs);
+                    worst = std::max(worst, std::abs(measured - expected));
+                }
+            }
+            expect(worst < 2e-5, "Fs " + juce::String(fs) + " worst complex error " + juce::String(worst, 9));
+            maximum = std::max(maximum, worst);
+        }
+        expect(rightRatioError < 2e-6, "Linked channels must have the same transfer");
+        logMessage("Maximum RBJ complex error " + juce::String(maximum, 10) + "; stereo ratio error " +
+                   juce::String(rightRatioError, 10));
+
+        beginTest("A bypassed or flat pair and the dry route reproduce the original stream bit for bit");
+        std::mt19937 rng(1311);
+        std::uniform_real_distribution<float> noise(-0.95f, 0.95f);
+        Buffer source(2, 12017);
+        for (int c = 0; c < 2; ++c)
+            for (int i = 0; i < source.getNumSamples(); ++i)
+                source.setSample(c, i, noise(rng));
+        auto pass = [&](const Parameters& p, bool hostBypass = false)
+        {
+            Buffer output(source);
+            RoomMixer mixer;
+            mixer.prepare(96000., 64, 0, identity);
+            render(mixer, output, 2, p, hostBypass);
+            return output;
+        };
+        auto same = [&](const Buffer& one, const Buffer& two)
+        {
+            for (int c = 0; c < 2; ++c)
+                expect(std::memcmp(one.getReadPointer(c), two.getReadPointer(c),
+                                   size_t(one.getNumSamples()) * sizeof(float)) == 0);
+        };
+        Parameters p;
+        p.pairDb.fill(0.f);
+        p.solo[0] = true;
+        const auto unity = pass(p);
+        p.eqDb[0] = {12, -12, 8};
+        same(unity, pass(p));
+        p.eqEnabled[1] = true;
+        p.eqDb[1] = {12, 12, 12};
+        same(unity, pass(p));
+        p.eqEnabled[0] = true;
+        p.eqDb[0] = {};
+        same(unity, pass(p));
+        p.eqDb[0] = {12, -12, 8};
+        p.mixPercent = 0;
+        auto dryEQ = pass(p);
+        p.eqEnabled.fill(false);
+        same(dryEQ, pass(p));
+        p.mixPercent = 100;
+        p.eqEnabled.fill(true);
+        auto bypassed = pass(p, true);
+        p.eqEnabled.fill(false);
+        same(bypassed, pass(p, true));
+        beginTest("20 ms wet EQ gain and enable ramps stay finite and pair states remain hot while out");
+        RoomMixer mixer;
+        mixer.prepare(48000, 64, 0, identity);
+        p = {};
+        p.pairDb.fill(0.f);
+        p.solo[0] = true;
+        p.eqDb[0] = {12, 0, 0};
+        auto constant = [&](int n, float amplitude)
+        {
+            Buffer b(2, n);
+            b.clear();
+            std::fill_n(b.getWritePointer(0), n, amplitude);
+            render(mixer, b, 2, p);
+            return b;
+        };
+        constant(12000, 0.2f);
+        p.eqEnabled[0] = true;
+        auto transition = constant(960, 0.2f);
+        const double boosted = 0.2 * std::pow(10., 12. / 20.);
+        expectWithinAbsoluteError(double(transition.getSample(0, 479)), (0.2 + boosted) / 2, 2e-5);
+        expectWithinAbsoluteError(double(transition.getSample(0, 959)), boosted, 2e-5);
+        expectEquals(transition.getMagnitude(1, 0, 960), 0.f);
+        p.eqDb[0][0] = -12.f;
+        auto changed = constant(960, 0.2f);
+        expect(std::abs(changed.getSample(0, 0) - transition.getSample(0, 959)) < 0.005f);
+        expectWithinAbsoluteError(double(changed.getSample(0, 479)), 0.2, 2e-5);
+        expectWithinAbsoluteError(double(changed.getSample(0, 959)), 0.2 * std::pow(10., -12. / 20.), 2e-5);
+        auto settled = constant(8000, 0.2f);
+        expectWithinAbsoluteError(double(settled.getSample(0, 7999)), 0.2 * std::pow(10., -12. / 20.), 2e-5);
+        float previous = settled.getSample(0, 7999), peak = 0, maxStep = 0;
+        for (int block = 0; block < 180; ++block)
+        {
+            p.eqEnabled[0] = block % 3 != 0;
+            p.eqDb[0] =
+                block % 2 == 0 ? std::array<float, 3>{12, -12, 12} : std::array<float, 3>{-12, 12, -12};
+            auto b = constant(127, 0.2f);
+            for (int i = 0; i < 127; ++i)
+            {
+                const auto x = b.getSample(0, i);
+                peak = std::max(peak, std::abs(x));
+                maxStep = std::max(maxStep, std::abs(x - previous));
+                previous = x;
+            }
+        }
+        logMessage("Rapid automation at constant 0.2 FS: peak " + juce::String(peak, 7) +
+                   ", largest adjacent step " + juce::String(maxStep, 8));
+        expect(std::isfinite(peak) && peak < 1.1f && maxStep < 0.015f);
+        p.eqDb[0] = {std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::infinity(),
+                     -std::numeric_limits<float>::infinity()};
+        p.eqEnabled[0] = true;
+        constant(9600, 0.2f);
+        auto none = constant(12000, 0.f);
+        expectEquals(none.getMagnitude(0, none.getNumSamples() - 128, 128), 0.f);
+        beginTest("Rapid EQ moves across a decaying wet reflection preserve its silent right channel and "
+                  "yield finite samples");
+        mixer.prepare(96000., 64, 0,
+                      [](int, int)
+                      {
+                          Buffer ir(4, 24000);
+                          ir.clear();
+                          for (int i = 0; i < 24000; ++i)
+                              ir.setSample(0, i,
+                                           float(0.4 * std::exp(-i / 5000.) * (1. - std::exp(-i / 180.))));
+                          return ir;
+                      });
+        p = {};
+        p.solo[0] = true;
+        p.pairDb.fill(0.f);
+        previous = 0.f;
+        maxStep = 0.f;
+        peak = 0.f;
+        bool tailFinite = true;
+        for (int k = 0; k < 140; ++k)
+        {
+            p.eqEnabled[0] = (k % 4) != 0;
+            p.eqDb[0] = (k % 2 == 0) ? std::array<float, 3>{12, -12, 12} : std::array<float, 3>{-12, 12, -12};
+            Buffer b(2, 127);
+            b.clear();
+            if (k == 0)
+                b.setSample(0, 0, 1.f);
+            render(mixer, b, 2, p);
+            for (int i = 0; i < 127; ++i)
+            {
+                const float v = b.getSample(0, i);
+                tailFinite = tailFinite && std::isfinite(v) && b.getSample(1, i) == 0.f;
+                if (k > 8)
+                    maxStep = std::max(maxStep, std::abs(v - previous));
+                peak = std::max(peak, std::abs(v));
+                previous = v;
+            }
+        }
+        expect(tailFinite && peak > 0.1f && peak < 1.6f && maxStep < 0.015f);
+        logMessage("Tail modulation, peak " + juce::String(peak, 7) +
+                   ", largest adjacent step after the attack " + juce::String(maxStep, 8));
+
+        beginTest("The pair meter sees the EQ boost before clipping and follows its mute gate");
+        mixer.prepare(48000., 64, 0, identity);
+        p = {};
+        p.solo[0] = true;
+        p.pairDb[0] = 0.f;
+        p.eqEnabled[0] = true;
+        p.eqDb[0][0] = 12.f;
+        constant(8000, 0.5f);
+        static_cast<void>(mixer.meterSnapshot());
+        const auto high = constant(512, 0.5f);
+        const auto peaks = mixer.meterSnapshot();
+        expect(high.getSample(0, 511) > 1.9f, "The post-EQ sample must retain headroom above full scale");
+        expectWithinAbsoluteError(peaks.pairs[0][0], 1.9905359f, 2e-5f);
+        expectEquals(peaks.pairs[0][1], 0.f);
+        expectWithinAbsoluteError(peaks.output[0], peaks.pairs[0][0], 2e-5f);
+        p.mute[0] = true;
+        constant(1024, 0.5f);
+        static_cast<void>(mixer.meterSnapshot());
+        constant(512, 0.5f);
+        expectEquals(mixer.meterSnapshot().pairs[0][0], 0.f);
+    }
+};
+PairEQTests pairEQTests;
+
 class DspBenchmark : public juce::UnitTest
 {
   public:
@@ -630,15 +900,21 @@ class DspBenchmark : public juce::UnitTest
 #endif
         for (double rate : {48000., 96000., 192000.})
             for (int block : {1, 64, 256})
+                for (int eqMode=0; eqMode<(block==64 && rate>=96000. ? 3 : 1); ++eqMode)
             {
                 RoomMixer mixer;
                 auto load = [](int room, int pair) { return loadAsset(room, pair); };
                 Parameters p;
                 p.room = 2;
+                if(eqMode!=0) {
+                    p.eqEnabled.fill(true);
+                    for(auto& db:p.eqDb) db={12,-9,6};
+                }
                 const auto prepareStart = Clock::now();
                 mixer.prepare(rate, block, p.room, load, true);
                 const double prepareMs = Micros(Clock::now() - prepareStart).count() / 1000.;
-                beginTest("Fs " + juce::String(rate, 0) + " | block " + juce::String(block));
+                const char* modeNames[]{"OUT", "IN fixed", "IN/OUT and all gains automated"};
+                beginTest("Fs " + juce::String(rate, 0) + " | block " + juce::String(block)+" | EQ "+modeNames[eqMode]);
                 Buffer audio(2, block);
                 std::vector<double> timings;
                 const int count = static_cast<int>(rate * 6 / block);
@@ -649,6 +925,13 @@ class DspBenchmark : public juce::UnitTest
                 double checksum = 0.;
                 for (int b = 0; b < count; ++b)
                 {
+                    if(eqMode==2) {
+                        for(size_t pair=0;pair<3;++pair) {
+                            p.eqEnabled[pair]=((size_t(b)+pair)%4)!=0;
+                            p.eqDb[pair]=((size_t(b)+pair)%2)==0 ? std::array<float,3>{12,-12,12}
+                                                                  : std::array<float,3>{-12,12,-12};
+                        }
+                    }
                     for (int c = 0; c < 2; ++c)
                         for (int i = 0; i < block; ++i)
                             audio.setSample(c, i, uniform(random));

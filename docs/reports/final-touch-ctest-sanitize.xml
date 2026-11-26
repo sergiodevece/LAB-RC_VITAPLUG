@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="5"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname=""
+	time="128"
+	timestamp="2026-11-26T11:35:08"
+	>
+	<testcase name="DSP" classname="DSP" time="107.979" status="run">
+		<properties>
+			<property name="cmake_labels" value="DSP"/>
+		</properties>
+		<system-out>JUCE v8.0.17
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: Final Touch wet pair equalisation / Impulse responses match complex RBJ curves at six rates, including shelving and bell symmetry...
+Maximum RBJ complex error 0.0000001817; stereo ratio error 0.0000000000
+Completed tests in Final Touch wet pair equalisation / Impulse responses match complex RBJ curves at six rates, including shelving and bell symmetry
+-----------------------------------------------------------------
+Starting tests in: Final Touch wet pair equalisation / A bypassed or flat pair and the dry route reproduce the original stream bit for bit...
+Completed tests in Final Touch wet pair equalisation / A bypassed or flat pair and the dry route reproduce the original stream bit for bit
+-----------------------------------------------------------------
+Starting tests in: Final Touch wet pair equalisation / 20 ms wet EQ gain and enable ramps stay finite and pair states remain hot whil...
+[This part of the test output was removed since it exceeds the threshold of 1024 bytes.]
+</system-out>
+	</testcase>
+	<testcase name="Processor" classname="Processor" time="17.9001" status="run">
+		<properties>
+			<property name="cmake_labels" value="Processor"/>
+		</properties>
+		<system-out>JUCE v8.0.17
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: Processor, state and user undo / Embedded matrices retain all four original channels and samples...
+Completed tests in Processor, state and user undo / Embedded matrices retain all four original channels and samples
+-----------------------------------------------------------------
+Starting tests in: Processor, state and user undo / Embedded clean room photographs and transparent drum kit decode the approved pixels...
+Completed tests in Processor, state and user undo / Embedded clean room photographs and transparent drum kit decode the approved pixels
+-----------------------------------------------------------------
+Starting tests in: Processor, state and user undo / Mono to stereo and stereo to stereo only...
+Completed tests in Processor, state and user undo / Mono to stereo and stereo to stereo only
+-----------------------------------------------------------------
+Starting tests in: Pro...
+[This part of the test output was removed since it exceeds the threshold of 1024 bytes.]
+</system-out>
+	</testcase>
+	<testcase name="UI" classname="UI" time="1.9481" status="run">
+		<properties>
+			<property name="cmake_labels" value="UI"/>
+		</properties>
+		<system-out>JUCE v8.0.17
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Console anchors, exact inverse, contain and minimum editor geometry...
+Completed tests in UI geometry and console controls / Console anchors, exact inverse, contain and minimum editor geometry
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / Every EQ band is editable and each EQ IN reflects its own persistent parameter...
+Completed tests in UI geometry and console controls / Every EQ band is editable and each EQ IN reflects its own persistent parameter
+-----------------------------------------------------------------
+Starting tests in: UI geometry and console controls / All new EQ automation reaches GUI polling without user undo...
+Completed tests in UI geometry and console controls / All new EQ automation reaches GUI polling without user undo
+----------------------------------------...
+[This part of the test output was removed since it exceeds the threshold of 1024 bytes.]
+</system-out>
+	</testcase>
+	<testcase name="BuildTools" classname="BuildTools" time="0.680119" status="run">
+		<properties>
+			<property name="cmake_labels" value="Build"/>
+		</properties>
+		<system-out>.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.611s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="Bootstrap" classname="Bootstrap" time="0.112893" status="run">
+		<properties>
+			<property name="cmake_labels" value="Build"/>
+		</properties>
+		<system-out>....
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK
+Prepared JUCE 8.0.17-security: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/bootstrap-tests-ygrgqrju/dependencies/juce
+SHA-256 7f21b0fa3c38fef6748e33aa6fdb034c9197daa2f27f69f98f1d7acbfc4548d8
+</system-out>
+	</testcase>
+</testsuite>

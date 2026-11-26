@@ -1,0 +1,13 @@
+[ 29%] Built target LabRCAssets
+[ 43%] Built target labrc_dsp
+[ 45%] Building CXX object CMakeFiles/LabRC.dir/Source/PluginProcessor.cpp.o
+[ 47%] Building CXX object CMakeFiles/LabRC.dir/Source/PluginEditor.cpp.o
+[ 49%] Building CXX object CMakeFiles/LabRC.dir/Source/UI/VintageComponents.cpp.o
+[ 50%] Linking CXX static library LabRC_artefacts/Debug/libLAB-RC_SharedCode.a
+[ 91%] Built target LabRC
+[ 92%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/TestMain.cpp.o
+[ 94%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/DSPTests.cpp.o
+[ 96%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/ProcessorTests.cpp.o
+[ 98%] Building CXX object CMakeFiles/labrc_tests.dir/Tests/UITests.cpp.o
+[100%] Linking CXX executable tests/labrc_tests
+[100%] Built target labrc_tests

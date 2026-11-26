@@ -3,6 +3,8 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "EditorGeometry.h"
 #include "ConsoleFaderScale.h"
+#include "PairGeometry.h"
+#include "DrumKitLayer.h"
 
 class LabRCProcessor;
 
@@ -105,6 +107,7 @@ public:
     std::function<void(int)> onHighlight;
 private:
     std::array<juce::Image, 3> images;
+    DrumKitLayer drumLayer;
     std::array<std::unique_ptr<VintageButton>, 6> markers;
     int room = 0, highlightedPair = -1;
     bool mics = true;
@@ -118,13 +121,16 @@ public:
     void paint (juce::Graphics&) override;
     void setPresentation (bool muted, bool soloed, bool active, bool bypassed, bool highlighted);
     void setLevels (std::array<float, 2> linear) { meter.setLevels (linear); }
-    void refreshFromParameters() { gain.refreshFromParameter(); }
+    void refreshFromParameters();
 private:
     LabRCProcessor& processor;
     const int pair;
     ParameterControl gain;
-    VintageButton mute, solo;
+    std::array<std::unique_ptr<ParameterControl>, 3> eq;
+    VintageButton mute, solo, eqIn;
     StereoMeter meter;
+    juce::Image plateCache;
+    float plateScale = 0;
     bool routeActive = true, bypassed = false, highlighted = false;
 };
 }

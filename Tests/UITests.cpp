@@ -1,5 +1,6 @@
 #include "../Source/UI/ConsoleFaderScale.h"
 #include "../Source/UI/EditorGeometry.h"
+#include "../Source/UI/SceneComposition.h"
 #include <cmath>
 #include <iostream>
 #include <thread>
@@ -52,7 +53,7 @@ void geometryTests (Check& test)
     test.check (fitContain ({ 0, 0, 0, 40 }, 1448, 1086).empty(), "Empty stage remains empty");
     test.check (fitContain ({ 0, 0, 40, 40 }, 0, 1086).empty(), "Invalid image has no geometry");
 
-    for (const auto size : { Size { 800, 500 }, Size { 1180, 738 }, Size { 1586, 992 } })
+    for (const auto size : { Size { 1024, 684 }, Size { 1280, 854 }, Size { 1586, 1058 } })
     {
         const auto layout = EditorGeometry::forSize (size.width, size.height);
         const Rect outer { 0, 0, size.width, size.height };
@@ -76,6 +77,20 @@ void geometryTests (Check& test)
     const auto marker = markerPoint (0, 0, { 120, 40, 400, 300 });
     test.near (marker.x, 276, 1.e-9, "Kentucky EARS L uses 39% of the photo width");
     test.near (marker.y, 202, 1.e-9, "Kentucky EARS L uses 54% of the photo height");
+
+    const auto finalLayout = EditorGeometry::forSize (1586, 1058);
+    test.near (finalLayout.stage.height, 350, 1.e-9, "Final Touch leaves room for a readable three-band EQ");
+    test.check (finalLayout.pairs[0].height >= 370, "Final Touch modules must fit three complete EQ bands");
+    const auto kentuckyKit = drumLayerBounds (0, { 100, 200, 400, 300 });
+    test.near (kentuckyKit.x, 242, 1.e-9, "Kentucky layer stays at the previous drum position");
+    test.near (kentuckyKit.y, 342.5, 1.e-9, "Kentucky layer preserves the drum floor location");
+    test.near (kentuckyKit.width, 124, 1.e-9, "Kentucky kit remains contextual rather than room-sized");
+    test.near (kentuckyKit.height, 93, 1.e-9, "Kit alpha layer preserves its own aspect ratio");
+    for (int room = 0; room < 3; ++room)
+    {
+        const auto photo = room == 1 ? Rect { 0, 0, 600, 600.0 * 941 / 1671 } : Rect { 0, 0, 400, 300 };
+        test.check (photo.contains (drumLayerBounds (room, photo)), "Whole kit stays inside the unmodified photograph");
+    }
 }
 
 #if defined (LABRC_UI_STANDALONE_TEST)
@@ -125,18 +140,93 @@ public:
         beginTest ("Console anchors, exact inverse, contain and minimum editor geometry");
         geometryTests (*this);
 
-        beginTest ("Output knob remains reachable behind the transparent mix container at every size");
         LabRCProcessor processor;
         LabRCEditor editor (processor);
         editor.setVisible (true);
-        for (const auto size : { labrc::ui::Size { 800, 500 }, labrc::ui::Size { 1180, 738 }, labrc::ui::Size { 1586, 992 } })
+        beginTest ("Every EQ band is editable and each EQ IN reflects its own persistent parameter");
+        for (const auto* pair : { "ears", "front", "floor" })
+        {
+            for (const auto* band : { "Low", "Mid", "High" })
+            {
+                const auto id = juce::String (pair) + "Eq" + band + "Db";
+                auto* readout = dynamic_cast<juce::Label*> (findComponent (editor, id + "Value"));
+                expect (readout != nullptr, "Editable EQ band: " + id);
+                if (readout != nullptr)
+                {
+                    expectEquals (readout->getText(), juce::String ("0.0 dB"), "Neutral EQ must display zero without a positive-zero artefact");
+                    processor.undoManager.clearUndoHistory();
+                    readout->setText ("+5.2 dB", juce::sendNotificationSync);
+                    expectWithinAbsoluteError (processor.apvts.getRawParameterValue (id)->load(), 5.2f, .001f);
+                    expect (processor.undoUser());
+                    expectWithinAbsoluteError (processor.apvts.getRawParameterValue (id)->load(), 0.0f, .001f);
+                }
+            }
+            const auto id = juce::String (pair) + "EqEnabled";
+            auto* button = dynamic_cast<juce::Button*> (findComponent (editor, id));
+            expect (button != nullptr, "Real EQ IN control: " + id);
+            if (button != nullptr)
+            {
+                expect (! button->getToggleState());
+                button->onClick();
+                expectWithinAbsoluteError (processor.apvts.getRawParameterValue (id)->load(), 1.0f, .001f);
+                consumeGuiFrame();
+                expect (button->getToggleState());
+                button->onClick();
+            }
+        }
+        beginTest ("All new EQ automation reaches GUI polling without user undo");
+        processor.undoManager.clearUndoHistory();
+        std::thread eqWorker ([&]
+        {
+            for (const auto* pair : { "ears", "front", "floor" })
+            {
+                for (const auto* band : { "Low", "Mid", "High" })
+                {
+                    auto* parameter = processor.apvts.getParameter (juce::String (pair) + "Eq" + band + "Db");
+                    parameter->setValueNotifyingHost (parameter->convertTo0to1 (-3.4f));
+                }
+                processor.apvts.getParameter (juce::String (pair) + "EqEnabled")->setValueNotifyingHost (1.0f);
+            }
+        });
+        eqWorker.join();
+        consumeGuiFrame();
+        for (const auto* pair : { "ears", "front", "floor" })
+        {
+            for (const auto* band : { "Low", "Mid", "High" })
+                if (auto* label = dynamic_cast<juce::Label*> (findComponent (editor, juce::String (pair) + "Eq" + band + "DbValue")))
+                    expectWithinAbsoluteError (static_cast<float> (label->getText().getDoubleValue()), -3.4f, .001f);
+            if (auto* button = dynamic_cast<juce::Button*> (findComponent (editor, juce::String (pair) + "EqEnabled"))) expect (button->getToggleState());
+        }
+        expect (! processor.canUndoUser());
+
+        beginTest ("EQ controls remain directly reachable and numeric values fit at the supported minimum");
+        editor.setSize (1024, 684);
+        for (const auto* pair : { "ears", "front", "floor" })
+            for (const auto* band : { "Low", "Mid", "High" })
+            {
+                const auto id = juce::String (pair) + "Eq" + band + "Db";
+                if (auto* control = findComponent (editor, id + "Slider"))
+                {
+                    expect (control->getWidth() >= 36 && control->getHeight() >= 36);
+                    const auto centre = editor.getLocalPoint (control, control->getLocalBounds().getCentre());
+                    expect (editor.getComponentAt (centre) == control, "Reachable EQ knob " + id);
+                }
+                if (auto* label = dynamic_cast<juce::Label*> (findComponent (editor, id + "Value")))
+                {
+                    expect (label->getWidth() >= 60 && label->getHeight() >= 22);
+                    const auto maximum = juce::GlyphArrangement::getStringWidth (label->getFont(), "+12.0 dB");
+                    expect (maximum <= label->getWidth() - 6, "Extreme EQ value remains fully visible");
+                }
+            }
+        beginTest ("Output knob remains reachable behind the transparent mix container at every size");
+        for (const auto size : { labrc::ui::Size { 1024, 684 }, labrc::ui::Size { 1280, 854 }, labrc::ui::Size { 1586, 1058 } })
         {
             editor.setSize (static_cast<int> (size.width), static_cast<int> (size.height));
             const auto layout = labrc::ui::EditorGeometry::forSize (size.width, size.height);
             const auto ox = (size.width - 1586 * layout.scale) * .5;
-            const auto oy = (size.height - 992 * layout.scale) * .5;
+            const auto oy = (size.height - 1058 * layout.scale) * .5;
             for (const auto& item : std::array<std::pair<const char*, labrc::ui::Point>, 3> {{
-                    { "inputDbSlider", { 127, 203 } }, { "outputDbSlider", { 1458, 203 } }, { "mixPercentSlider", { 1459, 398 } } }})
+                    { "inputDbSlider", { 127, 203 } }, { "outputDbSlider", { 1458, 203 } }, { "mixPercentSlider", { 1459, 359 } } }})
             {
                 auto* hit = editor.getComponentAt (juce::roundToInt (ox + item.second.x * layout.scale),
                                                    juce::roundToInt (oy + item.second.y * layout.scale));
@@ -256,7 +346,7 @@ public:
         }
 
         beginTest ("Mic label bounds stay on the original photograph at minimum size in every room");
-        editor.setSize (800, 500);
+        editor.setSize (1024, 684);
         for (int room = 0; room < 3; ++room)
         {
             auto* roomParameter = processor.apvts.getParameter ("room");
@@ -283,7 +373,7 @@ public:
         savedInstance.beginParameterGesture ("inputDb", "Saved input");
         savedInstance.setParameterFromUser ("inputDb", 7.7f);
         savedInstance.endParameterGesture ("inputDb");
-        savedInstance.setEditorSize (1180, 738);
+        savedInstance.setEditorSize (1280, 854);
         juce::MemoryBlock recalled;
         savedInstance.getStateInformation (recalled);
         processor.undoManager.clearUndoHistory();
@@ -296,13 +386,32 @@ public:
         expectWithinAbsoluteError (processor.apvts.getRawParameterValue ("inputDb")->load(), 7.7f, .001f,
                                    "Immediate undo after off-thread recall must not apply an old-session action");
         consumeGuiFrame();
-        expectEquals (editor.getWidth(), 1180);
-        expectEquals (editor.getHeight(), 738);
-        expectEquals (processor.editorSize().x, 1180);
-        editor.setSize (800, 500);
+        expectEquals (editor.getWidth(), 1280);
+        expectEquals (editor.getHeight(), 854);
+        expectEquals (processor.editorSize().x, 1280);
+        editor.setSize (1024, 684);
         consumeGuiFrame();
-        expectEquals (editor.getWidth(), 800, "A subsequent manual resize takes precedence");
-        expectEquals (processor.editorSize().x, 800);
+        expectEquals (editor.getWidth(), 1024, "A subsequent manual resize takes precedence");
+        expectEquals (processor.editorSize().x, 1024);
+
+        beginTest ("Repeated editor recreation recalls EQ, overlays and the migrated layout");
+        LabRCProcessor reopened;
+        reopened.setEditorSize (1280, 854);
+        reopened.beginParameterGesture ("frontEqLowDb", "Front low");
+        reopened.setParameterFromUser ("frontEqLowDb", 4.1f);
+        reopened.endParameterGesture ("frontEqLowDb");
+        reopened.setMicsVisible (false);
+        for (int opening = 0; opening < 4; ++opening)
+        {
+            std::unique_ptr<juce::AudioProcessorEditor> window (reopened.createEditor());
+            expect (window != nullptr);
+            if (! window) continue;
+            expectEquals (window->getWidth(), 1280);
+            expectEquals (window->getHeight(), 854);
+            if (auto* label = dynamic_cast<juce::Label*> (findComponent (*window, "frontEqLowDbValue")))
+                expectWithinAbsoluteError (static_cast<float> (label->getText().getDoubleValue()), 4.1f, .001f);
+            if (auto* marker = findComponent (*window, "mic0")) expect (! marker->isVisible());
+        }
     }
     void check (bool ok, const char* reason) { expect (ok, reason); }
     void near (double value, double expected, double tolerance, const char* reason)
