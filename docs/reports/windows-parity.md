@@ -21,11 +21,13 @@ python3 -B scripts/final_touch_regression.py compare \
 - El procesador Release arm64 enlazado con `LABRC_USE_ACCELERATE=0` reprodujo los 234 tramos completos con EQ OUT, incluidos los cambios de sala repetidos. Frente a Accelerate, hubo 157.198.058 patrones de bits diferentes de 213.520.746. El residual pico fue `3,5763e-7` y el RMS `4,5325e-9`, en amplitud lineal. El pico se mantuvo por debajo de `2e-5` y los dos renders declararon 128 muestras de latencia. Esta prueba ejercita el backend portable que usa Windows, compilado y ejecutado en macOS. Su suite DSP separada pasó 241 comprobaciones en 20 secciones.
 - La regresión concurrente nueva ejecutó dos procesadores preparados en hilos distintos. El silencio de una instancia se mantuvo exacto mientras la otra emitía audio finito.
 
-## Verificación nativa y smoke pendientes
+## Resultado nativo Windows
 
-| Área | Evidencia prevista en Windows x64 |
+El render MSVC con EQ OUT pasó la comparación con el procesador de referencia del AU. Los 234 segmentos mantuvieron 128 muestras de latencia. De 213.520.746 muestras escalares, 158.886.358 tuvieron distinto patrón de bits. El residual fue de `3,5762786865234375e-7 FS` de pico y `4,801214036803412e-9 FS` RMS, por debajo del umbral de `2e-5 FS`. El SHA-256 del render de Windows se verificó tras la descarga. [Run privado](https://github.com/sergiodevece/LAB-RC_VITAPLUG/actions/runs/45823374424)
+
+| Área | Evidencia de validación y smoke |
 |---|---|
-| Compilación, carga y formatos de canal | MSVC Release, CTest y pluginval. Steinberg VST3 Validator si se aporta un ejecutable verificado. El DAW confirma layouts mono a estéreo y estéreo a estéreo según su propio enrutamiento |
+| Compilación, carga y formatos de canal | MSVC Release, CTest 3/3, pluginval nivel 5 y Steinberg 47/47. El DAW confirma layouts mono a estéreo y estéreo a estéreo según su propio enrutamiento |
 | EQ, convolución, latencia, cambios de sala y null test | Suite DSP y comparación de los 234 tramos MSVC EQ OUT con la referencia Release arm64. Una prueba de continuidad durante reproducción del DAW complementa la medición de transiciones |
 | Automatización, undo/redo/reset, estados, tamaño, recreación y varias instancias | Suites Processor y UI con parámetros reales y recall. La automatización grabada y la restauración del proyecto se confirman en el DAW |
 | CPU, memoria y estabilidad | Benchmark de callback con tiempos, excesos de plazo y memoria residente del proceso, mediante el working set de Windows. Las comprobaciones Release no sustituyen la instrumentación de memoria en Windows |

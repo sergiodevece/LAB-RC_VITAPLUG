@@ -16,7 +16,7 @@ Registro de resultados reales. PENDIENTE no equivale a PASS. Los logs conservan 
 | 2: acabado gráfico | NO APROBADO; CONGELADO | El propietario identifica rasgos del prototipo descartado. No más cambios estéticos en esta fase |
 | 3: AU universal y VST3 macOS | PASS local | arm64+x86_64, lipo/minos/codesign ad hoc, pluginval doble SUCCESS |
 | 3: auval/instalación local | PASS, autorizados por el propietario | AU instalado; auval estricto SUCCESS en arm64 y x86_64 |
-| 3: VST3 Windows x64 | PENDIENTE | Kit local MSVC preparado. Faltan la compilación nativa, la validación del bundle Windows y el smoke en un DAW x64 |
+| 3: VST3 Windows x64 | PASS en runner privado | Release MSVC AMD64, CTest 3/3, pluginval nivel 5, Steinberg 47/47, instalador `-WhatIf` y paridad EQ OFF dentro de tolerancia. Smoke en DAW Windows pendiente |
 | 3: escucha/smoke Logic | APROBADO POR EL PROPIETARIO | Primera evaluación sonora en Logic Pro comunicada el 26-11-2026 |
 | 4: documentación/paquetes | ENTREGA LOCAL | Informes sellados, AU y fuentes en dist; comprobar sidecars .zip.sha256 y manifiestos internos |
 | Distribución pública | NO AUTORIZADA | Sin push/GitHub. Derechos/licencias públicos pendientes |

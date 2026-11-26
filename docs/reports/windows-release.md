@@ -17,4 +17,24 @@ En macOS arm64 pasaron las cinco suites de CTest Release y las cinco con ASan/UB
 
 La comparación usa el procesador y los estados internos compartidos por AU y VST3. La carga de proyectos de Logic y el comportamiento de un DAW Windows se verifican en sus respectivos hosts. El smoke en Windows 10/11, HiDPI real y la escucha quedan separados del resultado del runner.
 
-El workflow se conserva localmente. El build nativo, los validadores Windows y la comparación Windows contra macOS siguen pendientes de acceso a un runner autorizado. El kit de compilación contiene fuentes y herramientas. El ZIP de Release se genera a partir del DLL compilado y verificado.
+## Resultados del runner Windows
+
+- Release AMD64 compilado con MSVC 19.44.35230.0 en Windows Server 2022. El bundle pasó la inspección PE32+ y la comprobación de dependencias. El SHA-256 del DLL es `a4a116e794d5b30393b5a8a9fc4deb48309daf975400ec67cbb8b5f5b88eaedc`.
+- CTest pasó las tres suites. pluginval pasó a nivel 5. El VST3 Validator oficial de Steinberg pasó 47 pruebas. La simulación `-WhatIf` sobre el DLL empaquetado pasó en Windows PowerShell 5.1.
+- El wrapper VST3 de Windows etiqueta `Default` al programa existente y rechaza frecuencias fuera del rango de preparación del motor. Steinberg confirmó el rechazo de 1.234.567,8 Hz y terminó su suite con cero fallos. El código del procesador y del DSP coincide con el checkpoint.
+
+Mediciones del benchmark en el runner virtual con EQ apagada y bloques de 64 muestras. El tiempo es de callback y la memoria corresponde al proceso completo.
+
+| Frecuencia | p99 | Excesos de plazo | Memoria residente |
+|---|---:|---:|---:|
+| 48 kHz | 403,70 µs | 0 de 4.500 | 34,5 MiB |
+| 96 kHz | 464,30 µs | 16 de 9.000 | 57,3 MiB |
+| 192 kHz | 568,50 µs | 2.139 de 18.000 | 103,8 MiB |
+
+La validación de carga y el benchmark corresponden al binario nativo. El smoke en el DAW y el escalado HiDPI en Windows 10/11 se comprueban en el equipo del estudio. [Ejecución privada](https://github.com/sergiodevece/LAB-RC_VITAPLUG/actions/runs/45823374424)
+
+## Paridad y paquete final
+
+La comparación Windows x64 frente a la referencia del AU pasó en 234 tramos y 213.520.746 muestras con EQ apagada. El residual fue de `3,5762786865234375e-7 FS` de pico y `4,801214036803412e-9 FS` RMS, con 128 muestras de latencia en ambas plataformas. El archivo final incluye las mediciones y los registros nativos. El DLL conserva su hash del runner. [Paridad nativa](windows-parity.md#resultado-nativo-windows)
+
+El ZIP final `LAB-RC-Windows-x64-VST3.zip` tiene SHA-256 `e529be4e3ec45c7620f591cdf831669e22de9088b8c300ad5d95d922aad826d1`. Se verificaron el CRC y los hashes internos y externos. Se dejó una copia en Descargas junto a su archivo `.sha256`.
