@@ -66,6 +66,8 @@ if(LABRC_BUILD_PLUGIN)
     if(APPLE)
         list(APPEND labrc_formats AU)
     endif()
+    include(cmake/WindowsVst3Wrapper.cmake)
+    labrc_configure_windows_vst3_wrapper()
     juce_add_plugin(LabRC
         COMPANY_NAME VITAPLUG
         BUNDLE_ID com.vitaplug.labrc
