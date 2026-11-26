@@ -1,0 +1,22 @@
+# Deliberately no FetchContent, package manager, Git operation or network fallback.
+set(LABRC_JUCE_ARCHIVE_SHA256
+    "d37bab9f2330c50f42ba979575f6b55d5d3b23fa94221c2e57cac3abb69ac6d9")
+if(NOT EXISTS "${JUCE_ROOT}/CMakeLists.txt")
+    message(FATAL_ERROR
+        "JUCE local missing. Run python3 scripts/prepare_juce.py --archive /local/path/juce-8.0.17-security.tar.gz")
+endif()
+file(READ "${JUCE_ROOT}/CMakeLists.txt" labrc_juce_cmake)
+if(NOT labrc_juce_cmake MATCHES "project\\(JUCE VERSION 8\\.0\\.17 LANGUAGES C CXX\\)")
+    message(FATAL_ERROR "JUCE_ROOT must contain the pinned JUCE 8.0.17 source")
+endif()
+if(NOT EXISTS "${JUCE_ROOT}/.labrc-archive-sha256")
+    message(FATAL_ERROR "JUCE source has no LAB-RC provenance marker; use scripts/prepare_juce.py")
+endif()
+file(STRINGS "${JUCE_ROOT}/.labrc-archive-sha256" labrc_juce_source_sha)
+if(NOT labrc_juce_source_sha STREQUAL LABRC_JUCE_ARCHIVE_SHA256)
+    message(FATAL_ERROR "JUCE archive provenance does not match the pinned SHA-256")
+endif()
+set(JUCE_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(JUCE_BUILD_EXTRAS OFF CACHE BOOL "" FORCE)
+set(JUCE_COPY_PLUGIN_AFTER_BUILD OFF CACHE BOOL "" FORCE)
+add_subdirectory("${JUCE_ROOT}" "${CMAKE_BINARY_DIR}/juce")

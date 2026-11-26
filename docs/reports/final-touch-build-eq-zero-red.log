@@ -1,0 +1,39 @@
+[ 29%] Built target LabRCAssets
+[ 43%] Built target labrc_dsp
+[ 45%] Building CXX object CMakeFiles/LabRC.dir/Source/PluginProcessor.cpp.o
+/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/Source/PluginProcessor.cpp:68:63: error: type 'float (*)(float, float, float)' cannot be narrowed to 'bool' in initializer list [-Wc++11-narrowing]
+   68 |     juce::NormalisableRange<float> range{-12.f, 12.f, {}, {}, [](float minimum, float maximum, float value) {
+      |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   69 |         if (!std::isfinite(value))
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+   70 |             return 0.f;
+      |             ~~~~~~~~~~~
+   71 |         const auto bounded = juce::jlimit(minimum, maximum, value);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |         return static_cast<float>(std::round(static_cast<double>(bounded) * 10.0) / 10.0);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |     }};
+      |     ~
+/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/Source/PluginProcessor.cpp:68:63: note: insert an explicit cast to silence this issue
+   68 |     juce::NormalisableRange<float> range{-12.f, 12.f, {}, {}, [](float minimum, float maximum, float value) {
+      |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                               static_cast<bool>(
+   69 |         if (!std::isfinite(value))
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+   70 |             return 0.f;
+      |             ~~~~~~~~~~~
+   71 |         const auto bounded = juce::jlimit(minimum, maximum, value);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |         return static_cast<float>(std::round(static_cast<double>(bounded) * 10.0) / 10.0);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |     }};
+      |     ~
+      |      )
+/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/Source/PluginProcessor.cpp:68:63: warning: address of lambda function pointer conversion operator will always evaluate to 'true' [-Wpointer-bool-conversion]
+   68 |     juce::NormalisableRange<float> range{-12.f, 12.f, {}, {}, [](float minimum, float maximum, float value) {
+      |                                    ~~~~~                      ^
+1 warning and 1 error generated.
+make[3]: *** [CMakeFiles/LabRC.dir/Source/PluginProcessor.cpp.o] Error 1
+make[2]: *** [CMakeFiles/LabRC.dir/all] Error 2
+make[1]: *** [CMakeFiles/labrc_tests.dir/rule] Error 2
+make: *** [labrc_tests] Error 2

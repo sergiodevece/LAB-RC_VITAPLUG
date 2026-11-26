@@ -1,0 +1,51 @@
+Random seed: 0x4c41425243
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Positive control for the optional allocator interposer...
+Completed tests in Live Room callback timings / Positive control for the optional allocator interposer
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 48000 | block 1...
+callback us mean/p95/p99/max 0.43/0.33/0.46/134.33; deadline misses 999/288000; budget us 20.83; prepare ms 40.1; process RSS MiB 54.9; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 48000 | block 1
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 48000 | block 64...
+callback us mean/p95/p99/max 11.55/29.71/43.67/100.08; deadline misses 0/4500; budget us 1333.33; prepare ms 36.3; process RSS MiB 54.0; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 48000 | block 64
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 48000 | block 256...
+callback us mean/p95/p99/max 45.32/65.42/76.75/119.46; deadline misses 0/1125; budget us 5333.33; prepare ms 38.2; process RSS MiB 54.1; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 48000 | block 256
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 1...
+callback us mean/p95/p99/max 0.61/0.42/1.33/660.42; deadline misses 4682/576000; budget us 10.42; prepare ms 21.7; process RSS MiB 105.3; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 96000 | block 1
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 64...
+callback us mean/p95/p99/max 24.81/74.83/131.83/5524.08; deadline misses 5/9000; budget us 666.67; prepare ms 16.0; process RSS MiB 80.5; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 96000 | block 64
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 96000 | block 256...
+callback us mean/p95/p99/max 67.37/85.08/102.00/147.79; deadline misses 0/2250; budget us 2666.67; prepare ms 11.5; process RSS MiB 80.6; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 96000 | block 256
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 1...
+callback us mean/p95/p99/max 0.77/0.33/0.50/327.54; deadline misses 9416/1152000; budget us 5.21; prepare ms 91.6; process RSS MiB 113.4; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 192000 | block 1
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 64...
+callback us mean/p95/p99/max 29.76/67.21/79.21/234.92; deadline misses 0/18000; budget us 333.33; prepare ms 109.4; process RSS MiB 153.5; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 192000 | block 64
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Fs 192000 | block 256...
+callback us mean/p95/p99/max 161.29/311.71/465.29/2217.58; deadline misses 2/4500; budget us 1333.33; prepare ms 77.0; process RSS MiB 136.9; callback heap calls 0
+Completed tests in Live Room callback timings / Fs 192000 | block 256
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Two-bank fade, Fs 96000 | block 64...
+fade callbacks 300; us mean/p95/p99/max 26.02/59.04/178.17/201.79; deadline misses 0; sampled process RSS MiB 218.9
+Crossfade-series heap calls 0
+Completed tests in Live Room callback timings / Two-bank fade, Fs 96000 | block 64
+-----------------------------------------------------------------
+Starting tests in: Live Room callback timings / Two-bank fade, Fs 192000 | block 64...
+fade callbacks 600; us mean/p95/p99/max 50.08/130.62/309.50/839.00; deadline misses 5; sampled process RSS MiB 314.1
+Crossfade-series heap calls 0
+Completed tests in Live Room callback timings / Two-bank fade, Fs 192000 | block 64
+LAB-RC: 12 sections, 29 checks passed, 0 failed

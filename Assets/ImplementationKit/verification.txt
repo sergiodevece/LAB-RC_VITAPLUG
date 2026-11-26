@@ -1,0 +1,10 @@
+PASS center_field_EARS_wet: 3.68709152e-09
+PASS center_field_FLOOR_wet: 2.85581336e-09
+PASS center_field_FRONT_wet: 3.7252903e-09
+PASS kentucky_EARS_wet: 3.7252903e-09
+PASS kentucky_FLOOR_wet: 2.85581336e-09
+PASS kentucky_FRONT_wet: 3.7252903e-09
+PASS live_room_EARS_wet: 1.86264515e-09
+PASS live_room_FLOOR_wet: 3.25758265e-09
+PASS live_room_FRONT_wet: 1.7680577e-09
+PASS 32 hashes; 9 matrix regressions; max error=3.7252903e-09

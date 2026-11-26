@@ -1,0 +1,10 @@
+{
+  "reference": "0.1.0-31cf43a",
+  "candidate": "0.2.0-eq-off",
+  "segments": 234,
+  "float_samples": 213520746,
+  "bit_different_floats": 0,
+  "peak_abs_residual": 0.0,
+  "rms_residual": 0.0,
+  "different_segments": []
+}

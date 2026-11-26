@@ -1,0 +1,60 @@
+PASS MASTER_PROMPT.md
+PASS assets/design/approved_vintage.png
+PASS assets/design/prototype_v01.html
+PASS assets/ir/v05/center_field_EARS_wet.wav
+PASS assets/ir/v05/center_field_FLOOR_wet.wav
+PASS assets/ir/v05/center_field_FRONT_wet.wav
+PASS assets/ir/v05/kentucky_EARS_wet.wav
+PASS assets/ir/v05/kentucky_FLOOR_wet.wav
+PASS assets/ir/v05/kentucky_FRONT_wet.wav
+PASS assets/ir/v05/live_room_EARS_wet.wav
+PASS assets/ir/v05/live_room_FLOOR_wet.wav
+PASS assets/ir/v05/live_room_FRONT_wet.wav
+PASS assets/ir/v06/center_field_EARS_wet_matrix.wav
+PASS assets/ir/v06/center_field_FLOOR_wet_matrix.wav
+PASS assets/ir/v06/center_field_FRONT_wet_matrix.wav
+PASS assets/ir/v06/kentucky_EARS_wet_matrix.wav
+PASS assets/ir/v06/kentucky_FLOOR_wet_matrix.wav
+PASS assets/ir/v06/kentucky_FRONT_wet_matrix.wav
+PASS assets/ir/v06/live_room_EARS_wet_matrix.wav
+PASS assets/ir/v06/live_room_FLOOR_wet_matrix.wav
+PASS assets/ir/v06/live_room_FRONT_wet_matrix.wav
+PASS assets/rooms/center_field.png
+PASS assets/rooms/kentucky.png
+PASS assets/rooms/live_room.png
+PASS research/geometry_v02.json
+PASS research/v05/README.md
+PASS research/v05/execution_log.txt
+PASS research/v05/late_config.json
+PASS research/v05/tests.json
+PASS research/v06/README.md
+PASS research/v06/execution_log.txt
+PASS research/v06/results.json
+PASS mono center_field_EARS_wet: 3.68709152099e-09
+PASS mono center_field_FLOOR_wet: 2.85581336357e-09
+PASS mono center_field_FRONT_wet: 3.72529029846e-09
+PASS mono kentucky_EARS_wet: 3.72529029846e-09
+PASS mono kentucky_FLOOR_wet: 2.85581336357e-09
+PASS mono kentucky_FRONT_wet: 3.72529029846e-09
+PASS mono live_room_EARS_wet: 1.86264514923e-09
+PASS mono live_room_FLOOR_wet: 3.25758264808e-09
+PASS mono live_room_FRONT_wet: 1.76805770025e-09
+{
+  "status": "PASS",
+  "hashes": 32,
+  "pngs": 4,
+  "wavs": 18,
+  "mono_regressions": {
+    "center_field_EARS_wet": 3.687091520987451e-09,
+    "center_field_FLOOR_wet": 2.8558133635669947e-09,
+    "center_field_FRONT_wet": 3.725290298461914e-09,
+    "kentucky_EARS_wet": 3.725290298461914e-09,
+    "kentucky_FLOOR_wet": 2.8558133635669947e-09,
+    "kentucky_FRONT_wet": 3.725290298461914e-09,
+    "live_room_EARS_wet": 1.862645149230957e-09,
+    "live_room_FLOOR_wet": 3.2575826480751857e-09,
+    "live_room_FRONT_wet": 1.7680577002465725e-09
+  },
+  "max_mono_error": 3.725290298461914e-09,
+  "method": "independent Python stdlib; original numpy/scipy verifier not executed successfully"
+}

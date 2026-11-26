@@ -1,0 +1,62 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 22, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "mac-base",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TESTING": true,
+        "LABRC_BUILD_PLUGIN": true,
+        "CMAKE_OSX_SYSROOT": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk",
+        "JUCE_ROOT": "${sourceDir}/build/dependencies/juce"
+      }
+    },
+    {
+      "name": "mac-arm64",
+      "inherits": "mac-base",
+      "displayName": "macOS arm64, deployment 11.0",
+      "binaryDir": "${sourceDir}/build/mac-arm64",
+      "cacheVariables": {
+        "CMAKE_OSX_ARCHITECTURES": "arm64",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "11.0"
+      }
+    },
+    {
+      "name": "mac-x86_64",
+      "inherits": "mac-base",
+      "displayName": "macOS Intel, deployment 10.15",
+      "binaryDir": "${sourceDir}/build/mac-x86_64",
+      "cacheVariables": {
+        "CMAKE_OSX_ARCHITECTURES": "x86_64",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "10.15"
+      }
+    },
+    {
+      "name": "mac-sanitize",
+      "inherits": "mac-arm64",
+      "binaryDir": "${sourceDir}/build/mac-sanitize",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug", "LABRC_ENABLE_SANITIZERS": true }
+    },
+    {
+      "name": "mac-dsp",
+      "inherits": "mac-arm64",
+      "binaryDir": "${sourceDir}/build/mac-dsp",
+      "cacheVariables": { "LABRC_BUILD_PLUGIN": false }
+    }
+  ],
+  "buildPresets": [
+    { "name": "mac-arm64", "configurePreset": "mac-arm64", "jobs": 4 },
+    { "name": "mac-x86_64", "configurePreset": "mac-x86_64", "jobs": 4 },
+    { "name": "mac-sanitize", "configurePreset": "mac-sanitize", "jobs": 4 },
+    { "name": "mac-dsp", "configurePreset": "mac-dsp", "jobs": 4 }
+  ],
+  "testPresets": [
+    { "name": "mac-arm64", "configurePreset": "mac-arm64", "output": { "outputOnFailure": true } },
+    { "name": "mac-x86_64", "configurePreset": "mac-x86_64", "output": { "outputOnFailure": true } },
+    { "name": "mac-sanitize", "configurePreset": "mac-sanitize", "output": { "outputOnFailure": true } },
+    { "name": "mac-dsp", "configurePreset": "mac-dsp", "output": { "outputOnFailure": true } }
+  ]
+}

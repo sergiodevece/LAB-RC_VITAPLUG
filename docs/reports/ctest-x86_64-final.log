@@ -1,0 +1,21 @@
+Test project /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-x86_64
+    Start 1: DSP
+1/5 Test #1: DSP ..............................   Passed   22.16 sec
+    Start 2: Processor
+2/5 Test #2: Processor ........................   Passed    3.75 sec
+    Start 3: UI
+3/5 Test #3: UI ...............................   Passed    1.13 sec
+    Start 4: BuildTools
+4/5 Test #4: BuildTools .......................   Passed    0.76 sec
+    Start 5: Bootstrap
+5/5 Test #5: Bootstrap ........................   Passed    0.14 sec
+
+100% tests passed out of 5
+
+Label Time Summary:
+Build        =   0.90 sec*proc (2 tests)
+DSP          =  22.16 sec*proc (1 test)
+Processor    =   3.75 sec*proc (1 test)
+UI           =   1.13 sec*proc (1 test)
+
+Total Test time (real) =  27.96 sec

@@ -1,0 +1,11 @@
+build*/
+dist/*
+!dist/.gitkeep
+.DS_Store
+.superpowers/
+*.user
+CMakeUserPresets.json
+docs/screenshots/
+__pycache__/
+docs/briefs/*.diff
+checkpoints/

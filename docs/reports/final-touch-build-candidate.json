@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "candidate_bundle": "/Users/serx/Documents/ChatGPT/MANZA\u00b4S DRUM ROOMS BY ALBINI/build/universal-0.2.0/AU/LAB-RC.component",
+  "binary_sha256": "5bf36ca80b635aea63e25f9d1e28cabe68774437231922a286ee6c16553e4541",
+  "audio_sources_identical_to_QA_snapshot": true,
+  "installed_by_build_agent": false,
+  "ui_screenshots_approved": true,
+  "logic_opened": false,
+  "installation_authorization_at_candidate_creation": "pending",
+  "validation_receipt": "final-touch-au.json records any later temporary validation and rollback"
+}

@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "binary_sha256": "5bf36ca80b635aea63e25f9d1e28cabe68774437231922a286ee6c16553e4541",
+  "user_authorized_install": true,
+  "logic_opened": true,
+  "logic_smoke": "PENDING: owner listening in Logic",
+  "checkpoint_restored": false,
+  "checkpoint_executable_sha256": "6532f24cd0f908c9db627a966f2d8660327dfa360338bdc6a1031d0d49430f58",
+  "installation_state": "0.2.0 left installed for the owner\u2019s Logic smoke",
+  "auval": {
+    "arm64": "PASS",
+    "x86_64": "PASS"
+  }
+}

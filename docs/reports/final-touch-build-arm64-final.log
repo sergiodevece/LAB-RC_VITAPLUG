@@ -1,0 +1,62 @@
+[ 26%] Built target LabRCAssets
+[ 38%] Built target labrc_dsp
+[ 80%] Built target LabRC
+[ 81%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp.o
+[ 83%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp.o
+[ 84%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp.o
+[ 86%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp.o
+[ 87%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm.o
+[ 89%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm.o
+[ 90%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm.o
+[ 92%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm.o
+[ 93%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm.o
+[ 95%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm.o
+[ 96%] Building CXX object CMakeFiles/LabRC_AU.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm.o
+[ 98%] Linking CXX CFBundle shared module LabRC_artefacts/Release/AU/LAB-RC.component/Contents/MacOS/LAB-RC
+[100%] Built target LabRC_AU
+[  1%] Building VST3 manifest helper for LabRC
+[ 27%] Built target LabRCAssets
+[ 39%] Built target labrc_dsp
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64/vst3_helpers/LabRC
+make[4]: warning: jobserver unavailable: using -j1.  Add `+' to parent make rule.
+[ 50%] Building CXX object CMakeFiles/vst3_helper.dir/Users/serx/Documents/ChatGPT/MANZA´S_DRUM_ROOMS_BY_ALBINI/build/dependencies/juce/modules/juce_audio_plugin_client/VST3/juce_VST3ManifestHelper.cpp.o
+[ 80%] Built target LabRC
+[100%] Linking CXX executable vst3_helper
+[100%] Built target vst3_helper
+[ 80%] Built target LabRC_vst3_helper
+[ 83%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp.o
+[ 83%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp.o
+[ 84%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp.o
+[ 86%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp.o
+[ 89%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm.o
+[ 89%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm.o
+[ 90%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm.o
+[ 92%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm.o
+[ 95%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm.o
+[ 95%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm.o
+[ 96%] Building CXX object CMakeFiles/LabRC_VST3.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm.o
+[ 98%] Linking CXX CFBundle shared module LabRC_artefacts/Release/VST3/LAB-RC.vst3/Contents/MacOS/LAB-RC
+/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64/LabRC_artefacts/Release/VST3/LAB-RC.vst3: code has no resources but signature indicates they must be present
+-- Replacing invalid signature with ad-hoc signature
+/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64/LabRC_artefacts/Release/VST3/LAB-RC.vst3: replacing existing signature
+removing moduleinfo.json
+creating /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64/LabRC_artefacts/Release/VST3/LAB-RC.vst3/Contents/Resources/moduleinfo.json
+[100%] Built target LabRC_VST3
+[ 26%] Built target LabRCAssets
+[ 38%] Built target labrc_dsp
+[ 80%] Built target LabRC
+[ 83%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp.o
+[ 83%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp.o
+[ 84%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp.o
+[ 86%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp.o
+[ 87%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm.o
+[ 89%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm.o
+[ 90%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm.o
+[ 92%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm.o
+[ 93%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm.o
+[ 95%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm.o
+[ 96%] Building CXX object CMakeFiles/LabRC_Standalone.dir/build/dependencies/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm.o
+[ 98%] Linking CXX executable LabRC_artefacts/Release/Standalone/LAB-RC.app/Contents/MacOS/LAB-RC
+[100%] Built target LabRC_Standalone

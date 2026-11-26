@@ -1,0 +1,151 @@
+name: LAB-RC Windows x64 VST3 Release
+
+"on":
+  workflow_dispatch:
+    inputs:
+      steinberg_validator_sha256:
+        description: SHA-256 of the optional CI-inputs/validator.exe
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  windows-vst3:
+    if: ${{ github.event.repository.private }}
+    runs-on: windows-2022
+    timeout-minutes: 55
+    env:
+      PYTHONUTF8: '1'
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout approved build snapshot
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Test the packaging tools and PowerShell 5.1 preflight
+        run: |
+          python -B scripts/test_build_windows.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Windows build and installer script tests failed.' }
+
+      - name: Build Steinberg's official VST3 Validator
+        id: steinberg
+        if: ${{ inputs.steinberg_validator_sha256 == '' }}
+        continue-on-error: true
+        run: |
+          $sdk = Join-Path $env:RUNNER_TEMP 'steinberg-vst3sdk'
+          $output = Join-Path $env:RUNNER_TEMP 'steinberg-validator-build'
+          $revision = '9fad9770f2ae8542ab1a548a68c1ad1ac690abe0' # v3.8.0_build_66
+          git init $sdk
+          if ($LASTEXITCODE -ne 0) { throw 'SDK repository setup failed.' }
+          git -C $sdk remote add origin https://github.com/steinbergmedia/vst3sdk.git
+          if ($LASTEXITCODE -ne 0) { throw 'SDK origin setup failed.' }
+          git -C $sdk fetch --depth=1 origin $revision
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Steinberg SDK source unavailable.' }
+          git -C $sdk checkout --detach FETCH_HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'SDK checkout failed.' }
+          if ((git -C $sdk rev-parse HEAD) -ne $revision) { throw 'Unexpected SDK revision.' }
+          git -C $sdk submodule update --init --recursive --depth=1
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Steinberg SDK submodules unavailable.' }
+          cmake -S $sdk -B $output -G 'Visual Studio 17 2022' -A x64 `
+            -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=ON `
+            -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF
+          if ($LASTEXITCODE -ne 0) { throw 'Steinberg validator configure failed.' }
+          cmake --build $output --config Release --target validator --parallel 4
+          if ($LASTEXITCODE -ne 0) { throw 'Steinberg validator build failed.' }
+          $validator = @(Get-ChildItem -LiteralPath $output -Recurse -File -Filter 'validator.exe')
+          if ($validator.Count -ne 1) { throw 'Could not identify the native validator executable.' }
+          "validator=$($validator[0].FullName)" >> $env:GITHUB_OUTPUT
+
+      - name: Build Release x64 and run native validation
+        env:
+          STEINBERG_VALIDATOR_SHA256: ${{ inputs.steinberg_validator_sha256 }}
+          STEINBERG_BUILT_VALIDATOR: ${{ steps.steinberg.outputs.validator }}
+        run: |
+          function Assert-Sha256([string]$Path, [string]$Expected) {
+            if ($Expected -notmatch '^[0-9a-fA-F]{64}$') {
+              throw "A valid SHA-256 is required for $Path."
+            }
+            if ((Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash -ne $Expected) {
+              throw "SHA-256 mismatch for $Path."
+            }
+          }
+
+          $juce = 'CI-inputs/juce-8.0.17-security.tar.gz'
+          $pluginvalArchive = 'CI-inputs/pluginval_Windows.zip'
+          Assert-Sha256 $juce 'd37bab9f2330c50f42ba979575f6b55d5d3b23fa94221c2e57cac3abb69ac6d9'
+          Assert-Sha256 $pluginvalArchive 'c08e61ce3b96db41636f8ec7e76f4c7e2c13ebdac7fa1b5a1f52b4f32ec715ab'
+          $pluginvalDir = Join-Path $env:RUNNER_TEMP 'labrc-pluginval'
+          Expand-Archive -LiteralPath $pluginvalArchive -DestinationPath $pluginvalDir
+          $pluginval = Join-Path $pluginvalDir 'pluginval.exe'
+          $buildArguments = @('-B', 'scripts/build_windows.py', '--juce-archive', $juce, '--pluginval', $pluginval)
+
+          $steinbergValidator = 'CI-inputs/validator.exe'
+          if ((Test-Path -LiteralPath $steinbergValidator -PathType Leaf) -or $env:STEINBERG_VALIDATOR_SHA256) {
+            Assert-Sha256 $steinbergValidator $env:STEINBERG_VALIDATOR_SHA256
+            $buildArguments += @('--steinberg-validator', $steinbergValidator)
+          } elseif ($env:STEINBERG_BUILT_VALIDATOR) {
+            $buildArguments += @('--steinberg-validator', $env:STEINBERG_BUILT_VALIDATOR)
+          }
+
+          python @buildArguments
+          if ($LASTEXITCODE -ne 0) { throw 'Release build or native validation failed.' }
+
+          $zip = 'dist/LAB-RC-Windows-x64-VST3.zip'
+          $sha = ((Get-Content -LiteralPath "$zip.sha256" -Raw).Trim() -split '\s+')[0]
+          Assert-Sha256 $zip $sha
+
+      - name: Store private smoke package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: LAB-RC-Windows-x64-VST3
+          path: |
+            dist/LAB-RC-Windows-x64-VST3.zip
+            dist/LAB-RC-Windows-x64-VST3.zip.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Check installation against the packaged DLL in PowerShell 5.1
+        run: |
+          $installerCheck = Join-Path $env:RUNNER_TEMP 'labrc-installer-check'
+          Expand-Archive -LiteralPath 'dist/LAB-RC-Windows-x64-VST3.zip' -DestinationPath $installerCheck
+          $installer = Join-Path $installerCheck 'LAB-RC-Windows-x64-VST3/install.ps1'
+          powershell.exe -NoProfile -NonInteractive -File $installer -Action Install -WhatIf
+          if ($LASTEXITCODE -ne 0) { throw 'PowerShell 5.1 installer preflight failed.' }
+
+      - name: Render Windows output for AU parity analysis
+        run: |
+          $legacy = 'CI-inputs/legacy-state.bin'
+          $hash = (Get-FileHash -LiteralPath $legacy -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($hash -ne '281e19d58ea27403ba22d89a8b4212c5c14dbd5429a3d6e33fb9788286d8c7fa') {
+            throw 'SHA-256 mismatch for the legacy preset fixture.'
+          }
+          python -B scripts/final_touch_regression.py capture build/windows-x64 `
+            build/windows-x64/parity-render $legacy --label Windows-x64-Release-MSVC-EQ-OUT `
+            --executable build/windows-x64/tests/Release/labrc_final_touch_regression.exe --render-only
+          if ($LASTEXITCODE -ne 0) { throw 'Windows parity render failed.' }
+
+      - name: Store private QA render for AU parity analysis
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: LAB-RC-Windows-x64-parity-render
+          path: build/windows-x64/parity-render/
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Store private diagnostics for a failed build
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: LAB-RC-Windows-x64-diagnostics
+          path: |
+            build/windows-x64/validation-*/**/*.log
+            build/windows-x64/validation-*/**/*.txt
+            build/windows-x64/Testing/Temporary/*.log
+          if-no-files-found: ignore
+          retention-days: 7

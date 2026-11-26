@@ -1,0 +1,96 @@
+{
+  "status": "PASS",
+  "screenshots": [
+    {
+      "file": "kentucky-min.png",
+      "width": 1024,
+      "height": 684,
+      "bytes": 982593,
+      "sha256": "c8647760c6469dfd1dacb554017077b4ddb079b2a4dda73091b1e37db8f863be"
+    },
+    {
+      "file": "kentucky-default.png",
+      "width": 1280,
+      "height": 854,
+      "bytes": 1444071,
+      "sha256": "485157389fb83f568d3aa2e0a8ad4782c0bb53330ca520bd7a4ee0ec6d2255e9"
+    },
+    {
+      "file": "kentucky-max.png",
+      "width": 1586,
+      "height": 1058,
+      "bytes": 2163685,
+      "sha256": "e4222d3b8ca7272a19bf7a5628049df5f29907c486287440cf8cb02493ee249e"
+    },
+    {
+      "file": "kentucky-default@2x.png",
+      "width": 2560,
+      "height": 1708,
+      "bytes": 4861965,
+      "sha256": "eb5da8d61f3efadaa622b685fd249eee05f4ba50090179895190c335ae01f1d8"
+    },
+    {
+      "file": "center-field-min.png",
+      "width": 1024,
+      "height": 684,
+      "bytes": 1039218,
+      "sha256": "12402f7af893e32da8dd9ce1fd932155b91956a92e7b1ff2b6b6a0e02fc0a873"
+    },
+    {
+      "file": "center-field-default.png",
+      "width": 1280,
+      "height": 854,
+      "bytes": 1542382,
+      "sha256": "739da989eea00914fd03b6c277a173eba6d7842be0d231e25f9391f283ab61e3"
+    },
+    {
+      "file": "center-field-max.png",
+      "width": 1586,
+      "height": 1058,
+      "bytes": 2304574,
+      "sha256": "8c3f5072f6783622176561dad89e58cbdc7cb36142366a421e81dbf862cdf3a9"
+    },
+    {
+      "file": "center-field-default@2x.png",
+      "width": 2560,
+      "height": 1708,
+      "bytes": 5158794,
+      "sha256": "804daefa4c7bcfa4caa9829f9d3db3a061118eb2808ae729d78645b16da3ff8d"
+    },
+    {
+      "file": "live-room-min.png",
+      "width": 1024,
+      "height": 684,
+      "bytes": 982964,
+      "sha256": "268b5c22e5c02857f056a3dfdc42afd73464ccedb9abdee0041f8b151e8d3a4d"
+    },
+    {
+      "file": "live-room-default.png",
+      "width": 1280,
+      "height": 854,
+      "bytes": 1447006,
+      "sha256": "7ef8d1c608641832f2b297ec9bef9d753d5547c2fa7c20616df77ed762c19e02"
+    },
+    {
+      "file": "live-room-max.png",
+      "width": 1586,
+      "height": 1058,
+      "bytes": 2167188,
+      "sha256": "ea6aa8aeac11c4c94263598c746bc306c603886b10e6d05bae50f450474234e4"
+    },
+    {
+      "file": "live-room-default@2x.png",
+      "width": 2560,
+      "height": 1708,
+      "bytes": 4850506,
+      "sha256": "c5b3129f3af666dccf2f62c5371834cf3d5dde8cb04b1a91f3ef41bae0c7e6d8"
+    },
+    {
+      "file": "controls-detail.png",
+      "width": 1006,
+      "height": 740,
+      "bytes": 818365,
+      "sha256": "349da2a23f8d8cb911706b708450915f4f5e449747a96493748cb897ec0f02a6"
+    }
+  ]
+}

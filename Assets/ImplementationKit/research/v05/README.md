@@ -1,0 +1,19 @@
+# LAB-RC — Manza’s Rooms & Chambers
+A Tribute to Steve Albini | AcousticLab v0.5 — 25 November 2026
+
+## Run
+Python with NumPy, SciPy, Numba and Matplotlib. `python -m pip install -r requirements.txt`; `python late.py`; `python verify.py`. The included early_reference/ir directory contains the original v0.4 direct and early-only WAVs, unchanged. No need for v0.4 installed separately. This is offline research code, not a JUCE plugin.
+
+## Method
+Six independent band-specific 16-delay-line FDNs with normalized Hadamard feedback. Six orthogonal readout vectors per room, shared by all three mic pairs. Kentucky additionally has 16 subvolume delay lines per band, linked by passive orthogonal rotation with frequency-specific coupling. Per-delay attenuation g=10^(-3 D / T), where D is delay in seconds and T is a design target. Orthogonal feedback and coupling with gains below unity are sufficient for a dissipative unforced network. Deterministic 18 ms noise burst excitation; complementary linear-phase FIR crossover bands, group-delay-compensated offline. Lowest/highest bands extend to DC/Nyquist. Equal nominal band energy before transition, not a measured acoustic spectral balance. Same excitation burst across bands, so adjacent band signals need not be uncorrelated. Delay lengths, coupling, target times, mix energy and readouts are experimental choices; not derived from physical chamber dimensions. `geometry/late_config.json` records them.
+
+Early IRs are unmodified in early_reference. In the complete response the reflected component is faded via cosine while the diffuse component is faded in via sine over a room-dependent interval (22–65, 35–100, 45–115 ms). This is a heuristic transition, not an exact energy accounting or a measured mixing time. Direct is added unaltered. Late-to-weighted-early energy ratio set globally across all six receivers (1.2, 2, 3). No independent pair/channel normalization. Last 30 ms taper. All timings use common origin.
+
+## Outputs
+27 synthetic stereo WAV, 96 kHz, 32-bit float, 2.5/3.5/4.5 s by room. Each is a MONO point source to two receivers, not true stereo input. `wet` = weighted early + late (no separate direct path); `full` = wet + direct; `late_only` = diffuse component. Use wet as impulse in a 100% wet Space Designer aux fed with mono drum signal. Disable any automatic trimming, normalization, time scaling if available; same send gain for comparisons. Full variant for virtual mic perspective; mix carefully with original drum signal to avoid unwanted comb filtering. No listening test has been performed here. No approved image assets changed.
+
+## Metrics
+Schroeder backward integration; EDT, T20 and T30 extrapolate linear fit slopes to 60 dB; regression R² included. Broadband and approximate octave analysis for complete response; bandpass filtering can influence EDT and C80. C80 uses direct peak as approximate arrival reference. DRR is ratio of component energies, not gated total energy. Diagnostics T30 is calculated from each raw FDN before crossover and transition, not the final band's RT. The reported numbers are simulated IR metrics only. No ISO-compliance or fidelity to Electrical Audio claimed. Kentucky coupling comparison uses identical excitation with coupling on and off.
+
+## Limits / next
+Direct + early source is a single diagnostic point; late readout projections do not yet model specific capsule polar responses or positions. FDN is not a physical solution of the wave equation; scattering, exact material impedance, modal analysis, openings, pillars and mezzanine are not solved. Kentucky lower-volume effect is a hypothesis, not a measured double-slope response. No validation by listening yet. Next: audible A/B, energy calibration, then stereo-input transfer and room/mic model refinement, followed by C++/JUCE. Project is an independent tribute, not an official product or measured reproduction.

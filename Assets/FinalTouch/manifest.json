@@ -1,0 +1,88 @@
+{
+  "version": "0.2.0",
+  "originals_unchanged": true,
+  "resources": [
+    {
+      "file": "kentucky_clean.png",
+      "source": "/Users/serx/Downloads/LAB-RC_Kentucky_SIN_Bateria.png",
+      "sha256": "5a0e6c028025bb9136354ef23d930fc06e1f8e1456dbed76514d5e36d70a6242",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "pixels_sha256": "b7928ee6c0fc3e17762a16a8d1fc233e05774de28fae991f694dfc5404df99e9"
+    },
+    {
+      "file": "center_field_clean.png",
+      "source": "/Users/serx/Downloads/LAB-RC_CenterField_SIN_Bateria.png",
+      "sha256": "36dd6a86a2607df2aa31e8c7cde4856138182792759024ead5d60ac35028e101",
+      "width": 1671,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "pixels_sha256": "3670295ee0cd3102442f626ddf59009c4111188ece2785b18a998e4c15a62c1d"
+    },
+    {
+      "file": "live_room_clean.png",
+      "source": "/Users/serx/Downloads/LAB-RC_LiveRoom_SIN_Bateria.png",
+      "sha256": "9e56ee4a5e16f342c5611b4f86e550243c8322da033932e1329f3ee055df7df8",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "pixels_sha256": "20c81a43c551433f2907562e0e94c1121ea3e342d41c0a66d59e3d64bfa89324"
+    },
+    {
+      "file": "boost_this.png",
+      "source": "/Users/serx/Downloads/batería_rock_con_calavera_y_platillos.png",
+      "sha256": "1cf8e0217e9ff0181adc952b592580af05dd78ddb8c618bba8f8708d76cbf305",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "pixels_sha256": "bc49e53ef6d484db9f8b025beac62dbe8c0702a5d28c97c31204e22ca9d5161a",
+      "alpha_bbox": [
+        0,
+        0,
+        1432,
+        1086
+      ]
+    }
+  ],
+  "reference_sha256": "e97f122debe7700c83ee3e26e5a79fe762261c5c375e2fd008042d7f7540b52f",
+  "static_details": [
+    {
+      "file": "approved_metal.png",
+      "source": "/Users/serx/Downloads/LAB-RC_Final_Touch_02/LAB-RC_REFERENCIA_VINTAGE_APROBADA.png",
+      "source_crop_ltrb": [
+        183,
+        802,
+        283,
+        880
+      ],
+      "noninteractive_static_detail": true,
+      "alpha_circle_mask": false,
+      "sha256": "00cd5169b3a94e1ab9e85e78964891cd90b89613fc4eb983769ef1c1f2519974",
+      "width": 100,
+      "height": 78
+    },
+    {
+      "file": "approved_screw.png",
+      "source": "/Users/serx/Downloads/LAB-RC_Final_Touch_02/LAB-RC_REFERENCIA_VINTAGE_APROBADA.png",
+      "source_crop_ltrb": [
+        7,
+        7,
+        39,
+        39
+      ],
+      "noninteractive_static_detail": true,
+      "alpha_circle_mask": true,
+      "sha256": "08cf159ad17e7a45fca6a52f4423a61371c424e174d7ac0600294f6a857ae5b6",
+      "width": 32,
+      "height": 32
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+UpdateCTestConfiguration  from :/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/DartConfiguration.tcl
+Test project /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: DSP
+
+1: Test command: /Users/serx/Documents/ChatGPT/MANZA´S\ DRUM\ ROOMS\ BY\ ALBINI/build/mac-arm64/tests/labrc_tests "--category" "DSP"
+1: Working Directory: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64
+1: Test timeout computed to be: 1200
+1: Random seed: 0x4c41425243
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Room request during idle prepares the selected bank on the worker without a callback...
+1: Completed tests in Room matrices, controls and scheduling / Room request during idle prepares the selected bank on the worker without a callback
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / The final audio callback with an old room snapshot cannot cancel an external idle request...
+1: Completed tests in Room matrices, controls and scheduling / The final audio callback with an old room snapshot cannot cancel an external idle request
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Two independent stereo inputs sum through four distinct FIRs...
+1: Completed tests in Room matrices, controls and scheduling / Two independent stereo inputs sum through four distinct FIRs
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / L-only, R-only and mono traverse every sample of all nine approved matrices...
+1: Maximum sample error (L/R/mono, all 9 pairs): 0.0000000298
+1: Completed tests in Room matrices, controls and scheduling / L-only, R-only and mono traverse every sample of all nine approved matrices
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / All 64 solo/mute combinations preserve independent pair gains...
+1: Completed tests in Room matrices, controls and scheduling / All 64 solo/mute combinations preserve independent pair gains
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Dry routing respects trims; bypass ramps to original unity; peak above full scale survives...
+1: Completed tests in Room matrices, controls and scheduling / Dry routing respects trims; bypass ramps to original unity; peak above full scale survives
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Nonfinite samples and controls leave following buffers usable...
+1: Completed tests in Room matrices, controls and scheduling / Nonfinite samples and controls leave following buffers usable
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Room requests keep previous output until new bank is ready and latest room wins...
+1: Completed tests in Room matrices, controls and scheduling / Room requests keep previous output until new bank is ready and latest room wins
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Fader, mute, solo, trims and mix ramp at sample resolution; excluded tail remains hot...
+1: Completed tests in Room matrices, controls and scheduling / Fader, mute, solo, trims and mix ramp at sample resolution; excluded tail remains hot
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Multiple requests during an audible transition converge on the last selection...
+1: Completed tests in Room matrices, controls and scheduling / Multiple requests during an audible transition converge on the last selection
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / A sub-frame over is retained across silent callbacks until read by the UI...
+1: Completed tests in Room matrices, controls and scheduling / A sub-frame over is retained across silent callbacks until read by the UI
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / A failed off-thread IR load preserves the sounding room and permits another selection...
+1: Completed tests in Room matrices, controls and scheduling / A failed off-thread IR load preserves the sounding room and permits another selection
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Transfer magnitude and phase at all host rates, including delayed high-frequency content...
+1: Completed tests in Room matrices, controls and scheduling / Transfer magnitude and phase at all host rates, including delayed high-frequency content
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Broadband stereo random burst vs double-precision time-domain convolution at every sample rate...
+1: Fs 44100 Hz, max time-domain error 0.000011709
+1: Fs 48000 Hz, max time-domain error 0.000008410
+1: Fs 88200 Hz, max time-domain error 0.000004461
+1: Fs 96000 Hz, max time-domain error 0.000000124
+1: Fs 176400 Hz, max time-domain error 0.000002636
+1: Fs 192000 Hz, max time-domain error 0.000001273
+1: Completed tests in Room matrices, controls and scheduling / Broadband stereo random burst vs double-precision time-domain convolution at every sample rate
+1: -----------------------------------------------------------------
+1: Starting tests in: Room matrices, controls and scheduling / Nine recorded matrices preserve complex transfer across the six host sample rates...
+1: Fs 44100 Hz, max absolute complex transfer error 0.000017582
+1: Fs 48000 Hz, max absolute complex transfer error 0.000005998
+1: Fs 88200 Hz, max absolute complex transfer error 0.000001076
+1: Fs 96000 Hz, max absolute complex transfer error 0.000001036
+1: Fs 176400 Hz, max absolute complex transfer error 0.000002535
+1: Fs 192000 Hz, max absolute complex transfer error 0.000002936
+1: Completed tests in Room matrices, controls and scheduling / Nine recorded matrices preserve complex transfer across the six host sample rates
+1: LAB-RC: 15 sections, 209 checks passed, 0 failed
+1/5 Test #1: DSP ..............................   Passed   10.72 sec
+test 2
+    Start 2: Processor
+
+2: Test command: /Users/serx/Documents/ChatGPT/MANZA´S\ DRUM\ ROOMS\ BY\ ALBINI/build/mac-arm64/tests/labrc_tests "--category" "Processor"
+2: Working Directory: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64
+2: Test timeout computed to be: 180
+2: Random seed: 0x4c41425243
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Embedded matrices retain all four original channels and samples...
+2: Completed tests in Processor, state and user undo / Embedded matrices retain all four original channels and samples
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Embedded photographs decode the original pixels...
+2: Completed tests in Processor, state and user undo / Embedded photographs decode the original pixels
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Mono to stereo and stereo to stereo only...
+2: Completed tests in Processor, state and user undo / Mono to stereo and stereo to stereo only
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Persistent parameter defaults are usable without preparing audio...
+2: Completed tests in Processor, state and user undo / Persistent parameter defaults are usable without preparing audio
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / User drag creates one undo action; host automation creates none...
+2: Completed tests in Processor, state and user undo / User drag creates one undo action; host automation creates none
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Recall includes DSP and per-instance UI preferences...
+2: Completed tests in Processor, state and user undo / Recall includes DSP and per-instance UI preferences
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Reset and its inverse are a single user transaction...
+2: Completed tests in Processor, state and user undo / Reset and its inverse are a single user transaction
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / Legacy partial states clamp ranges and default malformed or missing data...
+2: Completed tests in Processor, state and user undo / Legacy partial states clamp ranges and default malformed or missing data
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor, state and user undo / A different instance remains untouched by state and undo...
+2: Completed tests in Processor, state and user undo / A different instance remains untouched by state and undo
+2: -----------------------------------------------------------------
+2: Starting tests in: Recall lifecycle and validation / An initial recall on either side of prepare renders the same first impulse for nine pairs...
+2: Completed tests in Recall lifecycle and validation / An initial recall on either side of prepare renders the same first impulse for nine pairs
+2: -----------------------------------------------------------------
+2: Starting tests in: Recall lifecycle and validation / An immediate GUI undo or redo cannot replay history preceding a host restore...
+2: Completed tests in Recall lifecycle and validation / An immediate GUI undo or redo cannot replay history preceding a host restore
+2: -----------------------------------------------------------------
+2: Starting tests in: Recall lifecycle and validation / Host recall during a drag balances the gesture and ignores old drag moves...
+2: Completed tests in Recall lifecycle and validation / Host recall during a drag balances the gesture and ignores old drag moves
+2: -----------------------------------------------------------------
+2: Starting tests in: Recall lifecycle and validation / Malformed envelopes and incompatible versions preserve all live state and user history...
+2: Completed tests in Recall lifecycle and validation / Malformed envelopes and incompatible versions preserve all live state and user history
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor audio integration / Unprepared processor starts silent...
+2: Completed tests in Processor audio integration / Unprepared processor starts silent
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor audio integration / Mono dry duplicates at unity with trims and computational alignment...
+2: Completed tests in Processor audio integration / Mono dry duplicates at unity with trims and computational alignment
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor audio integration / Host bypass ignores trims after ramp and retains latency...
+2: Completed tests in Processor audio integration / Host bypass ignores trims after ramp and retains latency
+2: -----------------------------------------------------------------
+2: Starting tests in: Processor audio integration / Prepare release at another host rate resets history...
+2: Completed tests in Processor audio integration / Prepare release at another host rate resets history
+2: LAB-RC: 17 sections, 206 checks passed, 0 failed
+2/5 Test #2: Processor ........................   Passed    1.84 sec
+test 3
+    Start 3: UI
+
+3: Test command: /Users/serx/Documents/ChatGPT/MANZA´S\ DRUM\ ROOMS\ BY\ ALBINI/build/mac-arm64/tests/labrc_tests "--category" "UI"
+3: Working Directory: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64
+3: Test timeout computed to be: 180
+3: Random seed: 0x4c41425243
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Console anchors, exact inverse, contain and minimum editor geometry...
+3: Completed tests in UI geometry and console controls / Console anchors, exact inverse, contain and minimum editor geometry
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Output knob remains reachable behind the transparent mix container at every size...
+3: Completed tests in UI geometry and console controls / Output knob remains reachable behind the transparent mix container at every size
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Numeric entry changes the real parameter once and rejects malformed numbers...
+3: Completed tests in UI geometry and console controls / Numeric entry changes the real parameter once and rejects malformed numbers
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Room selection keeps global faders and the six stable marker components...
+3: Completed tests in UI geometry and console controls / Room selection keeps global faders and the six stable marker components
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / MICS is an undoable instance preference and has no audio parameter side effects...
+3: Completed tests in UI geometry and console controls / MICS is an undoable instance preference and has no audio parameter side effects
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Host parameter updates reach controls without adding user undo...
+3: Completed tests in UI geometry and console controls / Host parameter updates reach controls without adding user undo
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / GUI observes host parameters only at GUI refresh, with no synchronous listener push...
+3: Completed tests in UI geometry and console controls / GUI observes host parameters only at GUI refresh, with no synchronous listener push
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Worker automation of every parameter reaches the next GUI frame without user undo...
+3: Completed tests in UI geometry and console controls / Worker automation of every parameter reaches the next GUI frame without user undo
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Numeric editing survives GUI frames and automation, then cancels or commits normally...
+3: Completed tests in UI geometry and console controls / Numeric editing survives GUI frames and automation, then cancels or commits normally
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Mic label bounds stay on the original photograph at minimum size in every room...
+3: Completed tests in UI geometry and console controls / Mic label bounds stay on the original photograph at minimum size in every room
+3: -----------------------------------------------------------------
+3: Starting tests in: UI geometry and console controls / Open editor recalls instance size and cannot undo changes from the previous restored state...
+3: Completed tests in UI geometry and console controls / Open editor recalls instance size and cannot undo changes from the previous restored state
+3: LAB-RC: 11 sections, 2231 checks passed, 0 failed
+3/5 Test #3: UI ...............................   Passed    0.70 sec
+test 4
+    Start 4: BuildTools
+
+4: Test command: /opt/homebrew/Frameworks/Python.framework/Versions/3.14/bin/python3.14 "-B" "/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/scripts/test_build_tools.py"
+4: Working Directory: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64
+4: Environment variables: 
+4:  PYTHONDONTWRITEBYTECODE=1
+4: Test timeout computed to be: 120
+4: .....
+4: ----------------------------------------------------------------------
+4: Ran 5 tests in 0.575s
+4: 
+4: OK
+4/5 Test #4: BuildTools .......................   Passed    0.68 sec
+test 5
+    Start 5: Bootstrap
+
+5: Test command: /opt/homebrew/Frameworks/Python.framework/Versions/3.14/bin/python3.14 "-B" "/Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/scripts/test_prepare_juce.py"
+5: Working Directory: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/mac-arm64
+5: Environment variables: 
+5:  PYTHONDONTWRITEBYTECODE=1
+5: Test timeout computed to be: 120
+5: ....
+5: ----------------------------------------------------------------------
+5: Ran 4 tests in 0.006s
+5: 
+5: OK
+5: Prepared JUCE 8.0.17-security: /Users/serx/Documents/ChatGPT/MANZA´S DRUM ROOMS BY ALBINI/build/bootstrap-tests-udi9vazi/dependencies/juce
+5: SHA-256 b47d27f2ed979cf70708cf8146fca98d739248ee475ea83b899f777bb00ccf6f
+5/5 Test #5: Bootstrap ........................   Passed    0.13 sec
+
+100% tests passed out of 5
+
+Label Time Summary:
+Build        =   0.81 sec*proc (2 tests)
+DSP          =  10.72 sec*proc (1 test)
+Processor    =   1.84 sec*proc (1 test)
+UI           =   0.70 sec*proc (1 test)
+
+Total Test time (real) =  14.08 sec

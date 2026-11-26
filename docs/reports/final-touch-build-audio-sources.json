@@ -1,0 +1,9 @@
+{
+  "Source/DSP/MatrixBank.cpp": "4624d3d8277b7ab4da113fddf004c7365be3d91ed7bc5203dde7a3235e094913",
+  "Source/DSP/MatrixBank.h": "96577e18b126caf3eab26bb837961288dd970d4a16a66416ced6109b8325439d",
+  "Source/DSP/PairEqualiser.h": "fe136ba4977d1c36184561d1a8dbabd71c799bf236bf599a88b631cd919061a5",
+  "Source/DSP/RoomMixer.cpp": "d018e7703144d31792f6b7b32976e2208e80cef8160c7aa4547c21a63df4bdbc",
+  "Source/DSP/RoomMixer.h": "5292b04805b2907f981b72b12ad392e5cd944a3f878784e7450e9c783551ae55",
+  "Source/PluginProcessor.cpp": "8739dead2f273f1860c3d87235d423361b9435a5e1a1378bf8cdf78bbe99d35d",
+  "Source/PluginProcessor.h": "c0729c85aae9c3f3c98bb5db609db4674e0c9e5bb41d721bcfee688e0f6181ae"
+}
