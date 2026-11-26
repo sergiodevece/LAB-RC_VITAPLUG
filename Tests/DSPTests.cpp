@@ -349,7 +349,7 @@ class DspTests : public juce::UnitTest
         expectWithinAbsoluteError(outputTrim.getSample(0, 959), 1.5f, 0.0002f);
         constexpr int lateTap = 6144;
         mixer.prepare(96000., 64, 0,
-                      [](int, int)
+                      [lateTap](int, int)
                       {
                           Buffer ir(4, lateTap + 1);
                           ir.clear();
