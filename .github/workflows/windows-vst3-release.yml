@@ -29,6 +29,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Test the packaging tools and PowerShell 5.1 preflight
+        run: |
+          python -B scripts/test_build_windows.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Windows build and installer script tests failed.' }
+
       - name: Build Steinberg's official VST3 Validator
         id: steinberg
         if: ${{ inputs.steinberg_validator_sha256 == '' }}
@@ -89,8 +94,6 @@ jobs:
             $buildArguments += @('--steinberg-validator', $env:STEINBERG_BUILT_VALIDATOR)
           }
 
-          python -B scripts/test_build_windows.py
-          if ($LASTEXITCODE -ne 0) { throw 'Windows build script tests failed.' }
           python @buildArguments
           if ($LASTEXITCODE -ne 0) { throw 'Release build or native validation failed.' }
 
@@ -98,10 +101,23 @@ jobs:
           $sha = ((Get-Content -LiteralPath "$zip.sha256" -Raw).Trim() -split '\s+')[0]
           Assert-Sha256 $zip $sha
 
+      - name: Store private smoke package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: LAB-RC-Windows-x64-VST3
+          path: |
+            dist/LAB-RC-Windows-x64-VST3.zip
+            dist/LAB-RC-Windows-x64-VST3.zip.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+      - name: Check installation against the packaged DLL in PowerShell 5.1
+        run: |
           $installerCheck = Join-Path $env:RUNNER_TEMP 'labrc-installer-check'
-          Expand-Archive -LiteralPath $zip -DestinationPath $installerCheck
+          Expand-Archive -LiteralPath 'dist/LAB-RC-Windows-x64-VST3.zip' -DestinationPath $installerCheck
           $installer = Join-Path $installerCheck 'LAB-RC-Windows-x64-VST3/install.ps1'
-          powershell.exe -NoProfile -File $installer -Action Install -WhatIf
+          powershell.exe -NoProfile -NonInteractive -File $installer -Action Install -WhatIf
           if ($LASTEXITCODE -ne 0) { throw 'PowerShell 5.1 installer preflight failed.' }
 
       - name: Render Windows output for AU parity analysis
@@ -123,17 +139,6 @@ jobs:
           path: build/windows-x64/parity-render/
           if-no-files-found: error
           retention-days: 1
-
-      - name: Store private smoke package
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: LAB-RC-Windows-x64-VST3
-          path: |
-            dist/LAB-RC-Windows-x64-VST3.zip
-            dist/LAB-RC-Windows-x64-VST3.zip.sha256
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 7
 
       - name: Store private diagnostics for a failed build
         if: failure()

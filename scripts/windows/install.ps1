@@ -68,11 +68,19 @@ function Get-LabRCFingerprint([string]$Bundle) {
         if (-not ($reader.ReadUInt16() -band 0x2000) -or $reader.ReadUInt16() -ne 0x20B) {
             throw "El binario no es una DLL PE32+ en $binary"
         }
+        # Keep the read-only hash independent of the caller's WhatIf preference.
+        $sha256 = [Security.Cryptography.SHA256]::Create()
+        try {
+            $reader.BaseStream.Position = 0
+            $hash = [BitConverter]::ToString($sha256.ComputeHash($reader.BaseStream)).Replace('-', '')
+        } finally {
+            $sha256.Dispose()
+        }
     } finally {
         $reader.Dispose()
     }
     return [pscustomobject]@{
-        Hash = (Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash
+        Hash = $hash
         Version = $manifest.Version
     }
 }
@@ -114,7 +122,7 @@ if ($Action -eq 'Install') {
         throw 'Indica la ruta LAB-RC.vst3 del respaldo con BackupPath.'
     }
     Assert-PlainDirectory $backups
-    $source = (Resolve-Path -LiteralPath $BackupPath).ProviderPath
+    $source = (Get-Item -LiteralPath $BackupPath -Force).FullName
     $backupFolder = [IO.Path]::GetDirectoryName($source)
     if ([IO.Path]::GetFileName($source) -ne $bundleName -or
         [IO.Path]::GetDirectoryName($backupFolder) -ne $backups) {

@@ -1,6 +1,9 @@
 import json
 from pathlib import Path
+import shutil
 import struct
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -103,6 +106,22 @@ class WindowsBundleTests(unittest.TestCase):
             receipt = json.loads(archive.read(f"{release.stem}/build-info.json"))
             self.assertEqual(receipt["binary_sha256"], sha256(self.binary))
             self.assertEqual(receipt["steinberg_validator"], "PENDIENTE")
+
+    @unittest.skipUnless(sys.platform == "win32", "Requires Windows PowerShell 5.1")
+    def test_installer_whatif_checks_fingerprint_without_writing(self):
+        from build_windows import ROOT, sha256
+        root = Path(self.temp.name)
+        installer = root / "install.ps1"
+        shutil.copy2(ROOT / "scripts/windows/install.ps1", installer)
+        (root / "build-info.json").write_text(json.dumps({
+            "architecture": "Windows x64", "configuration": "Release", "version": "0.2.0",
+            "binary_sha256": sha256(self.binary),
+        }), encoding="utf-8")
+        result = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-File",
+                                 str(installer), "-Action", "Install", "-WhatIf"], cwd=root,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, errors="replace")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Install LAB-RC", result.stdout)
 
 
 if __name__ == "__main__":
