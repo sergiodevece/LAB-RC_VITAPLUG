@@ -1,0 +1,4 @@
+Assets/ImplementationKit/** -text
+Assets/FinalTouch/** -text
+CI-inputs/** -text
+Tests/FinalTouchRegression.cpp text eol=lf

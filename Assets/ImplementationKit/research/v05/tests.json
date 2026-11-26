@@ -1,0 +1,38 @@
+[
+  {
+    "room": "kentucky",
+    "files": 9,
+    "late_early_ratio": 1.2000000000000002,
+    "peak_full": 0.5431472659111023,
+    "tail_last_20ms_relative_db": -150.5302936639009,
+    "direct_preserved": true,
+    "finite": true,
+    "roundtrip": true,
+    "passive_loop_conditions": true,
+    "late_silent_before_transition": true
+  },
+  {
+    "room": "center_field",
+    "files": 9,
+    "late_early_ratio": 2.0000000000000004,
+    "peak_full": 0.5431472659111023,
+    "tail_last_20ms_relative_db": -155.38894002167856,
+    "direct_preserved": true,
+    "finite": true,
+    "roundtrip": true,
+    "passive_loop_conditions": true,
+    "late_silent_before_transition": true
+  },
+  {
+    "room": "live_room",
+    "files": 9,
+    "late_early_ratio": 3.0,
+    "peak_full": 0.5431472659111023,
+    "tail_last_20ms_relative_db": -136.64549501020713,
+    "direct_preserved": true,
+    "finite": true,
+    "roundtrip": true,
+    "passive_loop_conditions": true,
+    "late_silent_before_transition": true
+  }
+]
