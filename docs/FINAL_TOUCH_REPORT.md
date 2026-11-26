@@ -34,8 +34,8 @@ En la medición intercalada sin compilación, el p99 mediano a 96 kHz con bloque
 | CTest con ASan y UBSan | 5/5 en arm64 |
 | `pluginval` estricto del VST3 auxiliar | PASS en arm64 y x86_64 bajo Rosetta |
 | AU Release universal | arm64 y x86_64 verificados con `lipo`. Firma ad hoc verificada con `codesign` y simulación de instalación superada |
-| `auval` estricto del AU de 0.2.0 | Pendiente de autorización para sustituir temporalmente el AU instalado |
+| `auval` estricto del AU de 0.2.0 | PASS en arm64 y x86_64 bajo Rosetta. Ambas pruebas identificaron la versión 0.2.0 |
 
-[Informe de compilación](reports/final-touch-build.md)
+El AU 0.2.0 quedó instalado para el smoke de Logic con autorización del propietario. El ejecutable instalado coincide con el del ZIP. Se conserva el checkpoint 0.1.0 para restauración. [Informe de compilación](reports/final-touch-build.md) · [Recibo de validación AU](reports/final-touch-au.json)
 
 La guía de instalación incluye respaldo y rollback. La escucha con EQ activa y la validación de un proyecto 0.2.0 en Logic quedan para revisión física. [Instalación y smoke de 0.2.0](FINAL_TOUCH_INSTALL.md)

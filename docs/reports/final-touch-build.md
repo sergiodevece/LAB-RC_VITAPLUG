@@ -9,7 +9,7 @@ Especificación y plan completos leídos: `docs/superpowers/specs/2026-11-26-lab
 - CMake embebe nueve matrices v06 intactas y seis PNG Final Touch: tres fondos limpios originales, batería transparente y dos recortes de material aprobados. No embebe v05 ni la escena vintage de referencia completa.
 - Los resultados nuevos usan exclusivamente `docs/reports/final-touch-*`. El wrapper pluginval comprueba la versión del candidato antes de ejecutarlo, para no atribuir evidencia 0.1 a 0.2.
 - El candidato se fusionará en `build/universal-0.2.0`; el paquete privado será `dist/LAB-RC-0.2.0-AU-universal.zip`. No se sustituyen los ZIP 0.1 ni se necesita otro ZIP de fuentes.
-- Si el propietario autoriza auval, el lead instalará 0.2 solo temporalmente y restaurará exactamente el checkpoint 0.1 al terminar. La identidad de hash del paquete se asocia al AU validado temporalmente, no a la versión que permanezca instalada. El recibo y metadata registran `checkpoint_restored` expresamente.
+- El propietario autorizó instalar 0.2.0 y dejarlo disponible para el smoke de Logic. El recibo identifica el binario instalado y validado. El checkpoint 0.1.0 está disponible para restaurar la versión previa.
 - Render real con processor/editor en el message thread, sin abrir device de audio: tres salas a mínimo/inicial/máximo/inicial@2x, más detalle de controles, en `docs/screenshots/final-touch`. El propietario aprobó expresamente las capturas y el acabado Final Touch tras ver la terna; el smoke humano de audio 0.2 permanece separado y pendiente.
 
 ## Registro
@@ -36,12 +36,12 @@ El wrapper pluginval comprueba también la versión declarada por el plugin en e
 
 | Artefacto final | Versión esperada | Arquitecturas / mínimos | Estado |
 |---|---|---|---|
-| AU `LAB-RC.component` | 0.2.0, `aufx/LbRc/Vtpl` | arm64 11.0 + x86_64 10.15 | Build/fusión/firma PASS; auval pendiente de consentimiento nuevo |
+| AU `LAB-RC.component` | 0.2.0, `aufx/LbRc/Vtpl` | arm64 11.0 + x86_64 10.15 | Build/fusión/firma y `auval -strict` en ambas arquitecturas PASS |
 | VST3 auxiliar `LAB-RC.vst3` | 0.2.0, `com.vitaplug.labrc` | arm64 11.0 + x86_64 10.15 | Build/fusión/firma y pluginval ambas arquitecturas PASS |
 | Standalone auxiliar `LAB-RC.app` | 0.2.0 | arm64 11.0 + x86_64 10.15 | Build/fusión/firma PASS; no se ha abierto |
 
 La UI cerró su ciclo RED/GREEN y el propietario aprobó las capturas finales. Los wrappers se recompilaron desde esas fuentes congeladas. No se confunden los tiempos CTest con mediciones de CPU: la ventana de benchmark independiente de QA se realizó sin compilaciones concurrentes del equipo.
 
-## Pendiente
+## Validación instalada
 
-El primer ZIP se entrega con auval 0.2 pendiente de autorización nueva; no se interpreta la etiqueta interna “auval” de pluginval VST3 como validación del AU. Tampoco se ejecutó el validador Steinberg externo, no configurado. Si el propietario autoriza después, el lead validará temporalmente 0.2 y restaurará 0.1, actualizando recibo y paquete sin cambiar estas fuentes. La escucha física Logic 0.2 sigue pendiente. No se declara compatibilidad Windows ni firma Developer ID/notarización. El tamaño, CRC y SHA-256 del ZIP se registran en su sidecar y recibo de entrega fuera de los documentos sellados para evitar hashes circulares.
+Tras la instalación, el registro de Audio Units seguía anunciando 0.1.0. Al reiniciar el registrador de la sesión, ambas ejecuciones estrictas identificaron y validaron 0.2.0. Se abrió Logic tras las dos pruebas. La escucha física sigue pendiente. [arm64](final-touch-auval-arm64.log) · [x86_64](final-touch-auval-x86_64.log)

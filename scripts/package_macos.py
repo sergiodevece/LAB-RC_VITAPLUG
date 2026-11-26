@@ -20,11 +20,11 @@ FORMATS = {"AU": "LAB-RC.component", "VST3": "LAB-RC.vst3", "Standalone": "LAB-R
 def au_validation_evidence(package):
     record = ROOT / "docs/reports/final-touch-au.json"
     if not record.is_file():
-        return {"auval": "PENDING: no temporary AU validation evidence"}
+        return {"auval": "PENDING: no AU validation evidence"}
     evidence = json.loads(record.read_text())
     digest = hashlib.sha256(bundle_info(package / "AU/LAB-RC.component").read_bytes()).hexdigest()
     if digest != evidence.get("binary_sha256"):
-        raise ValueError("Packaged AU binary differs from the temporarily validated AU evidence")
+        raise ValueError("Packaged AU binary differs from the validated AU evidence")
     statuses = {}
     for architecture in ("arm64", "x86_64"):
         log = ROOT / "docs/reports" / ("final-touch-auval-" + architecture + ".log")
@@ -33,13 +33,11 @@ def au_validation_evidence(package):
             f"Component Version: {EXPECTED_VERSION}" in contents and "AU VALIDATION SUCCEEDED." in contents
         ) else "PENDING"
     return {"auval": statuses, "au_binary_sha256": digest,
-            "identical_to_temporarily_validated_au": True,
+            "identical_to_validated_au": True,
             "user_authorized_install": bool(evidence.get("user_authorized_install")),
             "logic_opened": bool(evidence.get("logic_opened")),
             "checkpoint_restored": bool(evidence.get("checkpoint_restored")),
-            "installation_state": ("0.1.0 checkpoint restored after validation"
-                                   if evidence.get("checkpoint_restored")
-                                   else "See temporary validation receipt; not a claim about the current installed AU")}
+            "installation_state": evidence.get("installation_state", "See the AU validation receipt")}
 
 
 def make_package(merge_only=False, au_only=False):
